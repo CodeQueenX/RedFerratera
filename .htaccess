@@ -1,0 +1,27 @@
+RewriteEngine On
+RewriteBase /RedFerratera/
+
+# Redirigir URLs amigables a sus acciones correspondientes
+RewriteRule ^ferrata/([0-9]+)/([a-zA-Z0-9-]+)$ index.php?accion=ver_ferrata&id=$1 [L,QSA]
+RewriteRule ^ferratas$ index.php?accion=ferratas [L,QSA]
+RewriteRule ^nuevas-ferratas$ index.php?accion=nuevas_ferratas [L,QSA]
+RewriteRule ^reportes$ index.php?accion=reportes [L,QSA]
+RewriteRule ^agregar-ferrata$ index.php?accion=agregar_ferrata [L,QSA]
+RewriteRule ^agregar-reporte$ index.php?accion=agregar_reporte [L,QSA]
+RewriteRule ^gestionar-ferratas$ index.php?accion=gestionar_ferratas [L,QSA]
+RewriteRule ^editar-ferrata/([0-9]+)$ index.php?accion=editar_ferrata&id=$1 [L,QSA]
+RewriteRule ^eliminar-comentario/([0-9]+)/ferrata/([0-9]+)$ index.php?accion=eliminar_comentario&id=$1&ferrata_id=$2 [L,QSA]
+RewriteRule ^eliminar-imagen/([0-9]+)/ferrata/([0-9]+)$ index.php?accion=eliminar_imagen&id=$1&ferrata_id=$2 [L,QSA]
+RewriteRule ^login$ index.php?accion=login [L,QSA]
+RewriteRule ^registrar$ index.php?accion=registrar [L,QSA]
+RewriteRule ^logout$ index.php?accion=logout [L,QSA]
+RewriteRule ^inicio$ index.php?accion=home [L,QSA]
+
+# Manejo de errores 404
+ErrorDocument 404 /RedFerratera/index.php
+
+
+
+
+
+
