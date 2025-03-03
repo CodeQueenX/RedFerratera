@@ -1,14 +1,14 @@
 <h1 class="text-center">Agregar Nueva Ferrata</h1>
-<form action="index.php?accion=agregar_ferrata" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
+<form action="/RedFerratera/index.php?accion=agregar_ferrata" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
         <label for="nombre">Nombre de la ferrata:</label>
         <input type="text" class="form-control" name="nombre" id="nombre" required>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="ubicacion">Ubicación (Provincia, Comunidad):</label>
         <input type="text" class="form-control" name="ubicacion" id="ubicacion" required>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label>Comunidad Autónoma:</label>
         <select name="comunidad_autonoma" class="form-control" required>
             <option value="">Selecciona una comunidad</option>
@@ -31,11 +31,11 @@
             <option value="Valencia">Comunidad Valenciana</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label>Provincia:</label>
         <input type="text" class="form-control" name="provincia" required>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="dificultad">Dificultad (K1 - K7):</label>
         <select name="dificultad" id="dificultad" class="form-control" required>
             <option value="K1">K1</option>
@@ -47,21 +47,23 @@
             <option value="K7">K7</option>
         </select>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="descripcion">Descripción:</label>
         <textarea name="descripcion" id="descripcion" class="form-control" required></textarea>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="coordenadas">Coordenadas (latitud, longitud):</label>
         <input type="text" class="form-control" name="coordenadas" id="coordenadas">
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label for="fecha_creacion">Fecha de creación (AAAA-MM-DD):</label>
         <input type="date" class="form-control" name="fecha_creacion" id="fecha_creacion">
     </div>
-    <div>
-        <label for="imagen">Subir imagen:</label>
-        <input type="file" name="imagen" accept="image/*">
-    </div>
+    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
+        <div class="mb-3">
+            <label class="form-label">Subir imágenes:</label>
+            <input type="file" name="imagenes[]" multiple accept="image/*" class="form-control">
+        </div>
+    <?php endif; ?>
     <button type="submit" class="btn btn-primary">Agregar Ferrata</button>
 </form>

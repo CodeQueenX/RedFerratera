@@ -62,12 +62,20 @@ class Reporte {
         return $stmt->execute();
     }
     
-    public function cambiarEstadoReporte($id, $nuevo_estado) {
+    public function cambiarEstadoReporte($id, $estado) {
+        echo "🔍 Cambiando estado del reporte ID: $id a $estado<br>";
         $query = "UPDATE reportes SET estado = :estado WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':estado', $nuevo_estado);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            echo "✅ Estado actualizado en la base de datos.<br>";
+            return true;
+        } else {
+            echo "❌ Error al actualizar estado en la base de datos.<br>";
+            return false;
+        }
     }
 }
 ?>

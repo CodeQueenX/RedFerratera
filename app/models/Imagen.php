@@ -9,6 +9,14 @@ class Imagen {
         $this->conn = $database->getConnection();
     }
     
+    public function agregarImagen($ferrata_id, $ruta) {
+        $query = "INSERT INTO imagenes_ferratas (ferrata_id, ruta) VALUES (:ferrata_id, :ruta)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id);
+        $stmt->bindParam(':ruta', $ruta);
+        return $stmt->execute();
+    }
+    
     public function guardarImagen($ferrata_id, $ruta) {
         $query = "INSERT INTO imagenes_ferratas (ferrata_id, ruta) VALUES (:ferrata_id, :ruta)";
         $stmt = $this->conn->prepare($query);

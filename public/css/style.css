@@ -1,71 +1,79 @@
-/* MODALES (Ventanas emergentes) */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
+/* ESTILOS GENERALES */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
-.modal-content {
-    background-color: white;
+.container {
+    max-width: 1300px;
+    margin: auto;
     padding: 20px;
-    border-radius: 8px;
-    width: 50%;
 }
 
-.modal.show .cerrar {
-    display: block;
-}
+/* TIPOGRAFÍA Y ENCABEZADOS */
 
-.cerrar {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: white;
-    font-size: 40px;
+h1, h2, h3 {
+    color: #0056b3;
     font-weight: bold;
-    cursor: pointer;
-    z-index: 10000;
 }
 
-/* GALERÍAS E IMÁGENES */
-.galeria-imagenes,
-.galeria-detalle {
+/* BOTONES */
+
+.btn {
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #a71d2a;
+}
+
+.botones-acciones {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: flex-start;
-    justify-content: flex-start;
+    gap: 10px; /* Espacio entre botones */
+    align-items: center; /* Alinea verticalmente */
+    margin-top: 15px; /* Espaciado superior */
 }
 
-.galeria-imagenes img,
-.galeria-detalle img {
-    width: 150px;
-    height: 150px;
+/* GALERÍA DE IMÁGENES */
+
+.galeria-detalle img, .editar-ferrata img {
+    width: 180px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease;
 }
 
-.galeria-imagenes img:hover,
-.galeria-detalle img:hover {
-    transform: scale(1.1);
+.galeria-detalle img:hover, .editar-ferrata img:hover {
+    transform: scale(1.05);
 }
 
-/* BOTÓN DE ELIMINACIÓN */
+/* BOTÓN ELIMINAR */
+
 .imagen-contenedor {
     position: relative;
     display: inline-block;
 }
 
-.imagen-contenedor .boton-eliminar {
+.boton-eliminar {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -88,12 +96,19 @@
     transform: scale(1.1);
 }
 
-/* PÁGINA DE EDICIÓN DE FERRATA */
-.editar-ferrata .small-image {
-    width: 120px;
-    height: 120px;
+/* EDICIÓN DE FERRATA */
+
+.editar-ferrata img {
+    width: 180px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.editar-ferrata img:hover {
+    transform: scale(1.05);
 }
 
 .editar-ferrata .position-relative {
@@ -103,4 +118,86 @@
 .editar-ferrata .btn-danger {
     font-size: 12px;
     padding: 2px 5px;
+}
+
+/* MAPA Y CLIMA */
+
+#map {
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.weather-container {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+}
+
+/* COMENTARIOS */
+
+.list-group-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item strong {
+    color: #0056b3;
+}
+
+/* MODAL (VENTANA EMERGENTE) */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+}
+
+.modal.show .cerrar {
+    display: block;
+}
+
+.cerrar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* MODAL PARA AMPLIAR IMÁGENES */
+#modalImagen {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+#imagenAmpliada {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
 }

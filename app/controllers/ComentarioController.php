@@ -36,7 +36,8 @@ class ComentarioController {
             $comentarioModel = new Comentario();
             
             if ($comentarioModel->eliminarComentario($id)) {
-                header("Location: index.php?accion=ver_ferrata&id=$ferrata_id");
+                $ferrata_id = $_GET['ferrata_id'];
+                header("Location: http://localhost/RedFerratera/index.php?accion=ver_ferrata&id=" . $ferrata_id, true, 303);
                 exit();
             } else {
                 echo "Error al eliminar el comentario.";

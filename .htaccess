@@ -17,6 +17,10 @@ RewriteRule ^registrar$ index.php?accion=registrar [L,QSA]
 RewriteRule ^logout$ index.php?accion=logout [L,QSA]
 RewriteRule ^inicio$ index.php?accion=home [L,QSA]
 
+# Permitir POST
+RewriteCond %{REQUEST_METHOD} ^(POST)$ [NC]
+RewriteRule .* - [L]
+
 # Manejo de errores 404
 ErrorDocument 404 /RedFerratera/index.php
 

@@ -1,8 +1,12 @@
 <h1 class="text-center">Editar Ferrata</h1>
 
 <!-- Formulario para editar datos de la ferrata -->
-<form action="index.php?accion=guardar_edicion_ferrata" method="POST" enctype="multipart/form-data">
+<form action="/RedFerratera/index.php?accion=guardar_edicion_ferrata" method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="accion" value="guardar_edicion_ferrata">
     <input type="hidden" name="id" value="<?= $ferrata['id']; ?>">
+    
+    <!-- Campo oculto para saber si la edición viene de "Gestionar Ferratas" -->
+    <input type="hidden" name="desde_gestion" value="<?= isset($_GET['desde_gestion']) ? 1 : 0; ?>">
 
     <div class="mb-3">
         <label>Nombre:</label>
@@ -76,17 +80,27 @@
         <input type="date" name="fecha_creacion" value="<?= ($ferrata['fecha_creacion'] == '0000-00-00 00:00:00' ? '' : date('Y-m-d', strtotime($ferrata['fecha_creacion']))); ?>" class="form-control">
     </div>
 
-    <h3>Imágenes</h3>
-    <div class="galeria-imagenes">
+    <!-- Galería de imágenes en edición -->
+    <h3 class="mt-4"><i class="lucide lucide-image"></i> Imágenes de la ferrata</h3>
+    <div class="galeria-detalle editar-ferrata">
         <?php foreach ($imagenes as $img): ?>
-            <div class="imagen-contenedor">
+            <div class="position-relative imagen-contenedor">
                 <img src="/RedFerratera/public/img/ferratas/<?= htmlspecialchars($img['ruta']); ?>" 
-                     alt="Imagen" 
+                     alt="Imagen de la ferrata"
+                     class="img-thumbnail small-image"
                      onerror="this.onerror=null; this.src='/RedFerratera/public/img/default.jpg';">
+                
+                <!-- X para eliminar imágenes (solo para administradores) -->
                 <a href="/RedFerratera/eliminar-imagen/<?= $img['id']; ?>/ferrata/<?= $ferrata['id']; ?>" 
                    class="boton-eliminar">❌</a>
             </div>
         <?php endforeach; ?>
+    </div>
+
+    <!-- Modal para ampliar imágenes -->
+    <div id="modalImagen" class="modal">
+        <span class="cerrar" onclick="cerrarModalImagen()">&times;</span>
+        <img class="modal-contenido" id="imagenAmpliada">
     </div>
 
     <div class="mb-3">
@@ -97,6 +111,11 @@
     <button type="submit" class="btn btn-primary">Guardar cambios</button>
 </form>
 
+<!-- Botón para eliminar la ferrata -->
+<form action="/RedFerratera/index.php?accion=eliminar_ferrata&id=<?= $ferrata['id']; ?>" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta ferrata? Esta acción no se puede deshacer.')">
+    <button type="submit" class="btn btn-danger mt-3">Eliminar Ferrata</button>
+</form>
+
 <h3 class="mt-4">Comentarios</h3>
 <?php if (!empty($comentarios)): ?>
     <ul class="list-group">
@@ -105,7 +124,7 @@
                 <strong><?= htmlspecialchars($comentario['usuario']); ?>:</strong> 
                 <?= htmlspecialchars($comentario['comentario']); ?> 
                 <em>(<?= htmlspecialchars($comentario['fecha_comentario']); ?>)</em>
-                <a href="/RedFerratera/eliminar-comentario/<?= $comentario['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
+                <a href="/RedFerratera/eliminar-comentario/<?= $comentario['id']; ?>&ferrata_id=<?= $ferrata['id']; ?>" class="btn btn-danger btn-sm">Eliminar</a>
             </li>
         <?php endforeach; ?>
     </ul>

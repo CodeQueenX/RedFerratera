@@ -53,7 +53,7 @@
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h2>✅ Equipamiento básico</h2>
+                    <h2 class="fw-bold text-dark">✅ Equipamiento básico</h2>
                     <ul>
                         <li>🔗 Disipador de energía con mosquetones homologados.</li>
                         <li>⛑ Casco de escalada.</li>
@@ -67,7 +67,7 @@
     	<div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h2>⚠️ Consejos de seguridad</h2>
+                    <h2 class="fw-bold text-dark">⚠️ Consejos de seguridad</h2>
                     <ul>
                         <li>🔄 Revisa siempre tu equipo antes de iniciar.</li>
                         <li>🚷 No te desconectes nunca del cable de vida.</li>
@@ -81,12 +81,12 @@
 		<div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
-                    <h2>🎯 Clasificación de las vías ferratas</h2>
+                    <h2 class="fw-bold text-dark">🎯 Clasificación de las vías ferratas</h2>
                     <ul>
-                        <li>🟢 **K1-K2**: Fácil, ideal para principiantes.</li>
-                        <li>🔵 **K3-K4**: Moderado, requiere cierta experiencia.</li>
-                        <li>🔴 **K5-K6**: Difícil, recomendado para expertos.</li>
-                        <li>⚫ **K7**: Extremadamente difícil, solo para escaladores avanzados.</li>
+                        <li>🟢 K1-K2: Fácil, ideal para principiantes.</li>
+                        <li>🔵 K3-K4: Moderado, requiere cierta experiencia.</li>
+                        <li>🔴 K5-K6: Difícil, recomendado para expertos.</li>
+                        <li>⚫ K7: Extremadamente difícil, solo para escaladores avanzados.</li>
                     </ul>
                 </div>
             </div>
@@ -96,7 +96,7 @@
 
 <!-- Sección de contacto -->
 <section class="container mt-5 text-center">
-    <h2>📬 Contacto</h2>
+    <h2 class="fw-bold text-dark">📬 Contacto</h2>
     <p>Si tienes dudas o quieres colaborar, escríbenos:</p>
     <a href="mailto:megidorico@gmail.com" class="btn btn-outline-primary"><i class="lucide lucide-mail"></i> Enviar correo</a>
 </section>

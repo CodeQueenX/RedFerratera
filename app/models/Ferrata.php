@@ -20,9 +20,9 @@ class Ferrata {
     }
 
     // Insertar una nueva ferrata
-    public function agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $imagenNombre = null) {
-        $query = "INSERT INTO ferratas (nombre, ubicacion, comunidad_autonoma, provincia, dificultad, descripcion, coordenadas, estado, fecha_creacion, imagen)
-              VALUES (:nombre, :ubicacion, :comunidad_autonoma, :provincia, :dificultad, :descripcion, :coordenadas, :estado, :fecha_creacion, :imagen)";
+    public function agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
+        $query = "INSERT INTO ferratas (nombre, ubicacion, comunidad_autonoma, provincia, dificultad, descripcion, coordenadas, estado, fecha_creacion)
+              VALUES (:nombre, :ubicacion, :comunidad_autonoma, :provincia, :dificultad, :descripcion, :coordenadas, :estado, :fecha_creacion)";
         
         $stmt = $this->conn->prepare($query);
         
@@ -39,12 +39,15 @@ class Ferrata {
         }
         $stmt->bindParam(":estado", $estado);
         $stmt->bindParam(":fecha_creacion", $fecha_creacion);
-        $stmt->bindParam(":imagen", $imagenNombre);
         
         if ($stmt->execute()) {
-            return true;
+            $id = $this->conn->lastInsertId();
+            echo "Inserción exitosa, ID: $id";
+            return $id;
         } else {
-            die("Error al insertar ferrata: " . implode(" - ", $stmt->errorInfo()));
+            echo "Error al insertar en la base de datos.";
+            print_r($stmt->errorInfo()); // 🔍 VER ERROR SQL
+            return false;
         }
     }
 
@@ -94,7 +97,7 @@ class Ferrata {
               AS distancia
               FROM ferratas
               WHERE estado != 'Pendiente' AND coordenadas IS NOT NULL AND coordenadas != ''
-              AND id != :id_actual  -- ❌ Excluir la ferrata actual
+              AND id != :id_actual
               HAVING distancia < :distancia_km
               ORDER BY distancia ASC
               LIMIT 5";
@@ -116,13 +119,9 @@ class Ferrata {
         return $stmt->execute();
     }
     
-    public function editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $imagen = null) {
+    public function editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
         $query = "UPDATE ferratas SET nombre = :nombre, ubicacion = :ubicacion, comunidad_autonoma = :comunidad_autonoma, provincia = :provincia,
               dificultad = :dificultad, descripcion = :descripcion, coordenadas = :coordenadas, estado = :estado, fecha_creacion = :fecha_creacion";
-        
-        if ($imagen) {
-            $query .= ", imagen = :imagen";
-        }
         
         $query .= " WHERE id = :id";
         
@@ -137,10 +136,6 @@ class Ferrata {
         $stmt->bindParam(":coordenadas", $coordenadas);
         $stmt->bindParam(":estado", $estado);
         $stmt->bindParam(':fecha_creacion', $fecha_creacion);
-        
-        if ($imagen) {
-            $stmt->bindParam(":imagen", $imagen);
-        }
         
         return $stmt->execute();
     }
@@ -218,6 +213,14 @@ class Ferrata {
         }
         
         return $organizadas;
+    }
+    
+    public function eliminarFerrata($id) {
+        $query = "DELETE FROM ferratas WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
     }
 }
 ?>

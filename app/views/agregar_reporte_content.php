@@ -5,7 +5,7 @@ $ferratas = $ferrataModel->obtenerFerratas();
 ?>
 
 <h1>Añadir reporte</h1>
-<form action="index.php?accion=guardar_reporte" method="POST">
+<form action="/RedFerratera/index.php?accion=guardar_reporte" method="POST">
     <!-- Selección de Ferrata -->
     <label for="ferrata_id">Selecciona la Ferrata:</label>
     <select name="ferrata_id" required>

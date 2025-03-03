@@ -12,14 +12,14 @@
                 <p><strong>Coordenadas:</strong> <?= htmlspecialchars($ferrata['coordenadas'] ?? 'No especificadas'); ?></p>
                 <p><strong>Fecha de Creación:</strong> <?= htmlspecialchars($ferrata['fecha_creacion']); ?></p>
                 <p><strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
-                <a href="/RedFerratera/aprobar-ferrata/<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
-                <a href="/RedFerratera/rechazar-ferrata/<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>
-                <a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>" class="btn btn-warning">Editar Ferrata</a>
+                <a href="/RedFerratera/index.php?accion=aprobar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
+				<a href="/RedFerratera/index.php?accion=rechazar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>
+                <a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>?desde_gestion=1" class="btn btn-warning">Editar Ferrata</a>
             </li>
         <?php endforeach; ?>
     </ul>
 <?php else: ?>
-    <p class="text-center">No hay ferratas pendientes.</p>
+    <p>No hay ferratas pendientes.</p>
 <?php endif; ?>
 
 
@@ -32,11 +32,11 @@
                 <p><strong>Usuario:</strong> <?= htmlspecialchars($reporte['usuario']); ?></p>
                 <p><strong>Mensaje:</strong> <?= htmlspecialchars($reporte['mensaje']); ?></p>
                 <p><strong>Fecha:</strong> <?= htmlspecialchars($reporte['fecha_reporte']); ?></p>
-                <a href="/RedFerratera/aprobar-reporte/<?= $reporte['id']; ?>" class="btn btn-success">Aprobar</a>
-				<a href="/RedFerratera/rechazar-reporte/<?= $reporte['id']; ?>" class="btn btn-danger">Rechazar</a>
+                <a href="/RedFerratera/index.php?accion=aprobar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-success">Aprobar</a>
+				<a href="/RedFerratera/index.php?accion=rechazar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-danger">Rechazar</a>
             </li>
         <?php endforeach; ?>
     </ul>
 <?php else: ?>
-    <p class="text-center">No hay reportes pendientes.</p>
+    <p>No hay reportes pendientes.</p>
 <?php endif; ?>

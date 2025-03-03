@@ -18,7 +18,7 @@ class ImagenController {
             $imagenModel->eliminarImagen($imagen_id);
             
             // Redirige de vuelta a la página de editar ferrata
-            header("Location: index.php?accion=editar_ferrata&id=$ferrata_id");
+            header("Location: /RedFerratera/index.php?accion=editar_ferrata&id=$ferrata_id");
             exit();
         } else {
             echo "Imagen no encontrada.";

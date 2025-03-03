@@ -9,6 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Red Ferratera</title>
+    
+    <!-- Metadatos SEO -->
     <meta name="description" content="Descubre y comparte información sobre vías ferratas en España. Encuentra ferratas organizadas por dificultad y ubicación.">
     <meta name="keywords" content="vías ferratas, escalada, aventura, senderismo, montaña, deportes extremos">
     <meta name="author" content="Red Ferratera">
@@ -22,38 +24,14 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/RedFerratera/public/img/favicon.png">
     
-    <!-- Página de estilos -->
-    <link rel="stylesheet" href="/RedFerratera/public/css/style.css">
-
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/RedFerratera/public/css/bootstrap.min.css">
-
-    <!-- Iconos Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            lucide.createIcons();
-        });
-    </script>
-
-    <!-- Google Maps -->
-    <script>
-        if (!window.mapaCargado) {
-            document.addEventListener("DOMContentLoaded", function () {
-                var script = document.createElement('script');
-                script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAQI4xaz6p1EWwRV5GxoDthHt8YxELrO88";
-                script.async = true;
-                script.onload = function () {
-                    if (typeof initMap === "function") {
-                        initMap();
-                    }
-                };
-                document.body.appendChild(script);
-            });
-        }
-    </script>
+    
+    <!-- Página de estilos -->
+    <link rel="stylesheet" href="/RedFerratera/public/css/style.css">
 </head>
 <body>
+
     <!-- Barra de navegación (menú superior) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
@@ -101,8 +79,10 @@ if (session_status() === PHP_SESSION_NONE) {
             <a href="https://www.tiktok.com/@mai_elda" target="_blank" class="text-white"><i class="lucide lucide-play-circle"></i> TikTok</a>
         </div>
     </footer>
-
+    
+	<!-- Scripts JS -->
     <script src="/RedFerratera/public/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap JS -->
+    <script src="/RedFerratera/public/js/scripts.js"></script>
 </body>
 </html>
 

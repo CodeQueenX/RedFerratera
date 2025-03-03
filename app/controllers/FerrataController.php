@@ -13,7 +13,7 @@ class FerrataController {
         require_once __DIR__ . '/../models/Ferrata.php';
         $ferrataModel = new Ferrata();
         
-        // ✅ LLamar directamente a obtenerFerratasOrganizadas()
+        // LLamar directamente a obtenerFerratasOrganizadas()
         $ferratasOrganizadas = $ferrataModel->obtenerFerratasOrganizadas();
         
         // Incluir la vista
@@ -23,7 +23,14 @@ class FerrataController {
 
     // Agregar una nueva ferrata
     public function agregar() {
+        require_once __DIR__ . '/../models/Ferrata.php';
+        require_once __DIR__ . '/../models/Imagen.php';
+        
+        $ferrataModel = new Ferrata();
+        $imagenModel = new Imagen();
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
             $nombre = $_POST['nombre'] ?? '';
             $ubicacion = $_POST['ubicacion'] ?? '';
             $comunidad_autonoma = $_POST['comunidad_autonoma'] ?? '';
@@ -34,34 +41,58 @@ class FerrataController {
             $estado = isset($_POST['estado']) && $_POST['estado'] !== '' ? $_POST['estado'] : 'Pendiente';
             $fecha_creacion = $_POST['fecha_creacion'] ?? date('Y-m-d');
             
-            // Manejo de imagen
-            $imagenNombre = null;
-            if (!empty($_FILES['imagen']['name'])) {
-                $directorio = "public/img/ferratas/";
-                $imagenNombre = uniqid() . "_" . basename($_FILES['imagen']['name']);
-                $rutaImagen = $directorio . $imagenNombre;
-                
-                if (!is_dir($directorio)) {
-                    mkdir($directorio, 0777, true);
+            echo "<pre>🔍 Datos recibidos para insertar:\n";
+            print_r([
+                'nombre' => $nombre,
+                'ubicacion' => $ubicacion,
+                'comunidad_autonoma' => $comunidad_autonoma,
+                'provincia' => $provincia,
+                'dificultad' => $dificultad,
+                'descripcion' => $descripcion,
+                'coordenadas' => $coordenadas,
+                'estado' => $estado,
+                'fecha_creacion' => $fecha_creacion,
+            ]);
+            echo "</pre>";
+            
+            // Insertar la ferrata y obtener su ID
+            $ferrata_id = $ferrataModel->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);
+            
+            if ($ferrata_id) {
+                // ✅ Si es un usuario normal, redirigir a inicio
+                if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+                    header("Location: /RedFerratera/index.php");
+                    exit();
                 }
                 
-                move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaImagen);
+                // ✅ Si es un administrador, redirigir a gestionar ferratas
+                header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
+                exit();
             }
 
-            if ($nombre && $ubicacion && $dificultad && $descripcion) {
-                require_once __DIR__ . '/../models/Ferrata.php';
-                $ferrata = new Ferrata();
-                
-                if ($ferrata->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion)) {
-                    header("Location: index.php");
-                    exit();
-                } else {
-                    header("Location: index.php?error=ferrata");
-                    exit();
+            // Manejo de imágenes
+            if (!empty($_FILES['imagenes']['name'][0])) {
+                foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
+                    if ($_FILES['imagenes']['error'][$key] === UPLOAD_ERR_OK) {
+                        $directorio = "public/img/ferratas/";
+                        $nombreArchivo = time() . "_" . basename($_FILES['imagenes']['name'][$key]);
+                        $rutaDestino = $directorio . $nombreArchivo;
+                        
+                        if (move_uploaded_file($tmp_name, $rutaDestino)) {
+                            echo "✔ Imagen subida: $nombreArchivo <br>";
+                            $imagenModel->agregarImagen($ferrata_id, $nombreArchivo);
+                        } else {
+                            echo "❌ Error al mover la imagen: $nombreArchivo <br>";
+                        }
+                    } else {
+                        echo "⚠ Error en la imagen {$key}: Código " . $_FILES['imagenes']['error'][$key] . "<br>";
+                    }
                 }
             } else {
-                echo "Faltan datos obligatorios.";
+                echo "⚠ No se recibieron imágenes o la entrada estaba vacía.<br>";
             }
+            
+            exit(); // DETENER EJECUCIÓN AQUÍ PARA VER TODO EL DEBUG
         } else {
             include __DIR__ . '/../views/agregar_ferrata.php';
         }

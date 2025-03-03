@@ -228,6 +228,17 @@ switch ($accion) {
         $comentarioController->editar();
         break;
         
+    case 'eliminar_ferrata':
+        require_once 'app/controllers/AdminController.php';
+        $adminController = new AdminController();
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $adminController->eliminarFerrata($id);
+        } else {
+            echo "Error: No se proporcionó un ID válido para eliminar la ferrata.";
+        }
+        break;
+        
     default:
         // Por defecto, mostramos el listado de ferratas (página principal)
         require_once 'app/controllers/FerrataController.php';
