@@ -63,19 +63,25 @@ class Reporte {
     }
     
     public function cambiarEstadoReporte($id, $estado) {
-        echo "🔍 Cambiando estado del reporte ID: $id a $estado<br>";
         $query = "UPDATE reportes SET estado = :estado WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         
         if ($stmt->execute()) {
-            echo "✅ Estado actualizado en la base de datos.<br>";
+            echo "Estado actualizado en la base de datos.<br>";
             return true;
         } else {
-            echo "❌ Error al actualizar estado en la base de datos.<br>";
+            echo "Error al actualizar estado en la base de datos.<br>";
             return false;
         }
+    }
+    
+    public function eliminarReportesPorFerrata($ferrata_id) {
+        $query = "DELETE FROM reportes WHERE ferrata_id = :ferrata_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
 ?>

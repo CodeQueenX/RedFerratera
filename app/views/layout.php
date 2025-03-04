@@ -50,7 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-ferrata">Añadir Ferrata</a></li>
                         <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-reporte">Añadir Reporte</a></li>
 
-                        <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                        <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario']['rol'] === 'admin' || $_SESSION['usuario']['rol'] === 'moderador')): ?>
                             <li class="nav-item"><a class="nav-link" href="/RedFerratera/gestionar-ferratas">Gestionar Ferratas</a></li>
                         <?php endif; ?>
 

@@ -106,7 +106,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>
+                                    <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

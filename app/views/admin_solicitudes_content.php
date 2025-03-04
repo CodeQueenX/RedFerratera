@@ -14,7 +14,9 @@
                 <p><strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
                 <a href="/RedFerratera/index.php?accion=aprobar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
 				<a href="/RedFerratera/index.php?accion=rechazar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>
-                <a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>?desde_gestion=1" class="btn btn-warning">Editar Ferrata</a>
+				<?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                	<a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>?desde_gestion=1" class="btn btn-warning">Editar Ferrata</a>
+            	<?php endif; ?>
             </li>
         <?php endforeach; ?>
     </ul>

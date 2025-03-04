@@ -68,5 +68,12 @@ class Comentario {
         $stmt->bindParam(":comentario_id", $comentario_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+    
+    public function eliminarComentariosPorFerrata($ferrata_id) {
+        $query = "DELETE FROM comentarios WHERE ferrata_id = :ferrata_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>

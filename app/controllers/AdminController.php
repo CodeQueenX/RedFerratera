@@ -8,13 +8,24 @@ class AdminController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+        
+        if (!isset($_SESSION['usuario'])) {
             die("Acceso denegado.");
         }
+        
+        // Guardamos el rol del usuario
+        $this->usuarioRol = $_SESSION['usuario']['rol'];
+        
+        // Si no es admin o moderador, no puede acceder a este controlador
+        if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
+            die("Acceso denegado.");
+        }
+        
         $this->ferrata = new Ferrata();
     }
     
     public function gestionarSolicitudes() {
+        // Los moderadores y admins pueden acceder
         $solicitudesFerratas = $this->ferrata->obtenerSolicitudesPendientes();
         
         require_once __DIR__ . '/../models/Reporte.php';
@@ -25,28 +36,29 @@ class AdminController {
     }
     
     public function aprobarFerrata($id) {
-        require_once __DIR__ . '/../models/Ferrata.php';
-        $ferrataModel = new Ferrata();
-        
-        echo "🔍 Recibido en aprobarFerrata():<br>";
-        print_r($_GET);
-        
-        if (!$id) {
-            die("Error: ID de ferrata no válido.");
+        if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
+            die("Acceso denegado.");
         }
         
-        echo "Procesando aprobación de ferrata ID: $id <br>";
+        $ferrata = $this->ferrata->obtenerFerrataPorId($id);
+        if (!$ferrata) {
+            die("Error: No se encontró la ferrata.");
+        }
         
-        if ($ferrataModel->aprobarFerrata($id)) {
-            echo "Ferrata aprobada correctamente.<br>";
+        if ($this->ferrata->aprobarFerrata($id)) {
+            echo "Ferrata aprobada correctamente.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            die("Error al aprobar la ferrata.");
+            echo "Error al aprobar la ferrata.";
         }
     }
     
     public function rechazarFerrata($id) {
+        if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
+            die("Acceso denegado.");
+        }
+        
         $ferrata = $this->ferrata->obtenerFerrataPorId($id);
         if (!$ferrata) {
             die("Error: No se encontró la ferrata.");
@@ -61,57 +73,30 @@ class AdminController {
         }
     }
     
-    public function resolverReporte($id) {
-        require_once __DIR__ . '/../models/Reporte.php';
-        $reporteModel = new Reporte();
-        
-        if ($reporteModel->marcarComoResuelto($id)) {
-            echo "Reporte marcado como resuelto.";
-            header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
-            exit();
-        } else {
-            echo "Error al marcar el reporte como resuelto.";
-        }
-    }
-    
     public function aprobarReporte($id) {
+        if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
+            die("Acceso denegado.");
+        }
+        
         require_once __DIR__ . '/../models/Reporte.php';
         require_once __DIR__ . '/../models/Ferrata.php';
         
         $reporteModel = new Reporte();
         $ferrataModel = new Ferrata();
         
-        echo "🔍 Recibido en aprobarReporte():<br>";
-        print_r($_GET);
-        
-        // Verificar si ID es válido
-        if (!$id) {
-            die("Error: No se recibió un ID válido.");
-        }
-        
-        // Obtener el reporte antes de modificarlo
-        echo "🔍 Buscando reporte con ID: $id<br>";
         $reporte = $reporteModel->obtenerReportePorId($id);
         if (!$reporte) {
             die("Error: No se encontró el reporte.");
         }
         
-        echo "Reporte encontrado: ";
-        print_r($reporte);
-        
-        // Obtener la ferrata asociada al reporte
         $ferrata = $ferrataModel->obtenerFerrataPorId($reporte['ferrata_id']);
         if (!$ferrata) {
             die("Error: No se encontró la ferrata.");
         }
         
-        // Añadir el reporte a la descripción de la ferrata
         $nuevaDescripcion = $ferrata['descripcion'] . "\n🚨 [REPORTE] " . $reporte['mensaje'] . " (Fecha: " . $reporte['fecha_reporte'] . ")";
         $ferrataModel->actualizarDescripcion($reporte['ferrata_id'], $nuevaDescripcion);
-        echo "Actualizando descripción: $nuevaDescripcion<br>";
         
-        // Cambiar el estado del reporte a "Aprobado"
-        echo "⏳ Cambiando estado del reporte a 'Aprobado'<br>";
         if ($reporteModel->cambiarEstadoReporte($id, 'Aprobado')) {
             echo "Reporte aprobado y añadido a la ferrata.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
@@ -122,6 +107,10 @@ class AdminController {
     }
     
     public function rechazarReporte($id) {
+        if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
+            die("Acceso denegado.");
+        }
+        
         require_once __DIR__ . '/../models/Reporte.php';
         $reporteModel = new Reporte();
         
@@ -209,34 +198,46 @@ class AdminController {
     public function eliminarFerrata($id) {
         require_once __DIR__ . '/../models/Ferrata.php';
         require_once __DIR__ . '/../models/Imagen.php';
+        require_once __DIR__ . '/../models/Comentario.php';
+        require_once __DIR__ . '/../models/Reporte.php';
+        
+        // Verificar sesión y rol de usuario
+        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+            header("Location: /RedFerratera/index.php?accion=home"); // Bloqueo de acceso
+            exit();
+        }
         
         $ferrataModel = new Ferrata();
         $imagenModel = new Imagen();
+        $comentarioModel = new Comentario();
+        $reporteModel = new Reporte();
         
         if (!$id) {
             die("Error: ID de ferrata no válido.");
         }
-        
-        echo "Eliminando ferrata ID: $id<br>";
         
         // Eliminar imágenes asociadas
         $imagenes = $imagenModel->obtenerImagenesPorFerrata($id);
         foreach ($imagenes as $imagen) {
             $ruta = __DIR__ . "/../../public/img/ferratas/" . $imagen['ruta'];
             if (file_exists($ruta)) {
-                unlink($ruta); // Borrar la imagen del servidor
-                echo "Imagen eliminada: " . $imagen['ruta'] . "<br>";
+                unlink($ruta); // Borra la imagen del servidor
             }
-            $imagenModel->eliminarImagen($imagen['id']); // Borrar de la base de datos
+            $imagenModel->eliminarImagen($imagen['id']); // Borra la imagen de la BD
         }
+        
+        // Eliminar comentarios relacionados
+        $comentarioModel->eliminarComentariosPorFerrata($id);
+        
+        // Eliminar reportes relacionados
+        $reporteModel->eliminarReportesPorFerrata($id);
         
         // Eliminar la ferrata de la base de datos
         if ($ferrataModel->eliminarFerrata($id)) {
-            echo "Ferrata eliminada correctamente.<br>";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            echo "Error al eliminar la ferrata.<br>";
+            die("Error al eliminar la ferrata.");
         }
     }
 }

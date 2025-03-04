@@ -2,7 +2,7 @@ RewriteEngine On
 RewriteBase /RedFerratera/
 
 # Redirigir URLs amigables a sus acciones correspondientes
-RewriteRule ^ferrata/([0-9]+)/([a-zA-Z0-9-]+)$ index.php?accion=ver_ferrata&id=$1 [L,QSA]
+RewriteRule ^ferrata/([0-9]+)/(.+)$ index.php?accion=ver_ferrata&id=$1 [L,QSA]
 RewriteRule ^ferratas$ index.php?accion=ferratas [L,QSA]
 RewriteRule ^nuevas-ferratas$ index.php?accion=nuevas_ferratas [L,QSA]
 RewriteRule ^reportes$ index.php?accion=reportes [L,QSA]
@@ -16,6 +16,7 @@ RewriteRule ^login$ index.php?accion=login [L,QSA]
 RewriteRule ^registrar$ index.php?accion=registrar [L,QSA]
 RewriteRule ^logout$ index.php?accion=logout [L,QSA]
 RewriteRule ^inicio$ index.php?accion=home [L,QSA]
+RewriteRule ^eliminar-ferrata/([0-9]+)$ index.php?accion=eliminar_ferrata&id=$1 [L,QSA]
 
 # Permitir POST
 RewriteCond %{REQUEST_METHOD} ^(POST)$ [NC]
