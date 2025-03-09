@@ -25,7 +25,7 @@
 <?php endif; ?>
 
 
-<h2>Reportes Pendientes</h2>
+<h2 class="mt-4">Reportes Pendientes</h2>
 <?php if (!empty($solicitudesReportes)): ?>
     <ul class="list-group">
         <?php foreach ($solicitudesReportes as $reporte): ?>

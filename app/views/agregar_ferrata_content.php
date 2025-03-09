@@ -56,8 +56,8 @@
         <input type="text" class="form-control" name="coordenadas" id="coordenadas">
     </div>
     <div class="mb-3">
-        <label for="fecha_creacion">Fecha de creación (DD-MM-AAAA):</label>
-        <input type="text" name="fecha_creacion" value="<?= date('d-m-Y'); ?>" class="form-control" placeholder="DD-MM-AAAA">
+        <label for="fecha_creacion">Fecha de creación (DD-MM-YYYY):</label>
+        <input type="date" name="fecha_creacion" id="fecha_creacion" required>
     </div>
     <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
         <div class="mb-3">

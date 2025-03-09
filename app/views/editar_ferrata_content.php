@@ -77,7 +77,7 @@
 
     <div class="mb-3">
         <label>Fecha de Creación:</label>
-        <input type="text" name="fecha_creacion" value="<?= (!empty($ferrata['fecha_creacion']) ? date('d-m-Y', strtotime($ferrata['fecha_creacion'])) : ''); ?>" class="form-control" placeholder="DD-MM-AAAA">
+        <input type="date" name="fecha_creacion" id="fecha_creacion" required>
     </div>
 
     <!-- Galería de imágenes en edición -->

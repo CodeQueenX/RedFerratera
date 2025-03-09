@@ -39,23 +39,11 @@ class FerrataController {
             $descripcion = $_POST['descripcion'] ?? '';
             $coordenadas = isset($_POST['coordenadas']) && $_POST['coordenadas'] !== '' ? $_POST['coordenadas'] : null;
             $estado = isset($_POST['estado']) && $_POST['estado'] !== '' ? $_POST['estado'] : 'Pendiente';
-            $fecha_creacion = !empty($_POST['fecha_creacion'])
-            ? DateTime::createFromFormat('d-m-Y', $_POST['fecha_creacion'])->format('Y-m-d')
-            : date('Y-m-d');
-            
-            echo "<pre>🔍 Datos recibidos para insertar:\n";
-            print_r([
-                'nombre' => $nombre,
-                'ubicacion' => $ubicacion,
-                'comunidad_autonoma' => $comunidad_autonoma,
-                'provincia' => $provincia,
-                'dificultad' => $dificultad,
-                'descripcion' => $descripcion,
-                'coordenadas' => $coordenadas,
-                'estado' => $estado,
-                'fecha_creacion' => $fecha_creacion,
-            ]);
-            echo "</pre>";
+            if (!empty($_POST['fecha_creacion'])) {
+                $fecha_creacion = $_POST['fecha_creacion']; // Se guarda directamente, ya está en formato correcto
+            } else {
+                $fecha_creacion = date('Y-m-d'); // Si no se envía, usa la fecha actual como predeterminado
+            }
             
             // Insertar la ferrata y obtener su ID
             $ferrata_id = $ferrataModel->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);

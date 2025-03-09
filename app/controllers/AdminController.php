@@ -164,9 +164,11 @@ class AdminController {
         $descripcion = $_POST['descripcion'] ?? '';
         $coordenadas = $_POST['coordenadas'] ?? null;
         $estado = $_POST['estado'] ?? '';
-        $fecha_creacion = !empty($_POST['fecha_creacion'])
-        ? DateTime::createFromFormat('d-m-Y', $_POST['fecha_creacion'])->format('Y-m-d')
-        : date('Y-m-d');
+        if (!empty($_POST['fecha_creacion'])) {
+            $fecha_creacion = $_POST['fecha_creacion']; // Se guarda directamente, ya está en formato correcto
+        } else {
+            $fecha_creacion = date('Y-m-d'); // Si no se envía, usa la fecha actual como predeterminado
+        }
         
         // Guardar la ferrata editada
         $ferrataModel->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);

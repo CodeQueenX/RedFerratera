@@ -181,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // USO DE COOKIES
-
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Script de cookies ejecutado"); // <-- Para ver si el script se carga
 
@@ -203,4 +202,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// FORMATO FECHA
+document.addEventListener("DOMContentLoaded", function() {
+    let fechaInput = document.getElementById('fecha_creacion');
 
+    if (fechaInput) {
+        // Al seleccionar una fecha, la formatea correctamente
+        fechaInput.addEventListener("change", function() {
+            let fecha = fechaInput.value.split('-'); // YYYY-MM-DD
+            if (fecha.length === 3) {
+                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // DD-MM-YYYY
+            }
+        });
+
+        // Convertir antes de enviar el formulario
+        fechaInput.form.addEventListener("submit", function() {
+            let fecha = fechaInput.value.split('-'); // DD-MM-YYYY
+            if (fecha.length === 3) {
+                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // YYYY-MM-DD
+            }
+        });
+    }
+});
