@@ -39,7 +39,9 @@ class FerrataController {
             $descripcion = $_POST['descripcion'] ?? '';
             $coordenadas = isset($_POST['coordenadas']) && $_POST['coordenadas'] !== '' ? $_POST['coordenadas'] : null;
             $estado = isset($_POST['estado']) && $_POST['estado'] !== '' ? $_POST['estado'] : 'Pendiente';
-            $fecha_creacion = $_POST['fecha_creacion'] ?? date('Y-m-d');
+            $fecha_creacion = !empty($_POST['fecha_creacion'])
+            ? DateTime::createFromFormat('d-m-Y', $_POST['fecha_creacion'])->format('Y-m-d')
+            : date('Y-m-d');
             
             echo "<pre>🔍 Datos recibidos para insertar:\n";
             print_r([
@@ -59,13 +61,13 @@ class FerrataController {
             $ferrata_id = $ferrataModel->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);
             
             if ($ferrata_id) {
-                // ✅ Si es un usuario normal, redirigir a inicio
+                // Si es un usuario normal, redirigir a inicio
                 if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
                     header("Location: /RedFerratera/index.php");
                     exit();
                 }
                 
-                // ✅ Si es un administrador, redirigir a gestionar ferratas
+                // Si es un administrador, redirigir a gestionar ferratas
                 header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
                 exit();
             }
@@ -79,17 +81,17 @@ class FerrataController {
                         $rutaDestino = $directorio . $nombreArchivo;
                         
                         if (move_uploaded_file($tmp_name, $rutaDestino)) {
-                            echo "✔ Imagen subida: $nombreArchivo <br>";
+                            echo "Imagen subida: $nombreArchivo <br>";
                             $imagenModel->agregarImagen($ferrata_id, $nombreArchivo);
                         } else {
-                            echo "❌ Error al mover la imagen: $nombreArchivo <br>";
+                            echo "Error al mover la imagen: $nombreArchivo <br>";
                         }
                     } else {
-                        echo "⚠ Error en la imagen {$key}: Código " . $_FILES['imagenes']['error'][$key] . "<br>";
+                        echo "Error en la imagen {$key}: Código " . $_FILES['imagenes']['error'][$key] . "<br>";
                     }
                 }
             } else {
-                echo "⚠ No se recibieron imágenes o la entrada estaba vacía.<br>";
+                echo "No se recibieron imágenes o la entrada estaba vacía.<br>";
             }
             
             exit(); // DETENER EJECUCIÓN AQUÍ PARA VER TODO EL DEBUG

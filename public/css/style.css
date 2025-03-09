@@ -1,15 +1,84 @@
 /* ESTILOS GENERALES */
 
+html {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
     color: #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     max-width: 1300px;
     margin: auto;
     padding: 20px;
+}
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content {
+    flex: 1;
+    padding-bottom: 60px;
+}
+
+footer {
+    width: 100%;
+    margin-top: auto;
+    position: relative;
+}
+
+/* ESTILOS PARA LA PÁGINA DE INICIO */
+.inicio-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.inicio-background {
+    background-image: url('/RedFerratera/public/img/ferrata_background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Se asegura que esté detrás del contenido */
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Oscurece la imagen de fondo */
+}
+
+.inicio-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.bg-light {
+    background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* TIPOGRAFÍA Y ENCABEZADOS */
@@ -201,3 +270,26 @@ h1, h2, h3 {
     max-height: 90%;
     border-radius: 8px;
 }
+
+/* COOKIES */
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.cookie-banner button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+

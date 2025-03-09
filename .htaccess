@@ -17,6 +17,13 @@ RewriteRule ^registrar$ index.php?accion=registrar [L,QSA]
 RewriteRule ^logout$ index.php?accion=logout [L,QSA]
 RewriteRule ^inicio$ index.php?accion=home [L,QSA]
 RewriteRule ^eliminar-ferrata/([0-9]+)$ index.php?accion=eliminar_ferrata&id=$1 [L,QSA]
+RewriteRule ^contacto$ index.php?accion=contacto [L,QSA]
+RewriteRule ^faq$ index.php?accion=faq [L,QSA]
+RewriteRule ^aviso-legal$ index.php?accion=aviso_legal [L,QSA]
+RewriteRule ^politica-privacidad$ index.php?accion=politica_privacidad [L,QSA]
+RewriteRule ^politica-cookies$ index.php?accion=politica_cookies [L,QSA]
+RewriteRule ^sitemap$ index.php?accion=sitemap [L,QSA]
+
 
 # Permitir POST
 RewriteCond %{REQUEST_METHOD} ^(POST)$ [NC]

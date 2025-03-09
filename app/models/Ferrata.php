@@ -21,6 +21,10 @@ class Ferrata {
 
     // Insertar una nueva ferrata
     public function agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
+        
+        // Convertir fecha de DD-MM-YYYY a YYYY-MM-DD antes de guardar
+        $fecha_creacion = !empty($fecha_creacion) ? date('Y-m-d', strtotime(str_replace('-', '/', $fecha_creacion))) : date('Y-m-d');
+        
         $query = "INSERT INTO ferratas (nombre, ubicacion, comunidad_autonoma, provincia, dificultad, descripcion, coordenadas, estado, fecha_creacion)
               VALUES (:nombre, :ubicacion, :comunidad_autonoma, :provincia, :dificultad, :descripcion, :coordenadas, :estado, :fecha_creacion)";
         
@@ -120,6 +124,10 @@ class Ferrata {
     }
     
     public function editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
+        
+        // Convertir fecha de DD-MM-YYYY a YYYY-MM-DD antes de actualizar
+        $fecha_creacion = !empty($fecha_creacion) ? date('Y-m-d', strtotime(str_replace('-', '/', $fecha_creacion))) : date('Y-m-d');
+        
         $query = "UPDATE ferratas SET nombre = :nombre, ubicacion = :ubicacion, comunidad_autonoma = :comunidad_autonoma, provincia = :provincia,
               dificultad = :dificultad, descripcion = :descripcion, coordenadas = :coordenadas, estado = :estado, fecha_creacion = :fecha_creacion";
         

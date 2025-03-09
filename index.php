@@ -39,9 +39,20 @@ if ($accion === 'home' || empty($accion)) {
     $accion = 'home';
 }
 
+// Restringir acceso a usuarios no verificados
+if (isset($_SESSION['usuario']) && (!isset($_SESSION['usuario']['verificado']) || $_SESSION['usuario']['verificado'] != 1)) {
+    $paginasRestringidas = ['agregar_ferrata', 'agregar_reporte'];
+    
+    if (in_array($accion, $paginasRestringidas)) {
+        die("⚠️ Debes verificar tu cuenta para acceder a esta página.");
+    }
+}
+
+$contenido = null;
+
 switch ($accion) {
     case 'home':
-        include 'app/views/home.php';
+        $contenido = 'app/views/home_content.php';
         break;
         
     case 'registrar':
@@ -50,10 +61,42 @@ switch ($accion) {
         $usuarioController->registrar();
         break;
         
+    case 'activar_cuenta':
+        require_once 'app/controllers/UsuarioController.php';
+        $usuarioController = new UsuarioController();
+        $usuarioController->activarCuenta();
+        break;
+        
     case 'login':
         require_once 'app/controllers/UsuarioController.php';
         $usuarioController = new UsuarioController();
         $usuarioController->login();
+        break;
+        
+    case 'recuperar_clave':
+        include 'app/views/recuperar_clave.php';
+        break;
+        
+    case 'enviar_recuperacion':
+        require_once 'app/controllers/UsuarioController.php';
+        $usuarioController = new UsuarioController();
+        $usuarioController->enviarRecuperacion();
+        break;
+        
+    case 'restablecer_clave':
+        include 'app/views/restablecer_clave.php';
+        break;
+        
+    case 'procesar_cambio_clave':
+        require_once 'app/controllers/UsuarioController.php';
+        $usuarioController = new UsuarioController();
+        $usuarioController->procesarCambioClave();
+        break;
+        
+    case 'logout':
+        require_once 'app/controllers/UsuarioController.php';
+        $usuarioController = new UsuarioController();
+        $usuarioController->logout();
         break;
         
     case 'agregar_ferrata':
@@ -84,12 +127,6 @@ switch ($accion) {
         require_once 'app/controllers/ReporteController.php';
         $reporteController = new ReporteController();
         $reporteController->guardar();
-        break;
-        
-    case 'logout':
-        require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->logout();
         break;
         
     case 'gestionar_ferratas':
@@ -209,7 +246,7 @@ switch ($accion) {
             $imagenController = new ImagenController();
             $imagenController->eliminarImagen($imagen_id, $ferrata_id);
         } else {
-            echo "⚠️ Faltan datos para eliminar la imagen.";
+            echo "Faltan datos para eliminar la imagen.";
             echo "<pre>";
             print_r($_GET);
             echo "</pre>";
@@ -239,11 +276,48 @@ switch ($accion) {
         }
         break;
         
+    case 'contacto':
+        $contenido = 'app/views/contacto_content.php';
+        break;
+        
+    case 'enviar_contacto':
+        require_once 'app/controllers/ContactoController.php';
+        $contactoController = new ContactoController();
+        $contactoController->enviar();
+        break;
+        
+    case 'faq':
+        $contenido = 'app/views/faq_content.php';
+        break;
+        
+    case 'aviso_legal':
+        $contenido = 'app/views/aviso_legal_content.php';
+        break;
+        
+    case 'politica_privacidad':
+        $contenido = 'app/views/politica_privacidad_content.php';
+        break;
+        
+    case 'politica_cookies':
+        $contenido = 'app/views/politica_cookies_content.php';
+        break;
+        
+    case 'sitemap':
+        $contenido = 'app/views/sitemap_content.php';
+        break;
+        
     default:
-        // Por defecto, mostramos el listado de ferratas (página principal)
+        // Por defecto, mostramos la página principal
         require_once 'app/controllers/FerrataController.php';
         $ferrataController = new FerrataController();
         $ferrataController->index();
         break;
+}
+if (!empty($contenido) && file_exists($contenido)) {
+    include 'app/views/layout.php';
+} else {
+    if ($accion !== 'home') {
+        echo "";
+    }
 }
 ?>

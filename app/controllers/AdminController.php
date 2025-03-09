@@ -3,6 +3,7 @@ require_once __DIR__ . '/../models/Ferrata.php';
 
 class AdminController {
     private $ferrata;
+    private $usuarioRol;
     
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
@@ -163,7 +164,9 @@ class AdminController {
         $descripcion = $_POST['descripcion'] ?? '';
         $coordenadas = $_POST['coordenadas'] ?? null;
         $estado = $_POST['estado'] ?? '';
-        $fecha_creacion = $_POST['fecha_creacion'] ?? date('Y-m-d');
+        $fecha_creacion = !empty($_POST['fecha_creacion'])
+        ? DateTime::createFromFormat('d-m-Y', $_POST['fecha_creacion'])->format('Y-m-d')
+        : date('Y-m-d');
         
         // Guardar la ferrata editada
         $ferrataModel->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);

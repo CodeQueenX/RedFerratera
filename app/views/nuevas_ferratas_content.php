@@ -17,7 +17,7 @@
                     <td><?php echo htmlspecialchars($ferrata['ubicacion']); ?></td>
                     <td><?php echo htmlspecialchars($ferrata['dificultad']); ?></td>
                     <td><?php echo htmlspecialchars($ferrata['estado']); ?></td>
-                    <td><?php echo htmlspecialchars($ferrata['fecha_creacion']); ?></td>
+                    <td><?php echo date('d-m-Y', strtotime($ferrata['fecha_creacion'])); ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

@@ -1,14 +1,14 @@
 <h1 class="text-center">Registro de Usuario</h1>
 <form action="index.php?accion=registrar" method="POST">
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label for="nombre">Nombre:</label>
         <input type="text" class="form-control" name="nombre" id="nombre" required>
     </div>
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label for="email">Correo electrónico:</label>
         <input type="email" class="form-control" name="email" id="email" required>
     </div>
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label for="contraseña">Contraseña:</label>
         <input type="password" class="form-control" name="clave" id="clave" required>
     </div>

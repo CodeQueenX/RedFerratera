@@ -179,3 +179,28 @@ document.addEventListener("DOMContentLoaded", function () {
     window.abrirModalEdicion = abrirModalEdicion;
     window.cerrarModalEdicion = cerrarModalEdicion;
 });
+
+// USO DE COOKIES
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script de cookies ejecutado"); // <-- Para ver si el script se carga
+
+    let banner = document.getElementById("cookie-banner");
+    let aceptarBoton = document.getElementById("accept-cookies");
+
+    if (!document.cookie.includes("cookies_aceptadas=true")) {
+        console.log("No se han aceptado las cookies, mostrando banner.");
+        banner.style.display = "block";
+    } else {
+        console.log("Las cookies ya están aceptadas, ocultando banner.");
+        banner.style.display = "none";
+    }
+
+    aceptarBoton.addEventListener("click", function () {
+        console.log("Clic en aceptar cookies");
+        document.cookie = "cookies_aceptadas=true; path=/; max-age=31536000"; // Guarda la cookie por 1 año
+        banner.style.display = "none";  // Oculta el banner inmediatamente
+    });
+});
+
+

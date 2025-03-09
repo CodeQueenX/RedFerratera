@@ -10,7 +10,7 @@
                 <p><strong>Dificultad:</strong> <?= htmlspecialchars($ferrata['dificultad']); ?></p>
                 <p><strong>Descripción:</strong> <?= htmlspecialchars($ferrata['descripcion']); ?></p>
                 <p><strong>Coordenadas:</strong> <?= htmlspecialchars($ferrata['coordenadas'] ?? 'No especificadas'); ?></p>
-                <p><strong>Fecha de Creación:</strong> <?= htmlspecialchars($ferrata['fecha_creacion']); ?></p>
+                <p><strong>Fecha de Creación:</strong> <?= (!empty($ferrata['fecha_creacion']) && $ferrata['fecha_creacion'] != '0000-00-00') ? date('d-m-Y', strtotime($ferrata['fecha_creacion'])) : 'Fecha no disponible'; ?>
                 <p><strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
                 <a href="/RedFerratera/index.php?accion=aprobar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
 				<a href="/RedFerratera/index.php?accion=rechazar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>

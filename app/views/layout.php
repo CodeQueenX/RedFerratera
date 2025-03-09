@@ -29,6 +29,16 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <!-- Página de estilos -->
     <link rel="stylesheet" href="/RedFerratera/public/css/style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4DHKKM3QC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-T4DHKKM3QC');
+    </script>
 </head>
 <body>
 
@@ -47,9 +57,10 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li class="nav-item"><a class="nav-link" href="/RedFerratera/reportes">Reportes</a></li>
 
                     <?php if (isset($_SESSION['usuario']) && is_array($_SESSION['usuario'])): ?>  
-                        <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-ferrata">Añadir Ferrata</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-reporte">Añadir Reporte</a></li>
-
+                        <?php if (isset($_SESSION['usuario']['verificado']) && $_SESSION['usuario']['verificado'] == 1): ?>
+                            <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-ferrata">Añadir Ferrata</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/RedFerratera/agregar-reporte">Añadir Reporte</a></li>
+                        <?php endif; ?>
                         <?php if (isset($_SESSION['usuario']) && ($_SESSION['usuario']['rol'] === 'admin' || $_SESSION['usuario']['rol'] === 'moderador')): ?>
                             <li class="nav-item"><a class="nav-link" href="/RedFerratera/gestionar-ferratas">Gestionar Ferratas</a></li>
                         <?php endif; ?>
@@ -66,23 +77,69 @@ if (session_status() === PHP_SESSION_NONE) {
     </nav>
 
     <!-- Contenido dinámico -->
-    <div class="container mt-4">
-        <?php include($contenido); ?>
-    </div>
-
+    <div class="wrapper">
+        <div class="container mt-4 content">
+            <?php 
+            if (isset($contenido) && file_exists($contenido)) {
+                include $contenido;
+            } else {
+                echo "<p>Error: No se pudo cargar la página.</p>";
+            }
+            ?>
+        </div>
+	</div>
+	
     <!-- Pie de página -->
-    <footer class="bg-dark text-white text-center py-3 mt-4">
-        <p>&copy; <?php echo date("Y"); ?> Red Ferratera - Información y comunidad sobre vías ferratas en España</p>
-        <div>
-            <a href="https://www.instagram.com/mai_elda" target="_blank" class="text-white me-3"><i class="lucide lucide-instagram"></i> Instagram</a>
-            <a href="https://www.facebook.com/maielda" target="_blank" class="text-white me-3"><i class="lucide lucide-facebook"></i> Facebook</a>
-            <a href="https://www.tiktok.com/@mai_elda" target="_blank" class="text-white"><i class="lucide lucide-play-circle"></i> TikTok</a>
+    <footer class="bg-dark text-white text-center py-4 mt-4">
+        <div class="container">
+            <div class="row">
+                <!-- Columna 1: Contacto -->
+                <div class="col-md-3">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/RedFerratera/contacto" class="text-white">Formulario de Contacto</a></li>
+                        <li><a href="mailto:megidorico@gmail.com" class="text-white">Enviar Email</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Columna 2: Información legal -->
+                <div class="col-md-3">
+                    <h5>Información Legal</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/RedFerratera/aviso-legal" class="text-white">Aviso Legal</a></li>
+                        <li><a href="/RedFerratera/politica-privacidad" class="text-white">Política de Privacidad</a></li>
+                        <li><a href="/RedFerratera/politica-cookies" class="text-white">Política de Cookies</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Columna 3: Recursos -->
+                <div class="col-md-3">
+                    <h5>Recursos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/RedFerratera/faq" class="text-white">Preguntas Frecuentes</a></li>
+                        <li><a href="/RedFerratera/sitemap" class="text-white">Mapa del Sitio</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Columna 4: Redes Sociales -->
+                <div class="col-md-3">
+                    <h5>Síguenos</h5>
+                    <a href="https://www.instagram.com/mai_elda" target="_blank" class="text-white me-3"><i class="lucide lucide-instagram"></i> Instagram</a>
+                    <a href="https://www.facebook.com/maielda" target="_blank" class="text-white me-3"><i class="lucide lucide-facebook"></i> Facebook</a>
+                    <a href="https://www.tiktok.com/@mai_elda" target="_blank" class="text-white"><i class="lucide lucide-play-circle"></i> TikTok</a>
+                </div>
+            </div>
+    
+            <!-- Derechos reservados -->
+            <p class="mt-3">&copy; <?php echo date("Y"); ?> Red Ferratera - Información y comunidad sobre vías ferratas en España</p>
         </div>
     </footer>
-    
-	<!-- Scripts JS -->
+   
+	<!-- Scripts JS y Cookies -->
+	<?php include __DIR__ . '/cookies_banner.php'; ?>
     <script src="/RedFerratera/public/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap JS -->
     <script src="/RedFerratera/public/js/scripts.js"></script>
+
 </body>
 </html>
 
