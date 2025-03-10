@@ -299,3 +299,9 @@ h1, h2, h3 {
     margin-left: 10px;
 }
 
+/* ICONO ESTRELLAS */
+#starRating .star {
+    transition: color 0.2s ease;
+}
+
+

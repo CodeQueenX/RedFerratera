@@ -1,5 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
+//var_dump($_SESSION['usuario']);
+require_once 'config/Database.php';
 
 // Determinar la acción que se debe ejecutar, por defecto "home"
 $accion = isset($_GET['accion']) ? $_GET['accion'] : 'home';
@@ -223,6 +228,12 @@ switch ($accion) {
         require_once 'app/controllers/FerrataController.php';
         $ferrataController = new FerrataController();
         $ferrataController->verFerrata();
+        break;
+        
+    case 'guardar_valoracion':
+        require_once 'app/controllers/ValoracionController.php';
+        $valoracionController = new ValoracionController();
+        $valoracionController->guardar();
         break;
         
     case 'agregar_comentario':

@@ -89,6 +89,7 @@
                             <th>Ubicación</th>
                             <th>Dificultad</th>
                             <th>Estado</th>
+                            <th>Valoración</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -104,6 +105,14 @@
                                             (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : 'bg-danger') ?>">
                                         <?= htmlspecialchars($ferrata['estado']); ?>
                                     </span>
+                                </td>
+                                <td>
+                                    <?php
+                                        require_once 'app/models/Valoracion.php';
+                                        $ratingData = Valoracion::getAverageRating($ferrata['id']);
+                                        $promedio = ($ratingData && $ratingData['total'] > 0) ? round($ratingData['promedio'], 2) : 'Sin valoraciones';
+                                        echo $promedio . " / 5";
+                                    ?>
                                 </td>
                                 <td>
                                     <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>

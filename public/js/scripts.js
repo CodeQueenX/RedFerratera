@@ -224,3 +224,76 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+// AGREGAR EL MANEJO AJAX PARA LAS VALORACIONES
+document.addEventListener("DOMContentLoaded", function () {
+    const starRatingDiv = document.getElementById("starRating");
+    if (starRatingDiv) {
+        const maxStars = 5;
+        let selectedRating = 0;
+        
+        // Crear los elementos de las estrellas
+        for (let i = 1; i <= maxStars; i++) {
+            const star = document.createElement("span");
+            star.classList.add("star");
+            star.dataset.value = i;
+            star.innerHTML = "&#9733;"; // ★
+            star.style.cursor = "pointer";
+            star.style.fontSize = "2rem";
+            star.style.color = "#ccc"; // Gris para inactiva
+            
+            // Eventos de hover
+            star.addEventListener("mouseover", function () {
+                highlightStars(i);
+            });
+            star.addEventListener("mouseout", function () {
+                highlightStars(selectedRating);
+            });
+            // Evento de click
+            star.addEventListener("click", function () {
+                selectedRating = i;
+                highlightStars(selectedRating);
+                submitRating(selectedRating);
+            });
+            starRatingDiv.appendChild(star);
+        }
+        
+        function highlightStars(rating) {
+            const stars = starRatingDiv.querySelectorAll(".star");
+            stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= rating) {
+                    star.style.color = "#ff0"; // Amarillo para activada
+                } else {
+                    star.style.color = "#ccc"; // Gris para inactiva
+                }
+            });
+        }
+        
+        function submitRating(rating) {
+            const ferrataId = starRatingDiv.getAttribute("data-ferrata-id");
+            const formData = new FormData();
+            formData.append("ferrata_id", ferrataId);
+            formData.append("valor", rating);
+            
+            fetch('/RedFerratera/index.php?accion=guardar_valoracion', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Valoración guardada. Nueva media: " + data.promedio);
+                    const averageRatingSpan = document.getElementById("averageRating");
+                    if (averageRatingSpan) {
+                        averageRatingSpan.textContent = data.promedio;
+                    }
+                } else if (data.error) {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error en la petición:", error));
+        }
+    }
+});
+
+
