@@ -34,7 +34,12 @@ class ReporteController {
             $reporte = new Reporte();
             
             if ($reporte->agregarReporte($ferrata_id, $usuario_id, $descripcion, $fecha_reporte)) {
-                header("Location: index.php");
+                // Redirige según el rol del usuario:
+                if (isset($_SESSION['usuario']) && in_array($_SESSION['usuario']['rol'], ['admin', 'moderador'])) {
+                    header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
+                } else {
+                    header("Location: /RedFerratera/index.php?accion=reportes");
+                }
                 exit();
             } else {
                 die("Error al guardar el reporte.");

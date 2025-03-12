@@ -49,14 +49,14 @@ class FerrataController {
             $ferrata_id = $ferrataModel->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);
             
             if ($ferrata_id) {
-                // Si es un usuario normal, redirigir a inicio
-                if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
-                    header("Location: /RedFerratera/index.php");
+                // Si el usuario es admin o moderador, redirigir a gestionar ferratas
+                if (isset($_SESSION['usuario']) && in_array($_SESSION['usuario']['rol'], ['admin', 'moderador'])) {
+                    header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
                     exit();
                 }
                 
-                // Si es un administrador, redirigir a gestionar ferratas
-                header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
+                // En cualquier otro caso, redirigir a la página de ferratas
+                header("Location: /RedFerratera/index.php?accion=ferratas");
                 exit();
             }
 
@@ -209,7 +209,7 @@ class FerrataController {
                 }
             }
         }
-        header("Location: index.php?accion=ver_ferrata&id=$ferrata_id");
+        header("Location: index.php?accion=editar_ferrata&id=$ferrata_id");
         exit();
     }
     
@@ -234,7 +234,7 @@ class FerrataController {
         $wikiloc = new Wikiloc($ferrata_id, $wikiloc_embed);
         
         if ($wikiloc->save()) {
-            header("Location: /RedFerratera/index.php?accion=ver_ferrata&id=" . $ferrata_id);
+            header("Location: /RedFerratera/index.php?accion=editar_ferrata&id=" . $ferrata_id);
             exit;
         } else {
             echo "Error al guardar el enlace de Wikiloc.";
@@ -259,7 +259,7 @@ class FerrataController {
         
         require_once __DIR__ . '/../models/Wikiloc.php';
         if (Wikiloc::deleteById($id)) {
-            header("Location: /RedFerratera/index.php?accion=ver_ferrata&id=" . $ferrata_id);
+            header("Location: /RedFerratera/index.php?accion=editar_ferrata&id=" . $ferrata_id);
             exit;
         } else {
             echo "Error al borrar el enlace de Wikiloc.";
@@ -287,7 +287,7 @@ class FerrataController {
         $video = new Video($ferrata_id, $video_embed);
         
         if ($video->save()) {
-            header("Location: /RedFerratera/index.php?accion=ver_ferrata&id=" . $ferrata_id);
+            header("Location: /RedFerratera/index.php?accion=editar_ferrata&id=" . $ferrata_id);
             exit;
         } else {
             echo "Error al guardar el vídeo.";
@@ -312,7 +312,7 @@ class FerrataController {
         
         require_once __DIR__ . '/../models/Video.php';
         if (Video::deleteById($id)) {
-            header("Location: /RedFerratera/index.php?accion=ver_ferrata&id=" . $ferrata_id);
+            header("Location: /RedFerratera/index.php?accion=editar_ferrata&id=" . $ferrata_id);
             exit;
         } else {
             echo "Error al borrar el vídeo.";

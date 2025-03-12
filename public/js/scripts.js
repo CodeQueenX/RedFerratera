@@ -134,23 +134,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Formato de fecha para inputs
-    const fechaInput = document.getElementById('fecha_creacion');
-    if (fechaInput) {
-        fechaInput.addEventListener("change", function () {
-            let fecha = fechaInput.value.split('-'); // AAAA-MM-DD
-            if (fecha.length === 3) {
-                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // DD-MM-AAAA
-            }
-        });
-        if (fechaInput.form) {
-            fechaInput.form.addEventListener("submit", function () {
-                let fecha = fechaInput.value.split('-'); // DD-MM-AAAA
-                if (fecha.length === 3) {
-                    fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // AAAA-MM-DD
-                }
-            });
-        }
-    }
+	const fechaInputs = document.querySelectorAll('input[type="date"]');
+	    fechaInputs.forEach(fechaInput => {
+	        flatpickr(fechaInput, {
+	            altInput: true,
+	            altFormat: "d-m-Y",      // Se muestra en formato dd-mm-aaaa
+	            dateFormat: "Y-m-d",       // Se envía en formato aaaa-mm-dd
+	            locale: "es"
+	        });
+	    });
 
     // Manejo AJAX para valoraciones (estrellas)
     const starRatingDiv = document.getElementById("starRating");

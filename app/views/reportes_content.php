@@ -1,4 +1,4 @@
-<h1>Reportes de Ferratas</h1>
+<h1>Reportes de ferratas pendientes de revisar</h1>
 <?php foreach ($reportes as $reporte): ?>
     <div class="card mb-3">
         <div class="card-body">

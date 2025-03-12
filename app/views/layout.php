@@ -24,6 +24,10 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/RedFerratera/public/img/favicon.png">
     
+    <!-- Flatpickr CSS -->
+	<!-- Flatpickr CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/RedFerratera/public/css/bootstrap.min.css">
     
@@ -139,6 +143,10 @@ if (session_status() === PHP_SESSION_NONE) {
 	<?php include __DIR__ . '/cookies_banner.php'; ?>
     <script src="/RedFerratera/public/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap JS -->
     <script src="/RedFerratera/public/js/scripts.js"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Locale español -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 
 </body>
 </html>
