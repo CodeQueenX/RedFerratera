@@ -317,6 +317,30 @@ switch ($accion) {
         $contenido = 'app/views/sitemap_content.php';
         break;
         
+    case 'guardar_wikiloc':
+        require_once 'app/controllers/FerrataController.php';
+        $ferrataController = new FerrataController();
+        $ferrataController->guardarWikiloc();
+        break;
+        
+    case 'borrar_wikiloc':
+        require_once 'app/controllers/FerrataController.php';
+        $ferrataController = new FerrataController();
+        $ferrataController->borrarWikiloc();
+        break;
+        
+    case 'subir_video':
+        require_once 'app/controllers/FerrataController.php';
+        $ferrataController = new FerrataController();
+        $ferrataController->subirVideo();
+        break;
+        
+    case 'borrar_video':
+        require_once 'app/controllers/FerrataController.php';
+        $ferrataController = new FerrataController();
+        $ferrataController->borrarVideo();
+        break;
+        
     default:
         // Por defecto, mostramos la página principal
         require_once 'app/controllers/FerrataController.php';

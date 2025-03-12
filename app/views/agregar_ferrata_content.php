@@ -1,16 +1,16 @@
 <h1 class="text-center">Agregar Nueva Ferrata</h1>
 <form action="/RedFerratera/index.php?accion=agregar_ferrata" method="POST" enctype="multipart/form-data">
     <div class="mb-3">
-        <label for="nombre">Nombre de la ferrata:</label>
+        <label for="nombre" class="form-label">Nombre de la ferrata:</label>
         <input type="text" class="form-control" name="nombre" id="nombre" required>
     </div>
     <div class="mb-3">
-        <label for="ubicacion">Ubicación (Provincia, Comunidad):</label>
+        <label for="ubicacion" class="form-label">Ubicación (Provincia, Comunidad):</label>
         <input type="text" class="form-control" name="ubicacion" id="ubicacion" required>
     </div>
     <div class="mb-3">
-        <label>Comunidad Autónoma:</label>
-        <select name="comunidad_autonoma" class="form-control" required>
+        <label for="comunidad_autonoma" class="form-label">Comunidad Autónoma:</label>
+        <select name="comunidad_autonoma" id="comunidad_autonoma" class="form-control" required>
             <option value="">Selecciona una comunidad</option>
             <option value="Andalucía">Andalucía</option>
             <option value="Aragón">Aragón</option>
@@ -32,11 +32,11 @@
         </select>
     </div>
     <div class="mb-3">
-        <label>Provincia:</label>
-        <input type="text" class="form-control" name="provincia" required>
+        <label for="provincia" class="form-label">Provincia:</label>
+        <input type="text" class="form-control" name="provincia" id="provincia" required>
     </div>
     <div class="mb-3">
-        <label for="dificultad">Dificultad (K1 - K7):</label>
+        <label for="dificultad" class="form-label">Dificultad (K1 - K7):</label>
         <select name="dificultad" id="dificultad" class="form-control" required>
             <option value="K1">K1</option>
             <option value="K2">K2</option>
@@ -48,21 +48,21 @@
         </select>
     </div>
     <div class="mb-3">
-        <label for="descripcion">Descripción:</label>
+        <label for="descripcion" class="form-label">Descripción:</label>
         <textarea name="descripcion" id="descripcion" class="form-control" required></textarea>
     </div>
     <div class="mb-3">
-        <label for="coordenadas">Coordenadas (latitud, longitud):</label>
+        <label for="coordenadas" class="form-label">Coordenadas (latitud, longitud):</label>
         <input type="text" class="form-control" name="coordenadas" id="coordenadas">
     </div>
     <div class="mb-3">
-        <label for="fecha_creacion">Fecha de creación (DD-MM-YYYY):</label>
+        <label for="fecha_creacion" class="form-label">Fecha de creación (DD-MM-YYYY):</label>
         <input type="date" name="fecha_creacion" id="fecha_creacion" required>
     </div>
     <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
         <div class="mb-3">
-            <label class="form-label">Subir imágenes:</label>
-            <input type="file" name="imagenes[]" multiple accept="image/*" class="form-control">
+            <label for="imagenes" class="form-label">Subir imágenes:</label>
+            <input type="file" name="imagenes[]" id="imagenes" multiple accept="image/*" class="form-control">
         </div>
     <?php endif; ?>
     <button type="submit" class="btn btn-primary">Agregar Ferrata</button>

@@ -2,25 +2,25 @@
 
 <!-- Formulario para editar datos de la ferrata -->
 <form action="/RedFerratera/index.php?accion=guardar_edicion_ferrata" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="accion" value="guardar_edicion_ferrata">
+    <input type="hidden" name="accion" value="guardar_edicion_ferrata">
     <input type="hidden" name="id" value="<?= $ferrata['id']; ?>">
     
     <!-- Campo oculto para saber si la edición viene de "Gestionar Ferratas" -->
     <input type="hidden" name="desde_gestion" value="<?= isset($_GET['desde_gestion']) ? 1 : 0; ?>">
 
     <div class="mb-3">
-        <label>Nombre:</label>
-        <input type="text" name="nombre" value="<?= htmlspecialchars($ferrata['nombre']); ?>" class="form-control" required>
+        <label for="nombre" class="form-label">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" value="<?= htmlspecialchars($ferrata['nombre']); ?>" class="form-control" required>
     </div>
 
     <div class="mb-3">
-        <label>Ubicación:</label>
-        <input type="text" name="ubicacion" value="<?= htmlspecialchars($ferrata['ubicacion']); ?>" class="form-control" required>
+        <label for="ubicacion" class="form-label">Ubicación:</label>
+        <input type="text" name="ubicacion" id="ubicacion" value="<?= htmlspecialchars($ferrata['ubicacion']); ?>" class="form-control" required>
     </div>
     
     <div class="mb-3">
-        <label>Comunidad Autónoma:</label>
-        <select name="comunidad_autonoma" class="form-control" required>
+        <label for="comunidad_autonoma" class="form-label">Comunidad Autónoma:</label>
+        <select name="comunidad_autonoma" id="comunidad_autonoma" class="form-control" required>
             <option value="">Selecciona una comunidad</option>
             <option value="Andalucía">Andalucía</option>
             <option value="Aragón">Aragón</option>
@@ -43,13 +43,13 @@
     </div>
     
     <div class="mb-3">
-        <label>Provincia:</label>
-        <input type="text" name="provincia" value="<?= htmlspecialchars($ferrata['provincia']); ?>" class="form-control" required>
+        <label for="provincia" class="form-label">Provincia:</label>
+        <input type="text" name="provincia" id="provincia" value="<?= htmlspecialchars($ferrata['provincia']); ?>" class="form-control" required>
     </div>
 
     <div class="mb-3">
-        <label>Dificultad:</label>
-        <select name="dificultad" class="form-select">
+        <label for="dificultad" class="form-label">Dificultad:</label>
+        <select name="dificultad" id="dificultad" class="form-select">
             <?php foreach (['K1', 'K2', 'K3', 'K4', 'K5', 'K6', 'K7'] as $nivel): ?>
                 <option value="<?= $nivel; ?>" <?= $nivel == $ferrata['dificultad'] ? 'selected' : ''; ?>><?= $nivel; ?></option>
             <?php endforeach; ?>
@@ -57,18 +57,18 @@
     </div>
 
     <div class="mb-3">
-        <label>Descripción:</label>
-        <textarea name="descripcion" class="form-control"><?= htmlspecialchars($ferrata['descripcion']); ?></textarea>
+        <label for="descripcion" class="form-label">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" class="form-control"><?= htmlspecialchars($ferrata['descripcion']); ?></textarea>
     </div>
 
     <div class="mb-3">
-        <label>Coordenadas:</label>
-        <input type="text" name="coordenadas" value="<?= htmlspecialchars($ferrata['coordenadas'] ?? ''); ?>" class="form-control">
+        <label for="coordenadas" class="form-label">Coordenadas:</label>
+        <input type="text" name="coordenadas" id="coordenadas" value="<?= htmlspecialchars($ferrata['coordenadas'] ?? ''); ?>" class="form-control">
     </div>
 
     <div class="mb-3">
-        <label>Estado:</label>
-        <select name="estado" class="form-select">
+        <label for="estado" class="form-label">Estado:</label>
+        <select name="estado" id="estado" class="form-select">
             <?php foreach (['Abierta', 'Cerrada', 'No operativa'] as $estado): ?>
                 <option value="<?= $estado; ?>" <?= $estado == $ferrata['estado'] ? 'selected' : ''; ?>><?= $estado; ?></option>
             <?php endforeach; ?>
@@ -76,7 +76,7 @@
     </div>
 
     <div class="mb-3">
-        <label>Fecha de Creación:</label>
+        <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
         <input type="date" name="fecha_creacion" id="fecha_creacion" required>
     </div>
 
@@ -104,8 +104,8 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Añadir nuevas imágenes</label>
-        <input type="file" name="imagenes[]" multiple accept="image/*" class="form-control">
+        <label for="imagenes_nuevas" class="form-label">Añadir nuevas imágenes:</label>
+        <input type="file" name="imagenes[]" id="imagenes_nuevas" multiple accept="image/*" class="form-control">
     </div>
 
     <button type="submit" class="btn btn-primary">Guardar cambios</button>

@@ -6,13 +6,13 @@
     
     <div class="row g-2">
         <div class="col-md-6">
-            <label class="form-label">Ubicación:</label>
-            <input type="text" name="ubicacion" placeholder="Ejemplo: Madrid, Valencia..." class="form-control">
+            <label for="ubicacion" class="form-label">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" placeholder="Ejemplo: Madrid, Valencia..." class="form-control">
         </div>
         
         <div class="col-md-4">
-            <label class="form-label">Dificultad:</label>
-            <select name="dificultad" class="form-control">
+            <label for="dificultad" class="form-label">Dificultad:</label>
+            <select id="dificultad" name="dificultad" class="form-control">
                 <option value="">Todas</option>
                 <option value="K1">K1</option>
                 <option value="K2">K2</option>
@@ -23,11 +23,11 @@
                 <option value="K7">K7</option>
             </select>
         </div>
+    </div>
     <div class="row g-2">
-    
         <div class="col-md-4">
-            <label class="form-label">Comunidad Autónoma:</label>
-            <select name="comunidad" class="form-control">
+            <label for="comunidad" class="form-label">Comunidad Autónoma:</label>
+            <select id="comunidad" name="comunidad" class="form-control">
                 <option value="">Todas</option>
                 <option value="Andalucía">Andalucía</option>
                 <option value="Aragón">Aragón</option>
@@ -50,13 +50,13 @@
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Provincia:</label>
-            <input type="text" name="provincia" placeholder="Ejemplo: Alicante, Málaga..." class="form-control">
+            <label for="provincia" class="form-label">Provincia:</label>
+            <input type="text" id="provincia" name="provincia" placeholder="Ejemplo: Alicante, Málaga..." class="form-control">
         </div>
 
         <div class="col-md-3">
-            <label class="form-label">Estado:</label>
-            <select name="estado" class="form-control">
+            <label for="estado" class="form-label">Estado:</label>
+            <select id="estado" name="estado" class="form-control">
                 <option value="">Todos</option>
                 <option value="Abierta">Abierta</option>
                 <option value="Cerrada">Cerrada</option>

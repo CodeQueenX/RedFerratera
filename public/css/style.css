@@ -202,12 +202,22 @@ h1, h2, h3 {
     margin-top: 10px;
 }
 
-.weather-container {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin-top: 15px;
+/* Contenedor del widget de Windy */
+.weather-widget {
+    width: 100%;
+    max-width: 650;
+    margin: 20px auto;
+    text-align: left;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+
+.weather-widget iframe, 
+.windy-iframe {
+    width: 100%;
+    height: 450px;
+    border: none;
+    box-sizing: border-box;
 }
 
 /* COMENTARIOS */
@@ -277,7 +287,7 @@ h1, h2, h3 {
     border-radius: 8px;
 }
 
-/* COOKIES */
+/* BANNER DE COOKIES */
 
 .cookie-banner {
     position: fixed;
@@ -299,9 +309,52 @@ h1, h2, h3 {
     margin-left: 10px;
 }
 
-/* ICONO ESTRELLAS */
-#starRating .star {
+/* ESTRELLAS DE VALORACIÓN */
+.rating-section .star {
     transition: color 0.2s ease;
+}
+
+/* CONTENEDOR PARA WIKILOC Y VIDEOS */
+/* Contenedor genérico para embeds (Wikiloc, Vídeos, etc.) */
+.embed-container {
+    width: 100%;
+    max-width: 600px; /* Ajusta según diseño */
+    margin: 20px 0;
+    text-align: left;
+}
+
+/* Iframes responsive */
+.embed-container iframe {
+    width: 100%;
+    border: none;
+}
+
+/* Estilos adicionales para cada embed */
+.embed-item {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Botón para borrar (posicionado en la esquina superior derecha) */
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+/* AJUSTES PARA MÓVILES */
+@media (max-width: 600px) {
+    .weather-widget .embed-container{
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    .cookie-banner {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .cookie-banner button {
+        padding: 4px 8px;
+    }
 }
 
 

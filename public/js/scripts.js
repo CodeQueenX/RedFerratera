@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // INICIALIZAR ICONOS LUCIDE
+    // Inicialización de iconos (Lucide)
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
     }
 
-    // MODAL PARA AMPLIAR IMÁGENES
-    let modal = document.getElementById("modalImagen");
-    let modalImg = document.getElementById("imagenAmpliada");
-    let cerrarModal = document.querySelector(".cerrar");
+    // Modal para ampliar imágenes
+    const modal = document.getElementById("modalImagen");
+    const modalImg = document.getElementById("imagenAmpliada");
+    const cerrarModal = document.querySelector(".cerrar");
 
     function abrirModalImagen(event) {
         if (modal && modalImg) {
@@ -22,22 +22,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Aplicar eventos a las imágenes en "Detalles de Ferrata"
     document.querySelectorAll(".galeria-detalle img").forEach(img => {
         img.addEventListener("click", abrirModalImagen);
     });
-
-    // Aplicar eventos a las imágenes en "Editar Ferrata"
     document.querySelectorAll(".editar-ferrata img").forEach(img => {
         img.addEventListener("click", abrirModalImagen);
     });
-
-    // Cerrar el modal al hacer clic en la "X"
     if (cerrarModal) {
         cerrarModal.addEventListener("click", cerrarModalImagen);
     }
-
-    // Cerrar el modal al hacer clic fuera de la imagen
     if (modal) {
         modal.addEventListener("click", function (e) {
             if (e.target === modal) {
@@ -46,193 +39,125 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // CARGAR GOOGLE MAPS
+    // Cargar Google Maps si existe el contenedor "map"
     if (!window.mapaCargado && document.getElementById("map")) {
-        let script = document.createElement("script");
-        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAQI4xaz6p1EWwRV5GxoDthHt8YxELrO88&callback=initMap";
-        script.async = true;
-        document.body.appendChild(script);
+        let scriptMaps = document.createElement("script");
+        scriptMaps.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAQI4xaz6p1EWwRV5GxoDthHt8YxELrO88&callback=initMap";
+        scriptMaps.async = true;
+        document.body.appendChild(scriptMaps);
     }
 
     window.initMap = function () {
         let mapElement = document.getElementById("map");
         if (!mapElement) return;
-
-        let coordenadas = mapElement.getAttribute("data-coordenadas").split(",");
-        if (coordenadas.length < 2 || isNaN(coordenadas[0]) || isNaN(coordenadas[1])) {
-            console.error("Coordenadas inválidas:", coordenadas);
+        let coords = mapElement.getAttribute("data-coordenadas").split(",");
+        if (coords.length < 2 || isNaN(coords[0]) || isNaN(coords[1])) {
+            console.error("Coordenadas inválidas:", coords);
             return;
         }
-
-        let latLng = { lat: parseFloat(coordenadas[0]), lng: parseFloat(coordenadas[1]) };
+        let lat = parseFloat(coords[0]);
+        let lng = parseFloat(coords[1]);
+        let latLng = { lat: lat, lng: lng };
 
         let map = new google.maps.Map(mapElement, {
             zoom: 13,
             center: latLng,
         });
 
-        new google.maps.Marker({
+        let marker = new google.maps.Marker({
             position: latLng,
             map: map,
             title: "Ubicación de la ferrata"
         });
+
+        // InfoWindow con enlace "Cómo llegar"
+        let infoWindow = new google.maps.InfoWindow({
+            content: `<a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">Cómo llegar</a>`
+        });
+
+        marker.addListener('click', function () {
+            infoWindow.open(map, marker);
+        });
     };
 
-    // CARGAR CLIMA DESDE API OPEN-METEO
-    let weatherContainer = document.getElementById("weather-container");
-    
-    if (weatherContainer) {
-        let coordenadas = weatherContainer.getAttribute("data-coordenadas");
+    // Modal para editar comentarios
+    (function () {
+        const modalEditarComentario = document.getElementById("modalEditarComentario");
+        const comentarioIdInput = document.getElementById("comentario_id");
+        const comentarioTextoInput = document.getElementById("comentario_texto");
+        const cerrarModalBtn = modalEditarComentario ? modalEditarComentario.querySelector(".cerrar") : null;
 
-        if (coordenadas) {
-            let [lat, lon] = coordenadas.split(",").map(coord => coord.trim());
-
-            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=celsius&wind_speed_unit=kmh&winddirection=true&weathercode=true`)
-                .then(response => response.json())
-                .then(data => {
-                    let weather = data.current_weather;
-                    let weatherCode = weather.weathercode;
-                    let weatherText = obtenerDescripcionTiempo(weatherCode);
-                    let weatherIcon = obtenerIconoTiempo(weatherCode);
-
-                    let weatherHtml = `
-                        <p><strong>🌡 Temperatura:</strong> ${weather.temperature}°C</p>
-                        <p><strong>💨 Viento:</strong> ${weather.windspeed} km/h</p>
-                        <p><strong>📍 Dirección del viento:</strong> ${weather.winddirection}°</p>
-                        <p><strong>${weatherIcon} Estado:</strong> ${weatherText}</p>
-                    `;
-                    weatherContainer.innerHTML = weatherHtml;
-                })
-                .catch(error => {
-                    weatherContainer.innerHTML = "<p>⚠️ No se pudo obtener el clima.</p>";
-                    console.error("Error obteniendo el clima:", error);
-                });
+        function abrirModalEdicion(id, texto) {
+            if (modalEditarComentario && comentarioIdInput && comentarioTextoInput) {
+                modalEditarComentario.style.display = "flex";
+                comentarioIdInput.value = id;
+                comentarioTextoInput.value = texto;
+            }
         }
-    }
 
-    function obtenerDescripcionTiempo(code) {
-        const weatherDescriptions = {
-            0: "Despejado 🌞", 1: "Mayormente despejado 🌤", 2: "Parcialmente nublado ⛅",
-            3: "Nublado ☁️", 45: "Niebla 🌫", 48: "Niebla con escarcha ❄️🌫",
-            51: "Llovizna ligera 🌦", 53: "Llovizna moderada 🌧", 55: "Llovizna intensa 🌧💦",
-            56: "Llovizna helada ligera ❄️🌦", 57: "Llovizna helada intensa ❄️🌧",
-            61: "Lluvia ligera 🌦", 63: "Lluvia moderada 🌧", 65: "Lluvia intensa 🌧💦",
-            66: "Lluvia helada ligera ❄️🌦", 67: "Lluvia helada intensa ❄️🌧",
-            71: "Nieve ligera 🌨", 73: "Nieve moderada ❄️🌨", 75: "Nieve intensa ❄️❄️",
-            77: "Granizo 🌩❄️", 80: "Chubascos ligeros 🌦", 81: "Chubascos moderados 🌧",
-            82: "Chubascos intensos ⛈", 85: "Chubascos de nieve ligeros 🌨",
-            86: "Chubascos de nieve intensos ❄️🌨", 95: "Tormenta eléctrica ⛈",
-            96: "Tormenta con granizo 🌩❄️", 99: "Tormenta severa con granizo ⛈❄️"
-        };
-        return weatherDescriptions[code] || "Desconocido 🤷‍♂️";
-    }
-
-    function obtenerIconoTiempo(code) {
-        if (code >= 0 && code <= 3) return "☀️";
-        if (code >= 45 && code <= 48) return "🌫";
-        if (code >= 51 && code <= 57) return "🌦";
-        if (code >= 61 && code <= 67) return "🌧";
-        if (code >= 71 && code <= 77) return "❄️";
-        if (code >= 80 && code <= 82) return "🌧";
-        if (code >= 85 && code <= 86) return "🌨";
-        if (code >= 95 && code <= 99) return "⛈";
-        return "❓";
-    }
-});
-
-	// MODAL PARA EDITAR COMENTARIOS
-document.addEventListener("DOMContentLoaded", function () {
-    let modalEditarComentario = document.getElementById("modalEditarComentario");
-    let comentarioIdInput = document.getElementById("comentario_id");
-    let comentarioTextoInput = document.getElementById("comentario_texto");
-    let cerrarModalBtn = modalEditarComentario ? modalEditarComentario.querySelector(".cerrar") : null;
-
-    function abrirModalEdicion(id, texto) {
-        if (modalEditarComentario && comentarioIdInput && comentarioTextoInput) {
-            modalEditarComentario.style.display = "flex";
-            comentarioIdInput.value = id;
-            comentarioTextoInput.value = texto;
+        function cerrarModalEdicion() {
+            if (modalEditarComentario) {
+                modalEditarComentario.style.display = "none";
+            }
         }
-    }
 
-    function cerrarModalEdicion() {
+        if (cerrarModalBtn) {
+            cerrarModalBtn.addEventListener("click", cerrarModalEdicion);
+        }
         if (modalEditarComentario) {
-            modalEditarComentario.style.display = "none";
+            modalEditarComentario.addEventListener("click", function (e) {
+                if (e.target === modalEditarComentario) {
+                    cerrarModalEdicion();
+                }
+            });
+        }
+        window.abrirModalEdicion = abrirModalEdicion;
+        window.cerrarModalEdicion = cerrarModalEdicion;
+    })();
+
+    // Manejo del banner de cookies usando localStorage
+    const banner = document.getElementById("cookie-banner");
+    const acceptButton = document.getElementById("accept-cookies");
+
+    if (!localStorage.getItem("cookies_aceptadas")) {
+        if (banner) banner.style.display = "block";
+    } else {
+        if (banner) banner.style.display = "none";
+    }
+
+    if (acceptButton) {
+        acceptButton.addEventListener("click", function () {
+            localStorage.setItem("cookies_aceptadas", "true");
+            if (banner) banner.style.display = "none";
+            console.log("Cookie aceptada:", localStorage.getItem("cookies_aceptadas"));
+        });
+    }
+
+    // Formato de fecha para inputs
+    const fechaInput = document.getElementById('fecha_creacion');
+    if (fechaInput) {
+        fechaInput.addEventListener("change", function () {
+            let fecha = fechaInput.value.split('-'); // AAAA-MM-DD
+            if (fecha.length === 3) {
+                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // DD-MM-AAAA
+            }
+        });
+        if (fechaInput.form) {
+            fechaInput.form.addEventListener("submit", function () {
+                let fecha = fechaInput.value.split('-'); // DD-MM-AAAA
+                if (fecha.length === 3) {
+                    fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // AAAA-MM-DD
+                }
+            });
         }
     }
 
-    // Cerrar modal al hacer clic en la "X"
-    if (cerrarModalBtn) {
-        cerrarModalBtn.addEventListener("click", cerrarModalEdicion);
-    }
-
-    // Cerrar modal al hacer clic fuera del contenido
-    if (modalEditarComentario) {
-        modalEditarComentario.addEventListener("click", function (e) {
-            if (e.target === modalEditarComentario) {
-                cerrarModalEdicion();
-            }
-        });
-    }
-
-    // Exponer funciones al ámbito global (para llamadas desde HTML)
-    window.abrirModalEdicion = abrirModalEdicion;
-    window.cerrarModalEdicion = cerrarModalEdicion;
-});
-
-// USO DE COOKIES
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script de cookies ejecutado"); // <-- Para ver si el script se carga
-
-    let banner = document.getElementById("cookie-banner");
-    let aceptarBoton = document.getElementById("accept-cookies");
-
-    if (!document.cookie.includes("cookies_aceptadas=true")) {
-        console.log("No se han aceptado las cookies, mostrando banner.");
-        banner.style.display = "block";
-    } else {
-        console.log("Las cookies ya están aceptadas, ocultando banner.");
-        banner.style.display = "none";
-    }
-
-    aceptarBoton.addEventListener("click", function () {
-        console.log("Clic en aceptar cookies");
-        document.cookie = "cookies_aceptadas=true; path=/; max-age=31536000"; // Guarda la cookie por 1 año
-        banner.style.display = "none";  // Oculta el banner inmediatamente
-    });
-});
-
-// FORMATO FECHA
-document.addEventListener("DOMContentLoaded", function() {
-    let fechaInput = document.getElementById('fecha_creacion');
-
-    if (fechaInput) {
-        // Al seleccionar una fecha, la formatea correctamente
-        fechaInput.addEventListener("change", function() {
-            let fecha = fechaInput.value.split('-'); // YYYY-MM-DD
-            if (fecha.length === 3) {
-                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // DD-MM-YYYY
-            }
-        });
-
-        // Convertir antes de enviar el formulario
-        fechaInput.form.addEventListener("submit", function() {
-            let fecha = fechaInput.value.split('-'); // DD-MM-YYYY
-            if (fecha.length === 3) {
-                fechaInput.value = `${fecha[2]}-${fecha[1]}-${fecha[0]}`; // YYYY-MM-DD
-            }
-        });
-    }
-});
-
-// AGREGAR EL MANEJO AJAX PARA LAS VALORACIONES
-document.addEventListener("DOMContentLoaded", function () {
+    // Manejo AJAX para valoraciones (estrellas)
     const starRatingDiv = document.getElementById("starRating");
     if (starRatingDiv) {
         const maxStars = 5;
         let selectedRating = 0;
         
-        // Crear los elementos de las estrellas
         for (let i = 1; i <= maxStars; i++) {
             const star = document.createElement("span");
             star.classList.add("star");
@@ -240,16 +165,14 @@ document.addEventListener("DOMContentLoaded", function () {
             star.innerHTML = "&#9733;"; // ★
             star.style.cursor = "pointer";
             star.style.fontSize = "2rem";
-            star.style.color = "#ccc"; // Gris para inactiva
+            star.style.color = "#ccc";
             
-            // Eventos de hover
             star.addEventListener("mouseover", function () {
                 highlightStars(i);
             });
             star.addEventListener("mouseout", function () {
                 highlightStars(selectedRating);
             });
-            // Evento de click
             star.addEventListener("click", function () {
                 selectedRating = i;
                 highlightStars(selectedRating);
@@ -261,11 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function highlightStars(rating) {
             const stars = starRatingDiv.querySelectorAll(".star");
             stars.forEach(star => {
-                if (parseInt(star.dataset.value) <= rating) {
-                    star.style.color = "#ff0"; // Amarillo para activada
-                } else {
-                    star.style.color = "#ccc"; // Gris para inactiva
-                }
+                star.style.color = (parseInt(star.dataset.value) <= rating) ? "#ff0" : "#ccc";
             });
         }
         
@@ -295,5 +214,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
-
-
