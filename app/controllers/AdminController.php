@@ -169,9 +169,12 @@ class AdminController {
         } else {
             $fecha_creacion = date('Y-m-d'); // Si no se envía, usa la fecha actual como predeterminado
         }
+        $fecha_inicio_cierre = !empty($_POST['fecha_inicio_cierre']) ? $_POST['fecha_inicio_cierre'] : null;
+        $fecha_fin_cierre = !empty($_POST['fecha_fin_cierre']) ? $_POST['fecha_fin_cierre'] : null;
+        $recurrente = isset($_POST['recurrente']) ? 1 : 0;
         
         // Guardar la ferrata editada
-        $ferrataModel->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion);
+        $ferrataModel->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente);
         echo "Ferrata actualizada correctamente.<br>";
         
         // Manejar imágenes

@@ -70,6 +70,7 @@
     </div>
 </form>
 
+<!-- Lista de ferratas organizadas por comunidades y provincias -->
 <?php if (!empty($ferratasOrganizadas)): ?>
     <?php foreach ($ferratasOrganizadas as $comunidad => $provincias): ?>
         <div class="mt-4 p-2 rounded text-white text-center" style="background-color: rgba(46, 125, 50, 0.75);">
@@ -96,13 +97,15 @@
                     <tbody>
                         <?php foreach ($listaFerratas as $ferrata): ?>
                             <tr>
-                                <td><?= htmlspecialchars($ferrata['nombre']); ?></td>
+                                <td><a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>"><?= htmlspecialchars($ferrata['nombre']); ?></a></td>
                                 <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
                                 <td><?= htmlspecialchars($ferrata['dificultad']); ?></td>
                                 <td>
                                     <span class="badge 
                                         <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
-                                            (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : 'bg-danger') ?>">
+                                            (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : 
+                                                (($ferrata['estado'] === 'No operativa') ? 'bg-danger' : 
+                                                    (($ferrata['estado'] === 'Precaución') ? 'bg-warning' : '')) ) ?>">
                                         <?= htmlspecialchars($ferrata['estado']); ?>
                                     </span>
                                 </td>

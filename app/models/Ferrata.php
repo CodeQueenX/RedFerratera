@@ -20,13 +20,13 @@ class Ferrata {
     }
 
     // Insertar una nueva ferrata
-    public function agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
+    public function agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente = 0) {
         
         // Convertir fecha de DD-MM-YYYY a YYYY-MM-DD antes de guardar
         $fecha_creacion = !empty($fecha_creacion) ? date('Y-m-d', strtotime(str_replace('-', '/', $fecha_creacion))) : date('Y-m-d');
         
-        $query = "INSERT INTO ferratas (nombre, ubicacion, comunidad_autonoma, provincia, dificultad, descripcion, coordenadas, estado, fecha_creacion)
-              VALUES (:nombre, :ubicacion, :comunidad_autonoma, :provincia, :dificultad, :descripcion, :coordenadas, :estado, :fecha_creacion)";
+        $query = "INSERT INTO ferratas (nombre, ubicacion, comunidad_autonoma, provincia, dificultad, descripcion, coordenadas, estado, fecha_creacion, fecha_inicio_cierre, fecha_fin_cierre, recurrente)
+              VALUES (:nombre, :ubicacion, :comunidad_autonoma, :provincia, :dificultad, :descripcion, :coordenadas, :estado, :fecha_creacion, :fecha_inicio_cierre, :fecha_fin_cierre, :recurrente)";
         
         $stmt = $this->conn->prepare($query);
         
@@ -43,6 +43,9 @@ class Ferrata {
         }
         $stmt->bindParam(":estado", $estado);
         $stmt->bindParam(":fecha_creacion", $fecha_creacion);
+        $stmt->bindParam(":fecha_inicio_cierre", $fecha_inicio_cierre);
+        $stmt->bindParam(":fecha_fin_cierre", $fecha_fin_cierre);
+        $stmt->bindParam(":recurrente", $recurrente);
         
         if ($stmt->execute()) {
             $id = $this->conn->lastInsertId();
@@ -123,13 +126,13 @@ class Ferrata {
         return $stmt->execute();
     }
     
-    public function editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion) {
+    public function editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente) {
         
         // Convertir fecha de DD-MM-YYYY a YYYY-MM-DD antes de actualizar
         $fecha_creacion = !empty($fecha_creacion) ? date('Y-m-d', strtotime(str_replace('-', '/', $fecha_creacion))) : date('Y-m-d');
         
         $query = "UPDATE ferratas SET nombre = :nombre, ubicacion = :ubicacion, comunidad_autonoma = :comunidad_autonoma, provincia = :provincia,
-              dificultad = :dificultad, descripcion = :descripcion, coordenadas = :coordenadas, estado = :estado, fecha_creacion = :fecha_creacion";
+              dificultad = :dificultad, descripcion = :descripcion, coordenadas = :coordenadas, estado = :estado, fecha_creacion = :fecha_creacion, fecha_inicio_cierre = :fecha_inicio_cierre, fecha_fin_cierre = :fecha_fin_cierre, recurrente = :recurrente";
         
         $query .= " WHERE id = :id";
         
@@ -144,6 +147,9 @@ class Ferrata {
         $stmt->bindParam(":coordenadas", $coordenadas);
         $stmt->bindParam(":estado", $estado);
         $stmt->bindParam(':fecha_creacion', $fecha_creacion);
+        $stmt->bindParam(":fecha_inicio_cierre", $fecha_inicio_cierre);
+        $stmt->bindParam(":fecha_fin_cierre", $fecha_fin_cierre);
+        $stmt->bindParam(":recurrente", $recurrente);
         
         return $stmt->execute();
     }
@@ -230,5 +236,35 @@ class Ferrata {
         
         return $stmt->execute();
     }
+    
+    public static function estaCerradaRecurrente($fechaInicio, $fechaFin, $recurrente) {
+        // Obtener la fecha actual
+        $hoy = date("Y-m-d");
+        
+        if (!$recurrente) {
+            // Comparación normal de fechas (no recurrente)
+            return ($hoy >= $fechaInicio && $hoy <= $fechaFin);
+        }
+        
+        // Si es recurrente, extraemos mes y día de las fechas
+        $hoy_md = date("m-d");
+        $inicio_md = date("m-d", strtotime($fechaInicio));
+        $fin_md = date("m-d", strtotime($fechaFin));
+        
+        // Caso 1: el periodo de cierre no cruza el año (por ejemplo, 03-10 a 03-20)
+        if ($inicio_md <= $fin_md) {
+            return ($hoy_md >= $inicio_md && $hoy_md <= $fin_md);
+        } else {
+            // Caso 2: el periodo cruza el año (por ejemplo, de 12-20 a 01-10)
+            return ($hoy_md >= $inicio_md || $hoy_md <= $fin_md);
+        }
+    }
+    
+    public function actualizarEstado($id, $nuevoEstado) {
+        $db = (new Database())->getConnection();
+        $stmt = $db->prepare("UPDATE ferratas SET estado = ? WHERE id = ?");
+        return $stmt->execute([$nuevoEstado, $id]);
+    }
+    
 }
 ?>

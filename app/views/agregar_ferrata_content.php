@@ -56,8 +56,22 @@
         <input type="text" class="form-control" name="coordenadas" id="coordenadas">
     </div>
     <div class="mb-3">
-        <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
+        <label for="fecha_creacion" class="form-label">Fecha de Creación de la Ferrata:</label>
         <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label for="fecha_inicio_cierre" class="form-label">Fecha de Inicio de Cierre:</label>
+        <input type="date" name="fecha_inicio_cierre" id="fecha_inicio_cierre" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="fecha_fin_cierre" class="form-label">Fecha de Fin de Cierre:</label>
+        <input type="date" name="fecha_fin_cierre" id="fecha_fin_cierre" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="recurrente" class="form-label">Cierre recurrente:</label>
+        <!-- Usamos checkbox; cuando se marque, el valor será "1" -->
+        <input type="checkbox" name="recurrente" id="recurrente" value="1" <?= (isset($ferrata['recurrente']) && $ferrata['recurrente'] == 1) ? 'checked' : ''; ?>>
+        <small class="form-text text-muted">Si está marcado, las fechas de cierre se aplican cada año.</small>
     </div>
     <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
         <div class="mb-3">

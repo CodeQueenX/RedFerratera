@@ -11,7 +11,7 @@ $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
         <p><i data-lucide="map"></i> <strong>Provincia:</strong> <?= htmlspecialchars($ferrata['provincia']); ?></p>
         <p><i data-lucide="globe"></i> <strong>Comunidad Autónoma:</strong> <?= htmlspecialchars($ferrata['comunidad_autonoma']); ?></p>
         <p><i data-lucide="activity"></i> <strong>Dificultad:</strong> <?= htmlspecialchars($ferrata['dificultad']); ?></p>
-        <p><i data-lucide="alert-circle"></i> <strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
+        <p><i data-lucide="alert-circle"></i> <strong>Estado:</strong> <span class="badge <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : (($ferrata['estado'] === 'No operativa') ? 'bg-danger' : (($ferrata['estado'] === 'Precaución') ? 'bg-warning' : '')) ) ?>"><?= htmlspecialchars($ferrata['estado']); ?></span></p>
         <p><i data-lucide="calendar"></i> <strong>Fecha de Creación:</strong> <?= date('d-m-Y', strtotime($ferrata['fecha_creacion'])); ?></p>
         <p><i data-lucide="file-text"></i> <strong>Descripción:</strong> <?= nl2br(htmlspecialchars($ferrata['descripcion'])); ?></p>
         

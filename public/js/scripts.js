@@ -143,6 +143,22 @@ document.addEventListener("DOMContentLoaded", function () {
 	            locale: "es"
 	        });
 	    });
+		
+	// Configurar Flatpickr para el campo de fecha de inicio de cierre
+	    flatpickr("#fecha_inicio_cierre", {
+	        altInput: true,
+	        altFormat: "d-m-Y",        // Se muestra en formato dd-mm-aaaa
+	        dateFormat: "Y-m-d",         // Se envía en formato aaaa-mm-dd
+	        locale: "es",
+	    });
+
+	    // Configurar Flatpickr para el campo de fecha de fin de cierre
+	    flatpickr("#fecha_fin_cierre", {
+	        altInput: true,
+	        altFormat: "d-m-Y",         // Se muestra en formato dd-mm-aaaa
+	        dateFormat: "Y-m-d",        // Se envía en formato aaaa-mm-dd
+	        locale: "es",
+	    });
 
     // Manejo AJAX para valoraciones (estrellas)
     const starRatingDiv = document.getElementById("starRating");
