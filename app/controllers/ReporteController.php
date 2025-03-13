@@ -24,7 +24,7 @@ class ReporteController {
             $ferrata_id = $_POST['ferrata_id'] ?? null;
             $usuario_id = $_SESSION['usuario']['id'] ?? null;
             $descripcion = $_POST['descripcion'] ?? null;
-            $fecha_reporte = date('Y-m-d'); // Se asigna la fecha actual automáticamente
+            $fecha_reporte = date('Y-m-d H:i:s'); // Se asigna la fecha y hora actual automáticamente
             
             if (!$ferrata_id || !$usuario_id || !$descripcion) {
                 die("Error: Datos incompletos.");

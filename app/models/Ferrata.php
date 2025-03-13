@@ -206,7 +206,7 @@ class Ferrata {
     }
     
     public function obtenerFerratasOrganizadas() {
-        $query = "SELECT * FROM ferratas WHERE estado != 'Pendiente' ORDER BY comunidad_autonoma, provincia, nombre";
+        $query = "SELECT * FROM ferratas WHERE estado != 'Pendiente' ORDER BY comunidad_autonoma, provincia, ubicacion, nombre";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $ferratas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -225,7 +225,7 @@ class Ferrata {
             
             $organizadas[$comunidad][$provincia][] = $ferrata;
         }
-        
+
         return $organizadas;
     }
     
@@ -233,8 +233,11 @@ class Ferrata {
         $query = "DELETE FROM ferratas WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        return $stmt->execute();
+        if (!$stmt->execute()) {
+            error_log("Error al eliminar ferrata con id $id: " . implode(", ", $stmt->errorInfo()));
+            return false;
+        }
+        return true;
     }
     
     public static function estaCerradaRecurrente($fechaInicio, $fechaFin, $recurrente) {
@@ -266,5 +269,11 @@ class Ferrata {
         return $stmt->execute([$nuevoEstado, $id]);
     }
     
+    public function existeFerrataPorNombre($nombre) {
+        $db = (new Database())->getConnection();
+        $stmt = $db->prepare("SELECT COUNT(*) FROM ferratas WHERE nombre = ?");
+        $stmt->execute([$nombre]);
+        return $stmt->fetchColumn() > 0;
+    }
 }
 ?>

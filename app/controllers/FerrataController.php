@@ -17,10 +17,11 @@ class FerrataController {
         $ferratasOrganizadas = $ferrataModel->obtenerFerratasOrganizadas();
         
         // Recorremos cada ferrata para actualizar su estado si tiene fechas de cierre definidas
-        foreach ($ferratasOrganizadas as $comunidad => &$ferratasPorComunidad) {
-            foreach ($ferratasPorComunidad as $provincia => &$ferratas) {
-                foreach ($ferratas as &$ferrata) {
-                    // Si se definieron las fechas de inicio y fin de cierre
+        foreach ($ferratasOrganizadas as $comunidad => $ferratasPorComunidad) {
+            foreach ($ferratasPorComunidad as $provincia => $ferratas) {
+                // Iteramos usando el índice
+                for ($i = 0; $i < count($ferratas); $i++) {
+                    $ferrata = $ferratas[$i];
                     if (!empty($ferrata['fecha_inicio_cierre']) && !empty($ferrata['fecha_fin_cierre'])) {
                         // Convertir la bandera recurrente a booleano
                         $recurrente = (bool)$ferrata['recurrente'];
@@ -28,13 +29,13 @@ class FerrataController {
                         if (Ferrata::estaCerradaRecurrente($ferrata['fecha_inicio_cierre'], $ferrata['fecha_fin_cierre'], $recurrente)) {
                             if (strtolower($ferrata['estado']) === 'abierta') {
                                 $ferrataModel->actualizarEstado($ferrata['id'], 'Cerrada');
-                                $ferrata['estado'] = 'Cerrada';
+                                $ferratasOrganizadas[$comunidad][$provincia][$i]['estado'] = 'Cerrada';
                             }
                         } else {
                             // Si no está en periodo de cierre y está marcada como "Cerrada", se reabre
                             if (strtolower($ferrata['estado']) === 'cerrada') {
                                 $ferrataModel->actualizarEstado($ferrata['id'], 'Abierta');
-                                $ferrata['estado'] = 'Abierta';
+                                $ferratasOrganizadas[$comunidad][$provincia][$i]['estado'] = 'Abierta';
                             }
                         }
                     }
@@ -55,7 +56,7 @@ class FerrataController {
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
-            $nombre = $_POST['nombre'] ?? '';
+            $nombre = ($_POST['nombre'] ?? '');
             $ubicacion = $_POST['ubicacion'] ?? '';
             $comunidad_autonoma = $_POST['comunidad_autonoma'] ?? '';
             $provincia = $_POST['provincia'] ?? '';
@@ -71,6 +72,9 @@ class FerrataController {
             $fecha_inicio_cierre = !empty($_POST['fecha_inicio_cierre']) ? $_POST['fecha_inicio_cierre'] : null;
             $fecha_fin_cierre = !empty($_POST['fecha_fin_cierre']) ? $_POST['fecha_fin_cierre'] : null;
             $recurrente = isset($_POST['recurrente']) ? 1 : 0;
+            if ($ferrataModel->existeFerrataPorNombre($nombre)) {
+                die("Error: Ya existe una ferrata con ese nombre.");
+            }
             
             // Insertar la ferrata y obtener su ID
             $ferrata_id = $ferrataModel->agregarFerrata($nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente);
