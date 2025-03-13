@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const star = document.createElement("span");
             star.classList.add("star");
             star.dataset.value = i;
-            star.innerHTML = "&#9733;"; // ★
+            star.innerHTML = "&#9733;";
             star.style.cursor = "pointer";
             star.style.fontSize = "2rem";
             star.style.color = "#ccc";

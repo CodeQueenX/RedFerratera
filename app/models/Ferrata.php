@@ -10,13 +10,21 @@ class Ferrata {
         $this->conn = $database->getConnection();
     }
 
-    // Obtener todas las ferratas
+    // Selecciona todas las ferratas con estado 'Abierta'
     public function obtenerFerratas() {
         $query = "SELECT * FROM ferratas WHERE estado = 'Abierta'";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);  
         return $resultados;
+    }
+    
+    // Selecciona todas las ferratas cuyo estado no sea 'Pendiente'
+    public function obtenerFerratasParaReporte() {
+        $query = "SELECT * FROM ferratas WHERE estado != 'Pendiente' ORDER BY nombre";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Insertar una nueva ferrata

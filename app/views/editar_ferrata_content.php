@@ -79,15 +79,15 @@ $ferrata_id = $ferrata['id'];
 
     <div class="mb-3">
         <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
-        <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" required>
+        <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_creacion']); ?>" required>
     </div>
         <div class="mb-3">
         <label for="fecha_inicio_cierre" class="form-label">Fecha de Inicio de Cierre:</label>
-        <input type="date" name="fecha_inicio_cierre" id="fecha_inicio_cierre" class="form-control">
+        <input type="date" name="fecha_inicio_cierre" id="fecha_inicio_cierre" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_inicio_cierre']); ?>">
     </div>
     <div class="mb-3">
         <label for="fecha_fin_cierre" class="form-label">Fecha de Fin de Cierre:</label>
-        <input type="date" name="fecha_fin_cierre" id="fecha_fin_cierre" class="form-control">
+        <input type="date" name="fecha_fin_cierre" id="fecha_fin_cierre" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_fin_cierre']); ?>">
     </div>
     <div class="mb-3">
         <label for="recurrente" class="form-label">Cierre recurrente:</label>

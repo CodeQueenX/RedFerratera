@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Ferrata.php';
 $ferrataModel = new Ferrata();
-$ferratas = $ferrataModel->obtenerFerratas();
+$ferratas = $ferrataModel->obtenerFerratasParaReporte();
 ?>
 
 <h1>Añadir reporte</h1>
