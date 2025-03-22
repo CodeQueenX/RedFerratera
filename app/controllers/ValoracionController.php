@@ -1,8 +1,8 @@
 <?php
-
 require_once 'app/models/Valoracion.php';
 
 class ValoracionController {
+    private $valoracion;
     // Método para guardar la valoración recibida por POST
     public function guardar() {
         // Iniciar sesión

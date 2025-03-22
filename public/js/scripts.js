@@ -221,4 +221,24 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error en la petición:", error));
         }
     }
+	
+	// Búsqueda del menú
+	const toggleSearch = document.getElementById("toggleSearch");
+	const searchContainer = document.getElementById("searchContainer");
+
+	    if (toggleSearch && searchContainer) {
+	        toggleSearch.addEventListener("click", function () {
+	            // Alterna la visibilidad de la barra de búsqueda
+	            if (searchContainer.style.display === "none" || searchContainer.style.display === "") {
+	                searchContainer.style.display = "block";
+	                // Poner el foco en el input
+	                const searchInput = searchContainer.querySelector('input[name="buscar"]');
+	                if (searchInput) {
+	                    searchInput.focus();
+	                }
+	            } else {
+	                searchContainer.style.display = "none";
+	            }
+	        });
+	    }
 });

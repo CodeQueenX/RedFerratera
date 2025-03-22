@@ -13,6 +13,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .container {
@@ -317,10 +318,14 @@ h1, h2, h3 {
 /* CONTENEDOR PARA WIKILOC Y VIDEOS */
 /* Contenedor genérico para embeds (Wikiloc, Vídeos, etc.) */
 .embed-container {
-    width: 100%;
-    max-width: 600px; /* Ajusta según diseño */
-    margin: 20px 0;
-    text-align: left;
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin: 20px 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Iframes responsive */
@@ -331,8 +336,18 @@ h1, h2, h3 {
 
 /* Estilos adicionales para cada embed */
 .embed-item {
-    margin-bottom: 20px;
-    position: relative;
+  flex: 1 1 300px;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.embed-item iframe {
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  display: block;
 }
 
 /* Botón para borrar (posicionado en la esquina superior derecha) */
@@ -340,6 +355,28 @@ h1, h2, h3 {
     position: absolute;
     top: 5px;
     right: 5px;
+}
+
+/* ESTILOS FORMULARIO DE BÚSQUEDA DEL MENÚ */
+/* Estilos para el contenedor de búsqueda */
+#searchContainer {
+	position: absolute;
+	left: 0;
+	top: 100%;
+	transform: translateY(5px);
+	width: 100%;
+	max-width: 300px;
+	margin: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* Estilo para el input de búsqueda */
+#searchContainer input[type="search"] {
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
 }
 
 /* AJUSTES PARA MÓVILES */
@@ -355,6 +392,23 @@ h1, h2, h3 {
     .cookie-banner button {
         padding: 4px 8px;
     }
+    .navbar .container {
+    display: flex;
+  	align-items: center;
+    justify-content: space-between;
+  	}
+	.navbar .d-flex.align-items-center {
+    flex: 1;
+	}
+	#searchContainer {
+    position: static;
+    width: 100%;
+    margin-top: 5px;
+    max-width: none;
+	}
+	.navbar-collapse {
+    text-align: right;
+ 	}
 }
 
 

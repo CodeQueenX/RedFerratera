@@ -213,6 +213,27 @@ class Ferrata {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    public function buscarFerratasGlobal($termino) {
+        // Limpiar y preparar el término de búsqueda (usar comillas y comodines)
+        $termino = '%' . strtolower(trim($termino)) . '%';
+        
+        $query = "SELECT * FROM ferratas
+              WHERE estado != 'Pendiente'
+                AND (
+                    LOWER(nombre) LIKE :termino OR
+                    LOWER(ubicacion) LIKE :termino OR
+                    LOWER(provincia) LIKE :termino OR
+                    LOWER(comunidad_autonoma) LIKE :termino OR
+                    LOWER(dificultad) LIKE :termino
+                )
+              ORDER BY comunidad_autonoma, provincia, ubicacion, nombre";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':termino', $termino, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function obtenerFerratasOrganizadas() {
         $query = "SELECT * FROM ferratas WHERE estado != 'Pendiente' ORDER BY comunidad_autonoma, provincia, ubicacion, nombre";
         $stmt = $this->conn->prepare($query);

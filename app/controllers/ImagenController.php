@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../models/Imagen.php';
 
 class ImagenController {
+    private $imagen;
     
     public function eliminarImagen($imagen_id, $ferrata_id) {
         $imagenModel = new Imagen();

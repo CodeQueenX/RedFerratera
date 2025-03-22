@@ -224,6 +224,12 @@ switch ($accion) {
         $ferrataController->buscar();
         break;
         
+    case 'buscarGlobal':
+        require_once __DIR__ . '/app/controllers/FerrataController.php';
+        $busquedaController = new FerrataController();
+        $busquedaController->buscarGlobal();
+        break;
+        
     case 'ver_ferrata':
         require_once 'app/controllers/FerrataController.php';
         $ferrataController = new FerrataController();

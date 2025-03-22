@@ -149,6 +149,20 @@ class FerrataController {
         include __DIR__ . '/../views/ferratas.php';
     }
     
+    // Buscar ferratas para la búsqueda del menú
+    public function buscarGlobal() {
+        require_once __DIR__ . '/../models/Ferrata.php';
+        $ferrataModel = new Ferrata();
+        
+        // Recoger el término de búsqueda desde el parámetro
+        $termino = $_GET['buscar'] ?? '';
+        
+        // Llamar al método del modelo
+        $ferratas = $ferrataModel->buscarFerratasGlobal($termino);
+
+        include __DIR__ . '/../views/busqueda.php';
+    }
+    
     // Mostrar las ferratas cercanas
     public function obtenerFerratasCercanas($id) {
         require_once __DIR__ . '/../models/Ferrata.php';
