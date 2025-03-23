@@ -1,16 +1,30 @@
-<h1 class="text-center">Política de Cookies</h1>
-<p>Este sitio web utiliza cookies para mejorar la experiencia del usuario.</p>
+<h1 class="text-center mb-4">Política de Cookies</h1>
 
-<h2>¿Qué son las cookies?</h2>
-<p>Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas una web. Nos ayudan a entender cómo los usuarios interactúan con la web.</p>
+<div class="card p-4 shadow-sm mb-4">
+    <p class="mb-0">
+        Este sitio web utiliza cookies para ofrecer una mejor experiencia de usuario, analizar el uso del sitio y personalizar el contenido.
+    </p>
+</div>
 
-<h2>Tipos de cookies que utilizamos</h2>
-<ul>
-    <li><strong>Cookies esenciales:</strong> Necesarias para el funcionamiento básico del sitio.</li>
-    <li><strong>Cookies analíticas:</strong> Nos ayudan a mejorar el contenido analizando cómo los usuarios interactúan con la web.</li>
-    <li><strong>Cookies de terceros:</strong> Pueden provenir de servicios externos como redes sociales o Google Analytics.</li>
-</ul>
+<h2 class="text-primary mt-4">¿Qué son las cookies?</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <p class="mb-0">
+        Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas una página web. Nos permiten entender cómo interactúas con el sitio y mejorar nuestros servicios.
+    </p>
+</div>
 
-<h2>Gestión de cookies</h2>
-<p>Puedes aceptar o rechazar las cookies en la configuración de tu navegador. Ten en cuenta que algunas funciones de la web podrían no funcionar correctamente si las desactivas.</p>
+<h2 class="text-primary mt-4">Tipos de cookies que utilizamos</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <ul class="mb-0">
+        <li><strong>Cookies esenciales:</strong> Son necesarias para el funcionamiento básico del sitio, como el inicio de sesión o la navegación segura.</li>
+        <li><strong>Cookies analíticas:</strong> Nos ayudan a comprender cómo los usuarios utilizan el sitio para mejorarlo continuamente.</li>
+        <li><strong>Cookies de terceros:</strong> Algunas cookies pueden provenir de servicios externos como Google Analytics o redes sociales integradas.</li>
+    </ul>
+</div>
 
+<h2 class="text-primary mt-4">Gestión de cookies</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <p class="mb-0">
+        Puedes aceptar, rechazar o configurar las cookies desde la configuración de tu navegador. Ten en cuenta que desactivar algunas cookies puede afectar al correcto funcionamiento del sitio.
+    </p>
+</div>

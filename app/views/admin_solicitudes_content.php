@@ -1,44 +1,59 @@
-<h1 class="text-center">Solicitudes Pendientes</h1>
+<h1 class="text-center mb-4">Solicitudes Pendientes</h1>
 
-<h2>Ferratas Pendientes</h2>
+<!-- Sección de Ferratas Pendientes -->
+<h2 class="text-primary">Ferratas Pendientes</h2>
 <?php if (!empty($solicitudesFerratas)): ?>
-    <ul class="list-group">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         <?php foreach ($solicitudesFerratas as $ferrata): ?>
-            <li class="list-group-item">
-                <h3><?= htmlspecialchars($ferrata['nombre']); ?></h3>
-                <p><strong>Ubicación:</strong> <?= htmlspecialchars($ferrata['ubicacion']); ?></p>
-                <p><strong>Dificultad:</strong> <?= htmlspecialchars($ferrata['dificultad']); ?></p>
-                <p><strong>Descripción:</strong> <?= htmlspecialchars($ferrata['descripcion']); ?></p>
-                <p><strong>Coordenadas:</strong> <?= htmlspecialchars($ferrata['coordenadas'] ?? 'No especificadas'); ?></p>
-                <p><strong>Fecha de Creación:</strong> <?= (!empty($ferrata['fecha_creacion']) && $ferrata['fecha_creacion'] != '0000-00-00') ? date('d-m-Y', strtotime($ferrata['fecha_creacion'])) : 'Fecha no disponible'; ?>
-                <p><strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
-                <a href="/RedFerratera/index.php?accion=aprobar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
-				<a href="/RedFerratera/index.php?accion=rechazar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>
-				<?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
-                	<a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>?desde_gestion=1" class="btn btn-warning">Editar Ferrata</a>
-            	<?php endif; ?>
-            </li>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title"><?= htmlspecialchars($ferrata['nombre']); ?></h4>
+                        <p><strong>Ubicación:</strong> <?= htmlspecialchars($ferrata['ubicacion']); ?></p>
+                        <p><strong>Dificultad:</strong> <?= htmlspecialchars($ferrata['dificultad']); ?></p>
+                        <p><strong>Descripción:</strong> <?= htmlspecialchars($ferrata['descripcion']); ?></p>
+                        <p><strong>Coordenadas:</strong> <?= htmlspecialchars($ferrata['coordenadas'] ?? 'No especificadas'); ?></p>
+                        <p><strong>Fecha de Creación:</strong> <?= (!empty($ferrata['fecha_creacion']) && $ferrata['fecha_creacion'] != '0000-00-00') ? date('d-m-Y', strtotime($ferrata['fecha_creacion'])) : 'Fecha no disponible'; ?></p>
+                        <p><strong>Estado:</strong> <?= htmlspecialchars($ferrata['estado']); ?></p>
+
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a href="/RedFerratera/index.php?accion=aprobar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-success">Aprobar</a>
+                            <a href="/RedFerratera/index.php?accion=rechazar_ferrata&id=<?= $ferrata['id']; ?>" class="btn btn-danger">Rechazar</a>
+                            <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                                <a href="/RedFerratera/editar-ferrata/<?= $ferrata['id']; ?>?desde_gestion=1" class="btn btn-warning">Editar</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php endforeach; ?>
-    </ul>
+    </div>
 <?php else: ?>
-    <p>No hay ferratas pendientes.</p>
+    <p class="text-muted">No hay ferratas pendientes.</p>
 <?php endif; ?>
 
-
-<h2 class="mt-4">Reportes Pendientes</h2>
+<!-- Sección de Reportes Pendientes -->
+<h2 class="text-primary mt-5">Reportes Pendientes</h2>
 <?php if (!empty($solicitudesReportes)): ?>
-    <ul class="list-group">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         <?php foreach ($solicitudesReportes as $reporte): ?>
-            <li class="list-group-item">
-                <h3>Reporte sobre: <?= htmlspecialchars($reporte['ferrata']); ?></h3>
-                <p><strong>Usuario:</strong> <?= htmlspecialchars($reporte['usuario']); ?></p>
-                <p><strong>Mensaje:</strong> <?= htmlspecialchars($reporte['mensaje']); ?></p>
-                <p><strong>Fecha:</strong> <?= htmlspecialchars($reporte['fecha_reporte']); ?></p>
-                <a href="/RedFerratera/index.php?accion=aprobar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-success">Aprobar</a>
-				<a href="/RedFerratera/index.php?accion=rechazar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-danger">Rechazar</a>
-            </li>
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Reporte sobre: <?= htmlspecialchars($reporte['ferrata']); ?></h5>
+                        <p><strong>Usuario:</strong> <?= htmlspecialchars($reporte['usuario']); ?></p>
+                        <p><strong>Mensaje:</strong> <?= htmlspecialchars($reporte['mensaje']); ?></p>
+                        <p><small class="text-muted">Fecha: <?= htmlspecialchars($reporte['fecha_reporte']); ?></small></p>
+
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a href="/RedFerratera/index.php?accion=aprobar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-success">Aprobar</a>
+                            <a href="/RedFerratera/index.php?accion=rechazar_reporte&id=<?= htmlspecialchars($reporte['id']); ?>" class="btn btn-danger">Rechazar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php endforeach; ?>
-    </ul>
+    </div>
 <?php else: ?>
-    <p>No hay reportes pendientes.</p>
+    <p class="text-muted">No hay reportes pendientes.</p>
 <?php endif; ?>

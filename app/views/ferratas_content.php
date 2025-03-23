@@ -1,7 +1,7 @@
 <h1 class="text-center mt-4 mb-4">Listado de Vías Ferratas</h1>
 
 <!-- Formulario de búsqueda -->
-<form method="GET" action="index.php" class="mb-4">
+<form method="GET" action="index.php" class="mb-4 bg-white p-4 shadow-sm rounded">
     <input type="hidden" name="accion" value="buscar_ferratas">
     
     <div class="row g-2">
@@ -71,65 +71,80 @@
 </form>
 
 <!-- Lista de ferratas organizadas por comunidades y provincias -->
-<?php if (!empty($ferratasOrganizadas)): ?>
-    <?php foreach ($ferratasOrganizadas as $comunidad => $provincias): ?>
-        <div class="mt-4 p-2 rounded text-white text-center" style="background-color: rgba(46, 125, 50, 0.75);">
-            <h3 class="m-0"><?= htmlspecialchars($comunidad); ?></h3>
+<div class="accordion" id="accordionComunidades">
+    <?php foreach ($ferratasOrganizadas as $index => $provincias): ?>
+        <?php 
+            $comunidad = htmlspecialchars($index);
+            $comId = 'comunidad-' . preg_replace('/[^a-zA-Z0-9]/', '', strtolower($comunidad)); 
+        ?>
+        
+        <div class="accordion-item mb-3 shadow-sm border-0">
+            <h2 class="accordion-header" id="heading-<?= $comId ?>">
+                <button class="accordion-button collapsed custom-accordion" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $comId ?>" aria-expanded="false" aria-controls="collapse-<?= $comId ?>">
+                    <?= $comunidad ?>
+                </button>
+            </h2>
+            <div id="collapse-<?= $comId ?>" class="accordion-collapse collapse" aria-labelledby="heading-<?= $comId ?>" data-bs-parent="#accordionComunidades">
+                <div class="accordion-body">
+                    <?php foreach ($provincias as $provincia => $listaFerratas): ?>
+                        <div class="bloque-provincia mb-3">
+                            <h4 class="m-0"><?= htmlspecialchars($provincia); ?></h4>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover table-custom mt-2">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Ubicación</th>
+                                        <th>Dificultad</th>
+                                        <th>Estado</th>
+                                        <th>Valoración</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($listaFerratas as $ferrata): ?>
+                                        <tr>
+                                            <td class="ferrata-nombre" data-label="Nombre">
+                                                <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>">
+                                                    <?= htmlspecialchars($ferrata['nombre']); ?>
+                                                </a>
+                                            </td>
+                                            <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
+                                            <td><?= htmlspecialchars($ferrata['dificultad']); ?></td>
+                                            <td>
+                                                <span class="badge 
+                                                    <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
+                                                        (($ferrata['estado'] === 'Cerrada') ? 'bg-warning text-dark' : 
+                                                            (($ferrata['estado'] === 'No operativa') ? 'bg-danger' : 
+                                                                (($ferrata['estado'] === 'Precaución') ? 'bg-warning text-dark' : 'bg-secondary'))) ?>">
+                                                    <?= htmlspecialchars($ferrata['estado']); ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    require_once 'app/models/Valoracion.php';
+                                                    $ratingData = Valoracion::getAverageRating($ferrata['id']);
+                                                    $promedio = ($ratingData && $ratingData['total'] > 0) ? round($ratingData['promedio'], 2) : 'Sin valoraciones';
+                                                    echo $promedio . " / 5";
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
-
-        <?php foreach ($provincias as $provincia => $listaFerratas): ?>
-            <div class="mt-3 p-2 rounded text-white text-center" style="background-color: rgba(100, 181, 246, 0.75);">
-                <h4 class="m-0"><?= htmlspecialchars($provincia); ?></h4>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-hover mt-2">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Ubicación</th>
-                            <th>Dificultad</th>
-                            <th>Estado</th>
-                            <th>Valoración</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($listaFerratas as $ferrata): ?>
-                            <tr>
-                                <td><a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>"><?= htmlspecialchars($ferrata['nombre']); ?></a></td>
-                                <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
-                                <td><?= htmlspecialchars($ferrata['dificultad']); ?></td>
-                                <td>
-                                    <span class="badge 
-                                        <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
-                                            (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : 
-                                                (($ferrata['estado'] === 'No operativa') ? 'bg-danger' : 
-                                                    (($ferrata['estado'] === 'Precaución') ? 'bg-warning' : '')) ) ?>">
-                                        <?= htmlspecialchars($ferrata['estado']); ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <?php
-                                        require_once 'app/models/Valoracion.php';
-                                        $ratingData = Valoracion::getAverageRating($ferrata['id']);
-                                        $promedio = ($ratingData && $ratingData['total'] > 0) ? round($ratingData['promedio'], 2) : 'Sin valoraciones';
-                                        echo $promedio . " / 5";
-                                    ?>
-                                </td>
-                                <td>
-                                    <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php endforeach; ?>
     <?php endforeach; ?>
-<?php else: ?>
-    <p class="text-center text-muted">No hay ferratas disponibles.</p>
-<?php endif; ?>
+</div>
+
 
 
 

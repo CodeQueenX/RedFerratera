@@ -1,12 +1,29 @@
-<h1 class="text-center">Política de Privacidad</h1>
-<p>En Red Ferratera, respetamos la privacidad de nuestros usuarios y protegemos sus datos personales según la normativa vigente.</p>
+<h1 class="text-center mb-4">Política de Privacidad</h1>
 
-<h2>Información recopilada</h2>
-<p>Recopilamos datos personales cuando los usuarios se registran, envían formularios o comentan en la web.</p>
+<div class="card p-4 shadow-sm mb-4">
+    <p class="mb-0">
+        En <strong>Red Ferratera</strong>, respetamos la privacidad de nuestros usuarios y protegemos sus datos personales conforme a la normativa vigente en materia de protección de datos.
+    </p>
+</div>
 
-<h2>Uso de la información</h2>
-<p>Los datos recopilados se utilizan únicamente para mejorar la experiencia del usuario, responder consultas y mantener la seguridad del sitio.</p>
+<h2 class="text-primary mt-4">Información Recopilada</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <p class="mb-0">
+        Recopilamos datos personales únicamente cuando los usuarios se registran, envían formularios o realizan comentarios en la plataforma.
+    </p>
+</div>
 
-<h2>Derechos del usuario</h2>
-<p>Los usuarios pueden solicitar la modificación o eliminación de sus datos personales en cualquier momento enviando un correo a <a href="mailto:megidorico@gmail.com">megidorico@gmail.com</a>.</p>
+<h2 class="text-primary mt-4">Uso de la Información</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <p class="mb-0">
+        Los datos recogidos se emplean exclusivamente para mejorar la experiencia del usuario, responder consultas, gestionar reportes y mantener la seguridad e integridad del sitio.
+    </p>
+</div>
 
+<h2 class="text-primary mt-4">Derechos del Usuario</h2>
+<div class="card p-3 shadow-sm mb-4">
+    <p class="mb-0">
+        Los usuarios pueden ejercer sus derechos de acceso, rectificación o eliminación de sus datos personales en cualquier momento enviando un correo electrónico a 
+        <a href="mailto:megidorico@gmail.com" class="link-primary">megidorico@gmail.com</a>.
+    </p>
+</div>

@@ -1,9 +1,9 @@
-<h1 class="text-center mt-4">Resultados de búsqueda</h1>
+<h1 class="text-center my-4 fw-bold">Resultados de Búsqueda</h1>
 
 <?php if (!empty($ferratas)): ?>
     <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+        <table class="table table-hover table-custom align-middle shadow-sm">
+            <thead class="table-dark text-center">
                 <tr>
                     <th>Nombre</th>
                     <th>Ubicación</th>
@@ -15,24 +15,26 @@
             <tbody>
                 <?php foreach ($ferratas as $ferrata): ?>
                     <tr>
-                        <td>
-                            <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>">
+                        <td class="ferrata-nombre">
+                            <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>" class="text-decoration-underline fw-semibold text-dark">
                                 <?= htmlspecialchars($ferrata['nombre']); ?>
                             </a>
                         </td>
                         <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
-                        <td><?= htmlspecialchars($ferrata['dificultad']); ?></td>
+                        <td><span class="badge bg-secondary"><?= htmlspecialchars($ferrata['dificultad']); ?></span></td>
                         <td>
                             <span class="badge 
                                 <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
-                                    (($ferrata['estado'] === 'Cerrada') ? 'bg-warning' : 
+                                    (($ferrata['estado'] === 'Cerrada') ? 'bg-warning text-dark' : 
                                         (($ferrata['estado'] === 'No operativa') ? 'bg-danger' : 
-                                            (($ferrata['estado'] === 'Precaución') ? 'bg-warning' : '')) ) ?>">
+                                            (($ferrata['estado'] === 'Precaución') ? 'bg-warning text-dark' : 'bg-secondary'))) ?>">
                                 <?= htmlspecialchars($ferrata['estado']); ?>
                             </span>
                         </td>
-                        <td>
-                            <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">Ver detalles</a>
+                        <td class="text-center">
+                            <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">
+                                Ver detalles
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -40,5 +42,7 @@
         </table>
     </div>
 <?php else: ?>
-    <p class="text-center text-muted">No se encontraron resultados para tu búsqueda.</p>
+    <div class="alert alert-info text-center mt-4 shadow-sm" role="alert">
+        No se encontraron resultados para tu búsqueda.
+    </div>
 <?php endif; ?>

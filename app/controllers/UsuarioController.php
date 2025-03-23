@@ -14,6 +14,15 @@ class UsuarioController {
     // Método para registrar un nuevo usuario y verificación de email
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // Verificación de token CSRF
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                die('Error: Token CSRF inválido o ausente.');
+            }
+            
+            // Limpieza del token tras su uso
+            unset($_SESSION['csrf_token']);
+            
             $nombre = $_POST['nombre'] ?? '';
             $email = $_POST['email'] ?? '';
             $contraseña = $_POST['clave'] ?? '';
@@ -74,6 +83,15 @@ class UsuarioController {
     // Método para iniciar sesión
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // Verificación de token CSRF
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                die('Error: Token CSRF inválido o ausente.');
+            }
+            
+            // Limpieza del token tras su uso
+            unset($_SESSION['csrf_token']);
+            
             $email = $_POST['email'] ?? '';
             $contraseña = $_POST['clave'] ?? '';
             
@@ -108,54 +126,58 @@ class UsuarioController {
     
     public function enviarRecuperacion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (session_status() === PHP_SESSION_NONE) session_start();
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                die("Error: Token CSRF inválido.");
+            }
+            
             $email = $_POST['email'] ?? '';
             
             if ($email) {
-                $token = bin2hex(random_bytes(32)); // Genera un token único
-                
-                // Guarda el token en la base de datos
+                $token = bin2hex(random_bytes(32));
                 require_once __DIR__ . '/../models/Usuario.php';
                 $usuario = new Usuario();
+                
                 if ($usuario->guardarTokenRecuperacion($email, $token)) {
                     $enlace = "http://localhost/RedFerratera/index.php?accion=restablecer_clave&token=$token";
                     $mensaje = "Haz clic en este enlace para restablecer tu contraseña: <a href='$enlace'>$enlace</a>";
-                    
-                    // Enviar correo
-                    $headers = "From: tuemail@gmail.com\r\n";
+                    $headers = "From: no-reply@redferratera.com\r\n";
                     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
                     
                     if (mail($email, "Restablecer contraseña", $mensaje, $headers)) {
-                        echo "<div style='text-align:center; padding: 20px; background: #dff0d8; color: #3c763d; font-size: 18px; border: 1px solid #d6e9c6;'>
-                                ✅ <strong>Correo enviado.</strong> Revisa tu bandeja de entrada.
-                              </div>";
+                        echo "<div class='alert alert-success text-center mt-4'>✅ Correo enviado. Revisa tu bandeja de entrada.</div>";
                     } else {
-                        echo "<p style='color: red;'>⚠️ No se pudo enviar el correo.</p>";
+                        echo "<div class='alert alert-danger text-center mt-4'>⚠️ No se pudo enviar el correo.</div>";
                     }
                 } else {
-                    echo "<p style='color: red;'>⚠️ Correo no registrado.</p>";
+                    echo "<div class='alert alert-warning text-center mt-4'>⚠️ Este correo no está registrado.</div>";
                 }
             } else {
-                echo "<p style='color: red;'>⚠️ Debes ingresar tu correo.</p>";
+                echo "<div class='alert alert-warning text-center mt-4'>⚠️ Debes ingresar tu correo.</div>";
             }
         }
     }
     
     public function procesarCambioClave() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (session_status() === PHP_SESSION_NONE) session_start();
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                die("Error: Token CSRF inválido.");
+            }
+            
             $token = $_POST['token'] ?? null;
             $nuevaClave = $_POST['nueva_clave'] ?? '';
             
             if ($token && $nuevaClave) {
                 if ($this->usuario->actualizarClavePorToken($token, $nuevaClave)) {
-                    echo "<div style='text-align:center; padding: 20px; background: #dff0d8; color: #3c763d; font-size: 18px; border: 1px solid #d6e9c6;'>
-                            ✅ <strong>Contraseña restablecida correctamente.</strong> Ahora puedes iniciar sesión. <br><br>
-                            <a href='/RedFerratera/login' style='display:inline-block; padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:5px;'>Iniciar Sesión</a>
-                          </div>";
+                    $this->usuario->borrarTokenRecuperacion($token); // Invalida el token
+                    
+                    echo "<div class='alert alert-success text-center mt-4'>✅ Contraseña restablecida correctamente. <a href='/RedFerratera/login'>Iniciar sesión</a></div>";
                 } else {
-                    echo "⚠️ Error al actualizar la contraseña.";
+                    echo "<div class='alert alert-danger text-center mt-4'>⚠️ Error al actualizar la contraseña o el token ha expirado.</div>";
                 }
             } else {
-                echo "⚠️ Datos inválidos.";
+                echo "<div class='alert alert-warning text-center mt-4'>⚠️ Todos los campos son obligatorios.</div>";
             }
         }
     }

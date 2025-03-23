@@ -29,6 +29,7 @@ if (session_status() === PHP_SESSION_NONE) {
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/RedFerratera/public/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     
     <!-- Página de estilos -->
     <link rel="stylesheet" href="/RedFerratera/public/css/style.css">

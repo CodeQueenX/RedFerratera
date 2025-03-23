@@ -73,22 +73,36 @@ class Usuario {
     }
     
     public function guardarTokenRecuperacion($email, $token) {
-        $query = "UPDATE usuarios SET token = :token WHERE email = :email";
+        $query = "UPDATE usuarios
+              SET token = :token
+              WHERE email = :email AND verificado = 1";
         $stmt = $this->conn->prepare($query);
-        return $stmt->execute([
+        $stmt->execute([
             ":token" => $token,
             ":email" => $email
         ]);
+        return $stmt->rowCount() > 0; // Verifica si se modificó alguna fila
     }
     
     public function actualizarClavePorToken($token, $nuevaClave) {
         $nuevaClaveHash = password_hash($nuevaClave, PASSWORD_DEFAULT);
         
-        $stmt = $this->conn->prepare("UPDATE usuarios SET clave = :clave WHERE token = :token");
-        return $stmt->execute([
+        $query = "UPDATE usuarios
+              SET clave = :clave, token = NULL
+              WHERE token = :token";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([
             ":clave" => $nuevaClaveHash,
             ":token" => $token
         ]);
+        
+        return $stmt->rowCount() > 0; // True solo si se actualizó
+    }
+    
+    public function borrarTokenRecuperacion($token) {
+        $query = "UPDATE usuarios SET token = NULL WHERE token = :token";
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([':token' => $token]);
     }
 }
 ?>

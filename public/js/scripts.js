@@ -116,22 +116,24 @@ document.addEventListener("DOMContentLoaded", function () {
     })();
 
     // Manejo del banner de cookies usando localStorage
-    const banner = document.getElementById("cookie-banner");
-    const acceptButton = document.getElementById("accept-cookies");
+	const banner = document.getElementById("cookie-banner");
+	const acceptButton = document.getElementById("accept-cookies");
 
-    if (!localStorage.getItem("cookies_aceptadas")) {
-        if (banner) banner.style.display = "block";
-    } else {
-        if (banner) banner.style.display = "none";
-    }
+	if (banner) {
+	    if (!localStorage.getItem("cookies_aceptadas")) {
+	        banner.classList.remove("oculto");
+	    } else {
+	        banner.classList.add("oculto");
+	    }
+	}
 
-    if (acceptButton) {
-        acceptButton.addEventListener("click", function () {
-            localStorage.setItem("cookies_aceptadas", "true");
-            if (banner) banner.style.display = "none";
-            console.log("Cookie aceptada:", localStorage.getItem("cookies_aceptadas"));
-        });
-    }
+	if (acceptButton) {
+	    acceptButton.addEventListener("click", function () {
+	        localStorage.setItem("cookies_aceptadas", "true");
+	        if (banner) banner.classList.add("oculto");
+	        console.log("Cookie aceptada:", localStorage.getItem("cookies_aceptadas"));
+	    });
+	}
 
     // Formato de fecha para inputs
 	const fechaInputs = document.querySelectorAll('input[type="date"]');

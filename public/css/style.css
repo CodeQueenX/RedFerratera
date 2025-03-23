@@ -91,8 +91,12 @@ footer {
 /* TIPOGRAFÍA Y ENCABEZADOS */
 
 h1, h2, h3 {
-    color: #0056b3;
+    color: rgb(128, 0, 128);
     font-weight: bold;
+}
+
+h2.text-primary {
+    color: #a64ac9 !important;
 }
 
 /* BOTONES */
@@ -125,6 +129,119 @@ h1, h2, h3 {
     gap: 10px; /* Espacio entre botones */
     align-items: center; /* Alinea verticalmente */
     margin-top: 15px; /* Espaciado superior */
+}
+
+/* LISTADO DE FERRATAS */
+.bloque-comunidad {
+    background-color: #87019c;
+    padding: 10px 15px;
+    margin-top: 30px;
+    border-radius: 8px;
+}
+
+.bloque-comunidad h3 {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.bloque-provincia {
+    background-color: #E8DAF7;
+    padding: 8px 12px;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+.bloque-provincia h4 {
+    text-align: center;
+    font-weight: bold;
+    color: #4B2C5E;
+}
+
+/* TABLA DE FERRATAS */
+
+/* Estado normal del botón del acordeón */
+.accordion-button.custom-accordion {
+    background-color: white !important;
+    border: 2px solid #D6C8E7 !important; /* borde malva claro */
+    color: #4B2C5E !important; /* texto malva oscuro */
+    font-weight: 600;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Estado cuando está abierto (no tiene clase 'collapsed') */
+.accordion-button.custom-accordion:not(.collapsed) {
+    background-color: #E8DAF7 !important; /* fondo malva claro */
+    border-color: #6B3FA0 !important;     /* borde malva oscuro */
+    color: #4B2C5E !important;
+}
+
+/* Evita el efecto sombra azul al hacer clic */
+.accordion-button.custom-accordion:focus {
+    box-shadow: none !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f9f5fc;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #efe2f9;
+}
+
+.table-dark th {
+    background-color: #4B2C5E;
+    color: white;
+}
+
+.table-custom {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-custom th,
+.table-custom td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-custom thead {
+    background-color: #6B3FA0; /* malva profesional */
+    color: white;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #f4f1f8;
+}
+
+.table-custom a {
+    font-weight: 600;
+    text-decoration: none;
+    color: #3D315B;
+}
+
+.table-custom .ferrata-nombre a {
+    text-decoration: underline !important;
+}
+
+.table-custom a:hover {
+    color: #6B3FA0;
+}
+
+.shadow-sm {
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.ferrata-nueva-nombre {
+    font-weight: 600;
+    text-decoration: underline;
+    color: #3D315B;
+}
+
+.ferrata-nueva-nombre:hover {
+    color: #6B3FA0;
 }
 
 /* GALERÍA DE IMÁGENES */
@@ -310,6 +427,10 @@ h1, h2, h3 {
     margin-left: 10px;
 }
 
+.oculto {
+    display: none !important;
+}
+
 /* ESTRELLAS DE VALORACIÓN */
 .rating-section .star {
     transition: color 0.2s ease;
@@ -379,6 +500,44 @@ h1, h2, h3 {
     padding: 5px;
 }
 
+/* PÁGINA SITEMAP */
+.site-map-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.site-map-container ul {
+    padding: 0;
+    margin: 0 auto;
+}
+
+.site-map-container .list-group-item {
+    border: none;
+    font-size: 1.05rem;
+    background-color: transparent;
+    padding: 12px 20px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.site-map-container .list-group-item:hover {
+    background-color: #f4f1f8;
+}
+
+.enlace-mapa {
+    text-decoration: none;
+    color: #3D315B;
+    font-weight: 500;
+}
+
+.enlace-mapa:hover {
+	text-decoration: underline;
+    color: #6B3FA0;
+}
+
+.enlace-mapa i {
+    color: #6B3FA0;
+}
+
 /* AJUSTES PARA MÓVILES */
 @media (max-width: 600px) {
     .weather-widget .embed-container{
@@ -409,6 +568,47 @@ h1, h2, h3 {
 	.navbar-collapse {
     text-align: right;
  	}
+ 	
+ 	.form-label {
+        font-size: 0.95rem;
+    }
+    
+    .table thead {
+        display: none;
+    }
+
+    .table tbody tr {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .table tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        border: none;
+    }
+
+    .table tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+    }
+    
+    .table td {
+        vertical-align: top;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        text-align: right;
+    }
+    
+    .tabla-nuevas-ferratas td {
+        text-align: left;
+    }
 }
 
 
