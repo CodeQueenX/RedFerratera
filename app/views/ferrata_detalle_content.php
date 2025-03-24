@@ -125,6 +125,22 @@ $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
             </form>
         <?php endif; ?>
     </div>
+    
+    <!-- Ferratas cercanas -->
+    <?php if (!empty($ferratasCercanas)): ?>
+        <h3 class="mt-4">Ferratas cercanas</h3>
+        <ul class="list-group">
+            <?php foreach ($ferratasCercanas as $cercana): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong><?= htmlspecialchars($cercana['nombre']); ?></strong> 
+                        (<?= htmlspecialchars($cercana['distancia']) ?> km)
+                    </span>
+                    <a href="/RedFerratera/ferrata/<?= $cercana['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $cercana['nombre']))) ?>" class="btn btn-outline-primary btn-sm">Ver</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 
     <!-- Sección de valoración -->
     <?php
