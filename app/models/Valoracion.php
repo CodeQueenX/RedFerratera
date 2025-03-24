@@ -1,56 +1,40 @@
 <?php
+require_once __DIR__ . '/../../config/Database.php';
 
 class Valoracion {
-    private $id;
-    private $ferrata_id;
-    private $usuario_id;
-    private $valor;
-    private $created_at;
-
-    public function __construct($ferrata_id, $usuario_id, $valor) {
-        $this->ferrata_id = $ferrata_id;
-        $this->usuario_id = $usuario_id;
-        $this->valor = $valor;
+    private $conn;
+    private $table_name = "valoraciones";
+    
+    public function __construct() {
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
-
-    // Métodos getters
-    public function getId() { return $this->id; }
-    public function getFerrataId() { return $this->ferrata_id; }
-    public function getUsuarioId() { return $this->usuario_id; }
-    public function getValor() { return $this->valor; }
-    public function getCreatedAt() { return $this->created_at; }
-
-    // Guarda la valoración (inserta o actualiza si ya existe)
-    public function save() {
-        $db = (new Database())->getConnection();
+    
+    public function save($ferrata_id, $usuario_id, $valor) {
+        $query = "INSERT INTO $this->table_name (ferrata_id, usuario_id, valor)
+                  VALUES (:ferrata_id, :usuario_id, :valor)
+                  ON DUPLICATE KEY UPDATE valor = :valor";
         
-        // Comprueba si ya existe una valoración de este usuario para la ferrata
-        $stmt = $db->prepare("SELECT id FROM valoraciones WHERE ferrata_id = ? AND usuario_id = ?");
-        $stmt->execute([$this->ferrata_id, $this->usuario_id]);
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id);
+        $stmt->bindParam(':usuario_id', $usuario_id);
+        $stmt->bindParam(':valor', $valor);
         
-        if ($stmt->rowCount() > 0) {
-            // Si existe, se actualiza
-            $existing = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->id = $existing['id'];
-            $stmt = $db->prepare("UPDATE valoraciones SET valor = ?, created_at = CURRENT_TIMESTAMP WHERE id = ?");
-            return $stmt->execute([$this->valor, $this->id]);
-        } else {
-            // Si no existe, se inserta una nueva valoración
-            $stmt = $db->prepare("INSERT INTO valoraciones (ferrata_id, usuario_id, valor) VALUES (?, ?, ?)");
-            if ($stmt->execute([$this->ferrata_id, $this->usuario_id, $this->valor])) {
-                $this->id = $db->lastInsertId();
-                return true;
-            }
-            return false;
-        }
+        return $stmt->execute();
     }
-
-    // Obtiene la valoración media y total de valoraciones para una ferrata
+    
     public static function getAverageRating($ferrata_id) {
-        $db = (new Database())->getConnection();
-        $stmt = $db->prepare("SELECT AVG(valor) as promedio, COUNT(*) as total FROM valoraciones WHERE ferrata_id = ?");
-        $stmt->execute([$ferrata_id]);
+        $database = new Database();
+        $conn = $database->getConnection();
+        
+        $query = "SELECT ROUND(AVG(valor), 2) AS promedio, COUNT(*) AS total
+                  FROM valoraciones
+                  WHERE ferrata_id = :ferrata_id";
+        
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id);
+        $stmt->execute();
+        
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
-?>

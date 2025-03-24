@@ -249,9 +249,9 @@ switch ($accion) {
         break;
         
     case 'subir_imagen':
-        require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->subirImagen();
+        require_once 'app/controllers/ImagenController.php';
+        $imagenController = new ImagenController();
+        $imagenController->subirImagen();
         break;
         
     case 'eliminar_imagen':
@@ -324,27 +324,27 @@ switch ($accion) {
         break;
         
     case 'guardar_wikiloc':
-        require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->guardarWikiloc();
+        require_once 'app/controllers/WikilocController.php';
+        $wikilocController = new WikilocController();
+        $wikilocController->guardar();
         break;
         
     case 'borrar_wikiloc':
-        require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->borrarWikiloc();
+        require_once 'app/controllers/WikilocController.php';
+        $wikilocController = new WikilocController();
+        $wikilocController->borrar();
         break;
         
     case 'subir_video':
-        require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->subirVideo();
+        require_once 'app/controllers/VideoController.php';
+        $videoController = new VideoController();
+        $videoController->subirVideo();
         break;
         
     case 'borrar_video':
-        require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->borrarVideo();
+        require_once 'app/controllers/VideoController.php';
+        $videoController = new VideoController();
+        $videoController->borrarVideo();
         break;
         
     default:

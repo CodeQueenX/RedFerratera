@@ -3,14 +3,18 @@ require_once 'app/models/Valoracion.php';
 
 class ValoracionController {
     private $valoracion;
-    // Método para guardar la valoración recibida por POST
+    
+    public function __construct() {
+        $this->valoracion = new Valoracion();
+    }
+    
     public function guardar() {
         // Iniciar sesión
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
         
-        // Iniciar el buffer de salida para evitar salidas inesperadas
+        // Limpiar buffer de salida
         if (!ob_get_length()) {
             ob_start();
         } else {
@@ -19,32 +23,31 @@ class ValoracionController {
         
         header('Content-Type: application/json');
         
-        // Verificar que el usuario esté en la sesión
+        // Validar sesión
         if (!isset($_SESSION['usuario'])) {
             echo json_encode(['error' => 'Usuario no autenticado']);
             return;
         }
         
-        // Asignar el ID del usuario de la sesión
         $usuario_id = $_SESSION['usuario']['id'];
         
-        // Verificar el usuario
+        // Validar usuario verificado
         if ($_SESSION['usuario']['verificado'] != 1) {
             echo json_encode(['error' => 'Usuario no verificado']);
             return;
         }
         
-        // Recoger y validar datos (ferrata_id y valor)
+        // Validar datos POST
         $ferrata_id = isset($_POST['ferrata_id']) ? intval($_POST['ferrata_id']) : 0;
         $valor = isset($_POST['valor']) ? intval($_POST['valor']) : 0;
+        
         if ($ferrata_id <= 0 || $valor < 1 || $valor > 5) {
             echo json_encode(['error' => 'Datos inválidos']);
             return;
         }
         
-        $rating = new Valoracion($ferrata_id, $usuario_id, $valor);
-        
-        if ($rating->save()) {
+        // Guardar valoración
+        if ($this->valoracion->save($ferrata_id, $usuario_id, $valor)) {
             $avgData = Valoracion::getAverageRating($ferrata_id);
             echo json_encode([
                 'success' => true,
@@ -56,4 +59,3 @@ class ValoracionController {
         }
     }
 }
-?>

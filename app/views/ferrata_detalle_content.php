@@ -68,7 +68,8 @@ $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
         <!-- Sección de vídeos -->
         <?php
         require_once 'app/models/Video.php';
-        $videos = Video::getByFerrataId($ferrata['id']);
+        $videoModel = new Video();
+        $videos = $videoModel->obtenerVideosPorFerrata($ferrata['id']);
         if (!empty($videos)):
         ?>
             <h3 class="mt-4">Vídeos</h3>
@@ -89,16 +90,17 @@ $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
         <!-- Sección de Wikiloc -->
         <?php
         require_once 'app/models/Wikiloc.php';
-        $enlaces = Wikiloc::getByFerrataId($ferrata['id']);
-        if (!empty($enlaces)):
+        $wikilocModel = new Wikiloc();
+        $wikilocs = $wikilocModel->obtenerWikilocPorFerrata($ferrata['id']);
+        if (!empty($wikilocs)):
         ?>
             <h3 class="mt-4">Track de Wikiloc</h3>
             <div id="wikiloc-container" class="embed-container">
-                <?php if (!empty($enlaces)): ?>
-                    <?php foreach ($enlaces as $enlace): ?>
+                <?php if (!empty($wikilocs)): ?>
+                    <?php foreach ($wikilocs as $wikiloc): ?>
                         <div class="position-relative embed-item">
                             <!-- Mostrar el iframe embed -->
-                            <?= $enlace['wikiloc_embed']; ?>
+                            <?= $wikiloc['wikiloc_embed']; ?>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>

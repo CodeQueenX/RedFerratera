@@ -2,44 +2,42 @@
 require_once __DIR__ . '/../../config/Database.php';
 
 class Video {
-    private $id;
-    private $ferrata_id;
-    private $video_embed; // Guardamos el código embed
-    private $created_at;
+    private $conn;
+    private $table_name = "ferrata_videos";
     
-    public function __construct($ferrata_id, $video_embed) {
-        $this->ferrata_id = $ferrata_id;
-        $this->video_embed = $video_embed;
+    public function __construct($ferrata_id = null, $video_embed = null) {
+        $database = new Database();
+        $this->conn = $database->getConnection();
+        
+        if ($ferrata_id && $video_embed) {
+            $this->ferrata_id = $ferrata_id;
+            $this->video_embed = $video_embed;
+        }
     }
-    
-    public function getId() { return $this->id; }
-    public function getFerrataId() { return $this->ferrata_id; }
-    public function getVideoEmbed() { return $this->video_embed; }
-    public function getCreatedAt() { return $this->created_at; }
     
     public function save() {
-        $db = (new Database())->getConnection();
-        $stmt = $db->prepare("INSERT INTO ferrata_videos (ferrata_id, video_embed) VALUES (?, ?)");
-        if ($stmt->execute([$this->ferrata_id, $this->video_embed])) {
-            $this->id = $db->lastInsertId();
-            return true;
-        }
-        return false;
-    }
-    
-    public static function getByFerrataId($ferrata_id) {
-        $db = (new Database())->getConnection();
-        $stmt = $db->prepare("SELECT * FROM ferrata_videos WHERE ferrata_id = ?");
-        $stmt->execute([$ferrata_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $query = "INSERT INTO " . $this->table_name . " (ferrata_id, video_embed) VALUES (:ferrata_id, :video_embed)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $this->ferrata_id);
+        $stmt->bindParam(':video_embed', $this->video_embed);
+        return $stmt->execute();
     }
     
     public static function deleteById($id) {
-        $db = (new Database())->getConnection();
-        $stmt = $db->prepare("DELETE FROM ferrata_videos WHERE id = ?");
-        return $stmt->execute([$id]);
+        $database = new Database();
+        $conn = $database->getConnection();
+        
+        $query = "DELETE FROM ferrata_videos WHERE id = :id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+    
+    public function obtenerVideosPorFerrata($ferrata_id) {
+        $query = "SELECT * FROM " . $this->table_name . " WHERE ferrata_id = :ferrata_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':ferrata_id', $ferrata_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?>
-
-
