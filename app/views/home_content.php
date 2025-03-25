@@ -1,3 +1,4 @@
+<!-- Contenedor principal de inicio -->
 <div class="inicio-container">
     <!-- Fondo con efecto overlay -->
     <div class="inicio-background">
@@ -30,6 +31,8 @@
                 La práctica de vías ferratas es una forma emocionante de combinar senderismo y escalada, brindando vistas panorámicas espectaculares mientras 
                 se atraviesan pasos verticales y horizontales con la ayuda de equipamiento especializado.
             </p>
+
+            <!-- Características principales -->
             <h4 class="mt-4 text-success">🔍 Características principales:</h4>
             <ul class="list-unstyled">
                 <li>✅ <strong>Aventura segura:</strong> Se requiere casco, arnés y disipador.</li>
@@ -39,17 +42,20 @@
                 <li>✅ <strong>Elementos adicionales:</strong> Algunas incluyen puentes tibetanos, pasos de mono y tirolinas.</li>
             </ul>
         </div>
+
+        <!-- Imagen ilustrativa -->
         <div class="col-md-6 text-center">
             <img src="public/img/ferrata_info.jpg" alt="Vía Ferrata" class="img-fluid rounded shadow-lg">
         </div>
     </div>
 </section>
 
-
 <!-- Sección de Recomendaciones -->
 <section class="container mt-5">
     <h2 class="fw-bold text-dark text-center mb-4"><i class="lucide lucide-lightbulb"></i> Recomendaciones para Vías Ferratas</h2>
-	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- Equipamiento básico -->
         <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
@@ -61,10 +67,12 @@
                         <li>🎒 Arnés de escalada.</li>
                         <li>🥾 Calzado adecuado (preferiblemente botas de montaña o zapatillas de aproximación).</li>
                     </ul>
-            	</div>
+                </div>
             </div>
         </div>
-    	<div class="col">
+
+        <!-- Consejos de seguridad -->
+        <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h2 class="fw-bold text-dark">⚠️ Consejos de seguridad</h2>
@@ -78,7 +86,9 @@
                 </div>
             </div>
         </div>
-		<div class="col">
+
+        <!-- Clasificación de dificultad -->
+        <div class="col">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h2 class="fw-bold text-dark">🎯 Clasificación de las vías ferratas</h2>

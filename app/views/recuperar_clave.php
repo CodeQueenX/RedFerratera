@@ -1,4 +1,5 @@
 <?php
+// Iniciar sesión y generar token si no existe
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,12 +8,17 @@ if (empty($_SESSION['csrf_token'])) {
 }
 ?>
 
+<!-- Título -->
 <h1 class="text-center mb-3">Recuperar Contraseña</h1>
+
+<!-- Instrucciones -->
 <p class="text-center mb-4">Ingresa tu correo electrónico y te enviaremos instrucciones para restablecerla.</p>
 
 <div class="row justify-content-center">
     <div class="col-md-6">
+        <!-- Formulario de recuperación -->
         <form action="/RedFerratera/index.php?accion=enviar_recuperacion" method="POST">
+            <!-- CSRF Token -->
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <!-- Campo Email -->

@@ -9,30 +9,25 @@ class Imagen {
         $this->conn = $database->getConnection();
     }
     
-    public function agregarImagen($ferrata_id, $ruta) {
-        $query = "INSERT INTO imagenes_ferratas (ferrata_id, ruta) VALUES (:ferrata_id, :ruta)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':ferrata_id', $ferrata_id);
-        $stmt->bindParam(':ruta', $ruta);
-        return $stmt->execute();
-    }
-    
+    // Guardar una imagen asociada a una ferrata
     public function guardarImagen($ferrata_id, $ruta) {
         $query = "INSERT INTO imagenes_ferratas (ferrata_id, ruta) VALUES (:ferrata_id, :ruta)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":ferrata_id", $ferrata_id);
-        $stmt->bindParam(":ruta", $ruta);
+        $stmt->bindParam(':ferrata_id', $ferrata_id, PDO::PARAM_INT);
+        $stmt->bindParam(':ruta', $ruta, PDO::PARAM_STR);
         return $stmt->execute();
     }
     
+    // Obtener todas las imágenes asociadas a una ferrata
     public function obtenerImagenesPorFerrata($ferrata_id) {
         $query = "SELECT * FROM imagenes_ferratas WHERE ferrata_id = :ferrata_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":ferrata_id", $ferrata_id);
+        $stmt->bindParam(":ferrata_id", $ferrata_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    // Obtener una imagen concreta por su ID
     public function obtenerImagenPorId($id) {
         $query = "SELECT * FROM imagenes_ferratas WHERE id = :id";
         $stmt = $this->conn->prepare($query);
@@ -41,6 +36,7 @@ class Imagen {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
+    // Eliminar una imagen por su ID
     public function eliminarImagen($id) {
         $query = "DELETE FROM imagenes_ferratas WHERE id = :id";
         $stmt = $this->conn->prepare($query);

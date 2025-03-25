@@ -1,11 +1,14 @@
+<!-- Título -->
 <h1 class="text-center mb-4">Política de Cookies</h1>
 
+<!-- Introducción -->
 <div class="card p-4 shadow-sm mb-4">
     <p class="mb-0">
         Este sitio web utiliza cookies para ofrecer una mejor experiencia de usuario, analizar el uso del sitio y personalizar el contenido.
     </p>
 </div>
 
+<!-- ¿Qué son las cookies? -->
 <h2 class="text-primary mt-4">¿Qué son las cookies?</h2>
 <div class="card p-3 shadow-sm mb-4">
     <p class="mb-0">
@@ -13,6 +16,7 @@
     </p>
 </div>
 
+<!-- Tipos de cookies -->
 <h2 class="text-primary mt-4">Tipos de cookies que utilizamos</h2>
 <div class="card p-3 shadow-sm mb-4">
     <ul class="mb-0">
@@ -22,6 +26,7 @@
     </ul>
 </div>
 
+<!-- Gestión de cookies -->
 <h2 class="text-primary mt-4">Gestión de cookies</h2>
 <div class="card p-3 shadow-sm mb-4">
     <p class="mb-0">

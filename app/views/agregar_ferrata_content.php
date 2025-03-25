@@ -1,4 +1,5 @@
 <?php
+// Iniciar sesión y generar token si no existe
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,6 +8,7 @@ if (empty($_SESSION['csrf_token'])) {
 }
 ?>
 
+<!-- Añadir Ferrata -->
 <div class="container">
     <h1 class="text-center mb-4">Añadir Nueva Ferrata</h1>
 

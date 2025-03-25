@@ -3,58 +3,43 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-//var_dump($_SESSION['usuario']);
+
 require_once 'config/Database.php';
 
-// Determinar la acción que se debe ejecutar, por defecto "home"
-$accion = isset($_GET['accion']) ? $_GET['accion'] : 'home';
+// Acción por defecto
+$accion = $_GET['accion'] ?? 'home';
 
-// Manejo de URLs amigables
-if (preg_match('/^ferrata\/(\d+)\/([a-zA-Z0-9-]+)$/', $accion, $matches)) {
-    $_GET['id'] = $matches[1];
+// URLs amigables
+if (preg_match('/^ferrata\/(\d+)\/([a-zA-Z0-9-]+)$/', $accion, $m)) {
+    $_GET['id'] = $m[1];
     $accion = 'ver_ferrata';
 }
-
-if (preg_match('/^editar-ferrata\/(\d+)$/', $accion, $matches)) {
-    $_GET['id'] = $matches[1];
+if (preg_match('/^editar-ferrata\/(\d+)$/', $accion, $m)) {
+    $_GET['id'] = $m[1];
     $accion = 'editar_ferrata';
 }
-
-if (preg_match('/^eliminar-comentario\/(\d+)\/ferrata\/(\d+)$/', $accion, $matches)) {
-    $_GET['id'] = $matches[1];
-    $_GET['ferrata_id'] = $matches[2];
+if (preg_match('/^eliminar-comentario\/(\d+)\/ferrata\/(\d+)$/', $accion, $m)) {
+    $_GET['id'] = $m[1];
+    $_GET['ferrata_id'] = $m[2];
     $accion = 'eliminar_comentario';
 }
-
-if (preg_match('/^eliminar-imagen\/(\d+)\/ferrata\/(\d+)$/', $accion, $matches)) {
-    $_GET['id'] = $matches[1];
-    $_GET['ferrata_id'] = $matches[2];
+if (preg_match('/^eliminar-imagen\/(\d+)\/ferrata\/(\d+)$/', $accion, $m)) {
+    $_GET['id'] = $m[1];
+    $_GET['ferrata_id'] = $m[2];
     $accion = 'eliminar_imagen';
 }
 
-if ($accion === 'ferratas') {
-    $accion = 'ferratas';
-}
-
-if ($accion === 'login') {
-    $accion = 'login';
-}
-
-if ($accion === 'home' || empty($accion)) {
-    $accion = 'home';
-}
-
-// Restringir acceso a usuarios no verificados
+// Acceso restringido a usuarios no verificados
 if (isset($_SESSION['usuario']) && (!isset($_SESSION['usuario']['verificado']) || $_SESSION['usuario']['verificado'] != 1)) {
-    $paginasRestringidas = ['agregar_ferrata', 'agregar_reporte'];
-    
-    if (in_array($accion, $paginasRestringidas)) {
+    $restringidas = ['agregar_ferrata', 'agregar_reporte'];
+    if (in_array($accion, $restringidas)) {
         die("⚠️ Debes verificar tu cuenta para acceder a esta página.");
     }
 }
 
 $contenido = null;
 
+// Ruteo
 switch ($accion) {
     case 'home':
         $contenido = 'app/views/home_content.php';
@@ -62,235 +47,168 @@ switch ($accion) {
         
     case 'registrar':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->registrar();
+        (new UsuarioController())->registrar();
         break;
         
     case 'activar_cuenta':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->activarCuenta();
+        (new UsuarioController())->activarCuenta();
         break;
         
     case 'login':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->login();
+        (new UsuarioController())->login();
         break;
         
     case 'recuperar_clave':
-        include 'app/views/recuperar_clave.php';
+        $contenido = 'app/views/recuperar_clave.php';
         break;
         
     case 'enviar_recuperacion':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->enviarRecuperacion();
+        (new UsuarioController())->enviarRecuperacion();
         break;
         
     case 'restablecer_clave':
-        include 'app/views/restablecer_clave.php';
+        $contenido = 'app/views/restablecer_clave.php';
         break;
         
     case 'procesar_cambio_clave':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->procesarCambioClave();
+        (new UsuarioController())->procesarCambioClave();
         break;
         
     case 'logout':
         require_once 'app/controllers/UsuarioController.php';
-        $usuarioController = new UsuarioController();
-        $usuarioController->logout();
+        (new UsuarioController())->logout();
         break;
         
     case 'agregar_ferrata':
         require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->agregar();
+        (new FerrataController())->agregar();
         break;
         
     case 'nuevas_ferratas':
         require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->nuevas();
+        (new FerrataController())->nuevas();
         break;
         
     case 'reportes':
         require_once 'app/controllers/ReporteController.php';
-        $reporteController = new ReporteController();
-        $reporteController->index();
+        (new ReporteController())->index();
         break;
         
     case 'agregar_reporte':
         require_once 'app/controllers/ReporteController.php';
-        $reporteController = new ReporteController();
-        $reporteController->agregar();
+        (new ReporteController())->agregar();
         break;
         
     case 'guardar_reporte':
         require_once 'app/controllers/ReporteController.php';
-        $reporteController = new ReporteController();
-        $reporteController->guardar();
+        (new ReporteController())->guardar();
         break;
         
     case 'gestionar_ferratas':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->gestionarSolicitudes();
-        break;
-        
-    case 'panel_admin':
-        require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->panel();
+        (new AdminController())->gestionarSolicitudes();
         break;
         
     case 'aprobar_ferrata':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->aprobarFerrata($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->aprobarFerrata($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'rechazar_ferrata':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->rechazarFerrata($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->rechazarFerrata($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'resolver_reporte':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->resolverReporte($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->resolverReporte($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'aprobar_reporte':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->aprobarReporte($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->aprobarReporte($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'rechazar_reporte':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->rechazarReporte($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->rechazarReporte($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'editar_ferrata':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->editarFerrata($id);
-        } else {
-            die("Error: No se proporcionó un ID válido.");
-        }
+        $id ? (new AdminController())->editarFerrata($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'guardar_edicion_ferrata':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->guardarEdicionFerrata();
+        (new AdminController())->guardarEdicionFerrata();
         break;
         
     case 'buscar_ferratas':
         require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->buscar();
+        (new FerrataController())->buscar();
         break;
         
     case 'buscarGlobal':
-        require_once __DIR__ . '/app/controllers/FerrataController.php';
-        $busquedaController = new FerrataController();
-        $busquedaController->buscarGlobal();
+        require_once 'app/controllers/FerrataController.php';
+        (new FerrataController())->buscarGlobal();
         break;
         
     case 'ver_ferrata':
         require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->verFerrata();
+        (new FerrataController())->verFerrata();
         break;
         
     case 'guardar_valoracion':
         require_once 'app/controllers/ValoracionController.php';
-        $valoracionController = new ValoracionController();
-        $valoracionController->guardar();
+        (new ValoracionController())->guardar();
         break;
         
     case 'agregar_comentario':
-        require_once __DIR__ . '/app/controllers/ComentarioController.php';
-        $comentarioController = new ComentarioController();
-        $comentarioController->agregar();
+        require_once 'app/controllers/ComentarioController.php';
+        (new ComentarioController())->agregar();
+        break;
+        
+    case 'editar_comentario':
+        require_once 'app/controllers/ComentarioController.php';
+        (new ComentarioController())->editar();
+        break;
+        
+    case 'eliminar_comentario':
+        require_once 'app/controllers/ComentarioController.php';
+        (new ComentarioController())->eliminar();
         break;
         
     case 'subir_imagen':
         require_once 'app/controllers/ImagenController.php';
-        $imagenController = new ImagenController();
-        $imagenController->subirImagen();
+        (new ImagenController())->subirImagen();
         break;
         
     case 'eliminar_imagen':
         $imagen_id = $_GET['id'] ?? null;
         $ferrata_id = $_GET['ferrata_id'] ?? null;
-        
         if ($imagen_id && $ferrata_id) {
-            require_once __DIR__ . '/app/controllers/ImagenController.php';
-            $imagenController = new ImagenController();
-            $imagenController->eliminarImagen($imagen_id, $ferrata_id);
+            require_once 'app/controllers/ImagenController.php';
+            (new ImagenController())->eliminarImagen($imagen_id, $ferrata_id);
         } else {
             echo "Faltan datos para eliminar la imagen.";
-            echo "<pre>";
-            print_r($_GET);
-            echo "</pre>";
         }
-        break;
-        
-    case 'eliminar_comentario':
-        require_once 'app/controllers/ComentarioController.php';
-        $comentarioController = new ComentarioController();
-        $comentarioController->eliminar();
-        break;
-        
-    case 'editar_comentario':
-        require_once 'app/controllers/ComentarioController.php';
-        $comentarioController = new ComentarioController();
-        $comentarioController->editar();
         break;
         
     case 'eliminar_ferrata':
         require_once 'app/controllers/AdminController.php';
-        $adminController = new AdminController();
         $id = $_GET['id'] ?? null;
-        if ($id) {
-            $adminController->eliminarFerrata($id);
-        } else {
-            echo "Error: No se proporcionó un ID válido para eliminar la ferrata.";
-        }
+        $id ? (new AdminController())->eliminarFerrata($id) : die("Error: No se proporcionó un ID válido.");
         break;
         
     case 'contacto':
@@ -299,8 +217,7 @@ switch ($accion) {
         
     case 'enviar_contacto':
         require_once 'app/controllers/ContactoController.php';
-        $contactoController = new ContactoController();
-        $contactoController->enviar();
+        (new ContactoController())->enviar();
         break;
         
     case 'faq':
@@ -325,40 +242,31 @@ switch ($accion) {
         
     case 'guardar_wikiloc':
         require_once 'app/controllers/WikilocController.php';
-        $wikilocController = new WikilocController();
-        $wikilocController->guardar();
+        (new WikilocController())->guardar();
         break;
         
     case 'borrar_wikiloc':
         require_once 'app/controllers/WikilocController.php';
-        $wikilocController = new WikilocController();
-        $wikilocController->borrar();
+        (new WikilocController())->borrar();
         break;
         
     case 'subir_video':
         require_once 'app/controllers/VideoController.php';
-        $videoController = new VideoController();
-        $videoController->subirVideo();
+        (new VideoController())->subirVideo();
         break;
         
     case 'borrar_video':
         require_once 'app/controllers/VideoController.php';
-        $videoController = new VideoController();
-        $videoController->borrarVideo();
+        (new VideoController())->borrarVideo();
         break;
         
     default:
-        // Por defecto, mostramos la página principal
         require_once 'app/controllers/FerrataController.php';
-        $ferrataController = new FerrataController();
-        $ferrataController->index();
+        (new FerrataController())->index();
         break;
 }
+
+// Carga del layout con contenido
 if (!empty($contenido) && file_exists($contenido)) {
     include 'app/views/layout.php';
-} else {
-    if ($accion !== 'home') {
-        echo "";
-    }
 }
-?>

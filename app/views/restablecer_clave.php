@@ -1,4 +1,5 @@
 <?php
+// Iniciar sesión y generar token si no existe
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,11 +8,13 @@ if (empty($_SESSION['csrf_token'])) {
 }
 ?>
 
+<!-- Título -->
 <h1 class="text-center mb-3">Restablecer Contraseña</h1>
 <p class="text-center mb-4">Ingresa tu nueva contraseña para continuar.</p>
 
 <div class="row justify-content-center">
     <div class="col-md-6">
+        <!-- Formulario para restablecer la contraseña -->
         <form action="/RedFerratera/index.php?accion=procesar_cambio_clave" method="POST">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <input type="hidden" name="token" value="<?= $_GET['token'] ?? '' ?>">

@@ -2,6 +2,7 @@
 if ($ferrata):
 $ferrata_id = $ferrata['id'];
 ?>
+<!-- Editar Ferrata -->
 <h1 class="text-center">Editar Ferrata</h1>
 
 <!-- Formulario para editar datos básicos -->
@@ -10,45 +11,43 @@ $ferrata_id = $ferrata['id'];
     <input type="hidden" name="id" value="<?= $ferrata_id; ?>">
     <input type="hidden" name="desde_gestion" value="<?= isset($_GET['desde_gestion']) ? 1 : 0; ?>">
 
+    <!-- Nombre -->
     <div class="mb-3">
         <label for="nombre" class="form-label">Nombre:</label>
         <input type="text" name="nombre" id="nombre" value="<?= htmlspecialchars($ferrata['nombre']); ?>" class="form-control" required>
     </div>
 
+    <!-- Ubicación -->
     <div class="mb-3">
         <label for="ubicacion" class="form-label">Ubicación:</label>
         <input type="text" name="ubicacion" id="ubicacion" value="<?= htmlspecialchars($ferrata['ubicacion']); ?>" class="form-control" required>
     </div>
     
+    <!-- Comunidad Autónoma -->
     <div class="mb-3">
         <label for="comunidad_autonoma" class="form-label">Comunidad Autónoma:</label>
         <select name="comunidad_autonoma" id="comunidad_autonoma" class="form-control" required>
             <option value="">Selecciona una comunidad</option>
-            <option value="Andalucía" <?= $ferrata['comunidad_autonoma'] === 'Andalucía' ? 'selected' : ''; ?>>Andalucía</option>
-            <option value="Aragón" <?= $ferrata['comunidad_autonoma'] === 'Aragón' ? 'selected' : ''; ?>>Aragón</option>
-            <option value="Asturias" <?= $ferrata['comunidad_autonoma'] === 'Asturias' ? 'selected' : ''; ?>>Asturias</option>
-            <option value="Baleares" <?= $ferrata['comunidad_autonoma'] === 'Baleares' ? 'selected' : ''; ?>>Islas Baleares</option>
-            <option value="Canarias" <?= $ferrata['comunidad_autonoma'] === 'Canarias' ? 'selected' : ''; ?>>Canarias</option>
-            <option value="Cantabria" <?= $ferrata['comunidad_autonoma'] === 'Cantabria' ? 'selected' : ''; ?>>Cantabria</option>
-            <option value="Castilla-La Mancha" <?= $ferrata['comunidad_autonoma'] === 'Castilla-La Mancha' ? 'selected' : ''; ?>>Castilla-La Mancha</option>
-            <option value="Castilla y León" <?= $ferrata['comunidad_autonoma'] === 'Castilla y León' ? 'selected' : ''; ?>>Castilla y León</option>
-            <option value="Cataluña" <?= $ferrata['comunidad_autonoma'] === 'Cataluña' ? 'selected' : ''; ?>>Cataluña</option>
-            <option value="Extremadura" <?= $ferrata['comunidad_autonoma'] === 'Extremadura' ? 'selected' : ''; ?>>Extremadura</option>
-            <option value="Galicia" <?= $ferrata['comunidad_autonoma'] === 'Galicia' ? 'selected' : ''; ?>>Galicia</option>
-            <option value="Madrid" <?= $ferrata['comunidad_autonoma'] === 'Madrid' ? 'selected' : ''; ?>>Madrid</option>
-            <option value="Murcia" <?= $ferrata['comunidad_autonoma'] === 'Murcia' ? 'selected' : ''; ?>>Región de Murcia</option>
-            <option value="Navarra" <?= $ferrata['comunidad_autonoma'] === 'Navarra' ? 'selected' : ''; ?>>Navarra</option>
-            <option value="País Vasco" <?= $ferrata['comunidad_autonoma'] === 'País Vasco' ? 'selected' : ''; ?>>País Vasco</option>
-            <option value="La Rioja" <?= $ferrata['comunidad_autonoma'] === 'La Rioja' ? 'selected' : ''; ?>>La Rioja</option>
-            <option value="Valencia" <?= $ferrata['comunidad_autonoma'] === 'Valencia' ? 'selected' : ''; ?>>Comunidad Valenciana</option>
+            <?php
+            $comunidades = [
+                "Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria",
+                "Castilla-La Mancha", "Castilla y León", "Cataluña", "Extremadura", "Galicia",
+                "Madrid", "Murcia", "Navarra", "País Vasco", "La Rioja", "Valencia"
+            ];
+            foreach ($comunidades as $comunidad):
+            ?>
+                <option value="<?= $comunidad ?>" <?= $ferrata['comunidad_autonoma'] === $comunidad ? 'selected' : ''; ?>><?= $comunidad ?></option>
+            <?php endforeach; ?>
         </select>
     </div>
-    
+
+    <!-- Provincia -->
     <div class="mb-3">
         <label for="provincia" class="form-label">Provincia:</label>
         <input type="text" name="provincia" id="provincia" value="<?= htmlspecialchars($ferrata['provincia']); ?>" class="form-control" required>
     </div>
 
+    <!-- Dificultad -->
     <div class="mb-3">
         <label for="dificultad" class="form-label">Dificultad:</label>
         <select name="dificultad" id="dificultad" class="form-select">
@@ -58,16 +57,19 @@ $ferrata_id = $ferrata['id'];
         </select>
     </div>
 
+    <!-- Descripción -->
     <div class="mb-3">
         <label for="descripcion" class="form-label">Descripción:</label>
         <textarea name="descripcion" id="descripcion" class="form-control"><?= htmlspecialchars($ferrata['descripcion']); ?></textarea>
     </div>
 
+    <!-- Coordenadas -->
     <div class="mb-3">
         <label for="coordenadas" class="form-label">Coordenadas:</label>
         <input type="text" name="coordenadas" id="coordenadas" value="<?= htmlspecialchars($ferrata['coordenadas'] ?? ''); ?>" class="form-control">
     </div>
 
+    <!-- Estado -->
     <div class="mb-3">
         <label for="estado" class="form-label">Estado:</label>
         <select name="estado" id="estado" class="form-select">
@@ -77,11 +79,14 @@ $ferrata_id = $ferrata['id'];
         </select>
     </div>
 
+    <!-- Fecha de creación -->
     <div class="mb-3">
         <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
         <input type="date" name="fecha_creacion" id="fecha_creacion" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_creacion']); ?>" required>
     </div>
-        <div class="mb-3">
+
+    <!-- Fechas de cierre -->
+    <div class="mb-3">
         <label for="fecha_inicio_cierre" class="form-label">Fecha de Inicio de Cierre:</label>
         <input type="date" name="fecha_inicio_cierre" id="fecha_inicio_cierre" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_inicio_cierre']); ?>">
     </div>
@@ -89,17 +94,18 @@ $ferrata_id = $ferrata['id'];
         <label for="fecha_fin_cierre" class="form-label">Fecha de Fin de Cierre:</label>
         <input type="date" name="fecha_fin_cierre" id="fecha_fin_cierre" class="form-control" value="<?= htmlspecialchars($ferrata['fecha_fin_cierre']); ?>">
     </div>
+
+    <!-- Cierre recurrente -->
     <div class="mb-3">
         <label for="recurrente" class="form-label">Cierre recurrente:</label>
-        <!-- Usamos checkbox; cuando se marque, el valor será "1" -->
         <input type="checkbox" name="recurrente" id="recurrente" value="1" <?= (isset($ferrata['recurrente']) && $ferrata['recurrente'] == 1) ? 'checked' : ''; ?>>
         <small class="form-text text-muted">Si está marcado, las fechas de cierre se aplican cada año.</small>
     </div>
-    
+
     <button type="submit" class="btn btn-primary">Guardar cambios</button>
 </form>
 
-<!-- Sección de administración de imágenes -->
+<!-- Imágenes existentes -->
 <h3 class="mt-4">Imágenes</h3>
 <div class="galeria-detalle editar-ferrata">
     <?php foreach ($imagenes as $img): ?>
@@ -112,8 +118,8 @@ $ferrata_id = $ferrata['id'];
         </div>
     <?php endforeach; ?>
 </div>
-<br>
-<!-- Sección para añadir nuevas imágenes -->
+
+<!-- Subida de nuevas imágenes -->
 <form action="/RedFerratera/index.php?accion=subir_imagen" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
     <div class="mb-3">
@@ -123,13 +129,13 @@ $ferrata_id = $ferrata['id'];
     </div>
 </form>
 
-<!-- Modal para ampliar imágenes (se conserva) -->
+<!-- Modal para ver imagen ampliada -->
 <div id="modalImagen" class="modal">
     <span class="cerrar" onclick="cerrarModalImagen()">&times;</span>
     <img class="modal-contenido" id="imagenAmpliada">
 </div>
 
-<!-- Sección de administración de vídeos -->
+<!-- Vídeos -->
 <?php
 require_once 'app/models/Video.php';
 $videoModel = new Video();
@@ -138,33 +144,28 @@ if (!empty($videos)):
 ?>
     <h3 class="mt-4">Vídeos</h3>
     <div id="video-container" class="embed-container">
-        <?php if (!empty($videos)): ?>
-            <?php foreach ($videos as $vid): ?>
-                <div class="position-relative embed-item">
-                    <!-- Mostrar el iframe embed -->
-                    <?= $vid['video_embed']; ?>
-                    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
-                        <!-- Botón para borrar el vídeo -->
-                        <a href="/RedFerratera/index.php?accion=borrar_video&id=<?= $vid['id']; ?>&ferrata_id=<?= $ferrata['id']; ?>" class="btn btn-danger btn-sm position-absolute" style="top: 0; right: 0;">X</a>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-muted">No hay vídeos actualmente.</p>
-        <?php endif; ?>
+        <?php foreach ($videos as $vid): ?>
+            <div class="position-relative embed-item">
+                <?= $vid['video_embed']; ?>
+                <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
+                    <a href="/RedFerratera/index.php?accion=borrar_video&id=<?= $vid['id']; ?>&ferrata_id=<?= $ferrata['id']; ?>" class="btn btn-danger btn-sm position-absolute" style="top: 0; right: 0;">X</a>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 <?php endif; ?>
-<!-- Sección para agregar vídeo (siempre visible) -->
+
+<!-- Formulario para añadir vídeo -->
 <form action="/RedFerratera/index.php?accion=subir_video" method="POST" class="mb-4">
     <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
     <div class="mb-3">
         <label for="video_embed" class="form-label">Agregar vídeo (código embed):</label>
-        <textarea name="video" id="video_embed" class="form-control" placeholder='<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen></iframe>'></textarea>
+        <textarea name="video" id="video_embed" class="form-control" placeholder='<iframe ...></iframe>'></textarea>
         <button type="submit" class="btn btn-primary mt-2">Guardar Vídeo</button>
     </div>
 </form>
 
-<!-- Sección de administración de enlaces Wikiloc -->
+<!-- Wikiloc -->
 <?php
 require_once 'app/models/Wikiloc.php';
 $wikilocModel = new Wikiloc();
@@ -173,23 +174,18 @@ if (!empty($wikilocs)):
 ?>
     <h3 class="mt-4">Track de Wikiloc</h3>
     <div id="wikiloc-container" class="embed-container">
-        <?php if (!empty($wikilocs)): ?>
-            <?php foreach ($wikilocs as $wikiloc): ?>
-                <div class="position-relative embed-item">
-                    <!-- Mostrar el iframe embed -->
-                    <?= $wikiloc['wikiloc_embed']; ?>
-                    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
-                        <!-- Botón de borrado -->
-                        <a href="/RedFerratera/index.php?accion=borrar_wikiloc&id=<?= $wikiloc['id']; ?>&ferrata_id=<?= $ferrata['id']; ?>" class="btn btn-danger btn-sm position-absolute" style="top: 0; right: 0;">X</a>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p class="text-muted">No hay enlaces Wikiloc actualmente.</p>
-        <?php endif; ?>
+        <?php foreach ($wikilocs as $wikiloc): ?>
+            <div class="position-relative embed-item">
+                <?= $wikiloc['wikiloc_embed']; ?>
+                <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
+                    <a href="/RedFerratera/index.php?accion=borrar_wikiloc&id=<?= $wikiloc['id']; ?>&ferrata_id=<?= $ferrata['id']; ?>" class="btn btn-danger btn-sm position-absolute" style="top: 0; right: 0;">X</a>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 <?php endif; ?>
-<!-- Sección para agregar enlace Wikiloc (siempre visible) -->
+
+<!-- Formulario para añadir enlace Wikiloc -->
 <form action="/RedFerratera/index.php?accion=guardar_wikiloc" method="POST" class="mb-4">
     <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
     <div class="mb-3">
@@ -204,7 +200,7 @@ if (!empty($wikilocs)):
     <button type="submit" class="btn btn-danger mt-3">Eliminar Ferrata</button>
 </form>
 
-<!-- Sección de comentarios -->
+<!-- Comentarios -->
 <h3 class="mt-4">Comentarios</h3>
 <?php if (!empty($comentarios)): ?>
     <ul class="list-group">

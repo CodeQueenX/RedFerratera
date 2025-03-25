@@ -1,4 +1,5 @@
 <?php
+// Iniciar sesión y generar token si no existe
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,10 +8,12 @@ if (empty($_SESSION['csrf_token'])) {
 }
 ?>
 
+<!-- Título -->
 <h1 class="text-center mb-4">Iniciar Sesión</h1>
 
 <div class="row justify-content-center">
     <div class="col-md-6">
+        <!-- Formulario de inicio de sesión -->
         <form action="index.php?accion=login" method="POST">
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
@@ -33,13 +36,13 @@ if (empty($_SESSION['csrf_token'])) {
                 <label class="form-check-label" for="recordar">Recordar contraseña</label>
             </div>
 
-            <!-- Botón -->
+            <!-- Botón de envío -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
             </div>
         </form>
 
-        <!-- Enlaces -->
+        <!-- Enlaces de ayuda -->
         <div class="mt-3 text-center">
             <a href="/RedFerratera/index.php?accion=recuperar_clave">¿Olvidaste tu contraseña?</a><br>
             ¿No tienes cuenta? <a href="/RedFerratera/registrar">Regístrate aquí</a>

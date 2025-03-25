@@ -1,6 +1,8 @@
+<!-- Búsqueda Global -->
 <h1 class="text-center my-4 fw-bold">Resultados de Búsqueda</h1>
 
 <?php if (!empty($ferratas)): ?>
+    <!-- Tabla de resultados de ferratas -->
     <div class="table-responsive">
         <table class="table table-hover table-custom align-middle shadow-sm">
             <thead class="table-dark text-center">
@@ -15,13 +17,20 @@
             <tbody>
                 <?php foreach ($ferratas as $ferrata): ?>
                     <tr>
+                        <!-- Nombre con enlace SEO-friendly -->
                         <td class="ferrata-nombre">
                             <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>" class="text-decoration-underline fw-semibold text-dark">
                                 <?= htmlspecialchars($ferrata['nombre']); ?>
                             </a>
                         </td>
+
+                        <!-- Ubicación -->
                         <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
+
+                        <!-- Dificultad -->
                         <td><span class="badge bg-secondary"><?= htmlspecialchars($ferrata['dificultad']); ?></span></td>
+
+                        <!-- Estado con colores personalizados -->
                         <td>
                             <span class="badge 
                                 <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
@@ -31,6 +40,8 @@
                                 <?= htmlspecialchars($ferrata['estado']); ?>
                             </span>
                         </td>
+
+                        <!-- Botón de acción -->
                         <td class="text-center">
                             <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= rawurlencode($ferrata['nombre']); ?>" class="btn btn-outline-primary btn-sm">
                                 Ver detalles
@@ -42,6 +53,7 @@
         </table>
     </div>
 <?php else: ?>
+    <!-- Mensaje si no hay resultados -->
     <div class="alert alert-info text-center mt-4 shadow-sm" role="alert">
         No se encontraron resultados para tu búsqueda.
     </div>

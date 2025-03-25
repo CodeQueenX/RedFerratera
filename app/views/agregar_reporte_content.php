@@ -12,6 +12,7 @@ if (empty($_SESSION['csrf_token'])) {
 }
 ?>
 
+<!-- Añadir Reporte -->
 <div class="container">
   <h1 class="text-center mb-4">Añadir Reporte</h1>
   <div class="row justify-content-center">
@@ -31,13 +32,14 @@ if (empty($_SESSION['csrf_token'])) {
           </select>
         </div>
 
-        <!-- Descripción -->
+        <!-- Descripción del problema -->
         <div class="mb-3">
           <label for="descripcion" class="form-label">Descripción del problema:</label>
           <textarea name="descripcion" id="descripcion" class="form-control" rows="3" required minlength="5"></textarea>
           <div class="form-text">Describe el problema con detalle. Mínimo 5 caracteres.</div>
         </div>
 
+        <!-- Botón de envío -->
         <div class="text-end">
           <button type="submit" class="btn btn-primary">Enviar Reporte</button>
         </div>

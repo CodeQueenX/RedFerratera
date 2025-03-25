@@ -1,3 +1,4 @@
+<!-- Preguntas Frecuentes -->
 <h1 class="text-center my-4">Preguntas Frecuentes (FAQ)</h1>
 
 <div class="accordion accordion-flush" id="faqAccordion">
@@ -73,4 +74,5 @@
             </div>
         </div>
     </div>
+
 </div>

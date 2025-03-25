@@ -1,11 +1,9 @@
 /* ESTILOS GENERALES */
-
 html {
     height: 100%;
     display: flex;
     flex-direction: column;
 }
-
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -15,32 +13,28 @@ body {
     flex-direction: column;
     overflow-x: hidden;
 }
-
 .container {
     max-width: 1300px;
     margin: auto;
     padding: 20px;
 }
-
 .wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-
 .content {
     flex: 1;
     padding-bottom: 60px;
 }
-
 footer {
     width: 100%;
     margin-top: auto;
     position: relative;
 }
 
-/* ESTILOS PARA LA PÁGINA DE INICIO */
+/* PÁGINA DE INICIO */
 .inicio-container {
     position: relative;
     width: 100%;
@@ -51,7 +45,6 @@ footer {
     text-align: center;
     color: white;
 }
-
 .inicio-background {
     background-image: url('/RedFerratera/public/img/ferrata_background.jpg');
     background-repeat: no-repeat;
@@ -64,62 +57,51 @@ footer {
     left: 0;
     z-index: -1;
 }
-
 .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.3);
 }
-
 .inicio-content {
     position: relative;
     z-index: 1;
     padding: 20px;
 }
-
 .inicio-content h1 {
     color: #0234a0 !important;
     font-weight: bold;
-    text-shadow: -1px -1px 0 white, -1px -1px 0 white, -1px -1px 0 white, -1px -1px 0 white;
+    text-shadow: -1px -1px 0 white;
 }
 
-/* TIPOGRAFÍA Y ENCABEZADOS */
-
+/* ENCABEZADOS Y TIPOGRAFÍA */
 h1, h2, h3 {
     color: rgb(128, 0, 128);
     font-weight: bold;
 }
-
 h2.text-primary {
     color: #a64ac9 !important;
 }
 
 /* BOTONES */
-
 .btn {
     border-radius: 6px;
     transition: all 0.3s ease-in-out;
 }
-
 .btn-primary {
     background-color: #007bff;
     border: none;
 }
-
 .btn-primary:hover {
     background-color: #0056b3;
 }
-
 .btn-danger {
     background-color: #dc3545;
     border: none;
 }
-
 .btn-danger:hover {
     background-color: #a71d2a;
 }
-
 .botones-acciones {
     display: flex;
     gap: 10px;
@@ -127,23 +109,20 @@ h2.text-primary {
     margin-top: 15px;
 }
 
-/* LISTADO DE FERRATAS */
+/* BLOQUES DE PROVINCIA */
 .bloque-provincia {
     background-color: #E8DAF7;
     padding: 8px 12px;
     margin-top: 20px;
     border-radius: 4px;
 }
-
 .bloque-provincia h4 {
     text-align: center;
     font-weight: bold;
     color: #4B2C5E;
 }
 
-/* TABLA DE FERRATAS */
-
-/* Estado normal del botón del acordeón */
+/* BOTONES DE ACORDEÓN */
 .accordion-button.custom-accordion {
     background-color: white !important;
     border: 2px solid #D6C8E7 !important;
@@ -151,84 +130,66 @@ h2.text-primary {
     font-weight: 600;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-
-/* Estado cuando está abierto */
 .accordion-button.custom-accordion:not(.collapsed) {
     background-color: #E8DAF7 !important;
     border-color: #6B3FA0 !important;
     color: #4B2C5E !important;
 }
-
-/* Evita el efecto sombra azul al hacer clic */
 .accordion-button.custom-accordion:focus {
     box-shadow: none !important;
 }
 
+/* TABLAS */
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #f9f5fc;
 }
-
 .table-hover tbody tr:hover {
     background-color: #efe2f9;
 }
-
 .table-dark th {
     background-color: #4B2C5E;
     color: white;
 }
-
 .table-custom {
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
 }
-
-.table-custom th,
-.table-custom td {
+.table-custom th, .table-custom td {
     padding: 12px 15px;
     vertical-align: middle;
     border-bottom: 1px solid #ddd;
 }
-
 .table-custom thead {
-    background-color: #6B3FA0; /* malva profesional */
+    background-color: #6B3FA0;
     color: white;
 }
-
 .table-custom tbody tr:hover {
     background-color: #f4f1f8;
 }
-
 .table-custom a {
     font-weight: 600;
     text-decoration: none;
     color: #3D315B;
 }
-
 .table-custom .ferrata-nombre a {
     text-decoration: underline !important;
 }
-
 .table-custom a:hover {
     color: #6B3FA0;
 }
 
-.shadow-sm {
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-}
-
+/* NOMBRES DESTACADOS */
 .ferrata-nueva-nombre {
     font-weight: 600;
     text-decoration: underline;
     color: #3D315B;
 }
-
 .ferrata-nueva-nombre:hover {
     color: #6B3FA0;
 }
 
 /* GALERÍA DE IMÁGENES */
-
 .galeria-detalle img, .editar-ferrata img {
     width: 180px;
     height: 180px;
@@ -237,18 +198,15 @@ h2.text-primary {
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
 .galeria-detalle img:hover, .editar-ferrata img:hover {
     transform: scale(1.05);
 }
 
-/* BOTÓN ELIMINAR */
-
+/* BOTÓN ELIMINAR IMAGEN */
 .imagen-contenedor {
     position: relative;
     display: inline-block;
 }
-
 .boton-eliminar {
     position: absolute;
     top: 5px;
@@ -261,80 +219,45 @@ h2.text-primary {
     cursor: pointer;
     border-radius: 50%;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-
 .boton-eliminar:hover {
     background-color: rgba(255, 0, 0, 0.9);
     transform: scale(1.1);
 }
 
-/* EDICIÓN DE FERRATA */
-
-.editar-ferrata img {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.editar-ferrata img:hover {
-    transform: scale(1.05);
-}
-
-.editar-ferrata .position-relative {
-    display: inline-block;
-}
-
-.editar-ferrata .btn-danger {
-    font-size: 12px;
-    padding: 2px 5px;
-}
-
 /* MAPA Y CLIMA */
-
 #map {
     border-radius: 10px;
     margin-top: 10px;
 }
-
-/* Contenedor del widget de Windy */
 .weather-widget {
     width: 100%;
-    max-width: 650;
+    max-width: 650px;
     margin: 20px auto;
     text-align: left;
-    box-sizing: border-box;
     padding: 0 10px;
 }
-
 .weather-widget iframe {
     width: 100%;
     height: 450px;
     border: none;
-    box-sizing: border-box;
 }
 
 /* COMENTARIOS */
-
 .list-group-item {
     background: white;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
-
 .list-group-item strong {
     color: #0056b3;
 }
 
-/* MODAL (VENTANA EMERGENTE) */
-
+/* MODAL GENÉRICO */
 .modal {
     display: none;
     position: fixed;
@@ -347,17 +270,11 @@ h2.text-primary {
     justify-content: center;
     align-items: center;
 }
-
 .modal-content {
     max-width: 90%;
     max-height: 90%;
     border-radius: 8px;
 }
-
-.modal.show .cerrar {
-    display: block;
-}
-
 .cerrar {
     position: absolute;
     top: 15px;
@@ -367,7 +284,7 @@ h2.text-primary {
     cursor: pointer;
 }
 
-/* MODAL PARA AMPLIAR IMÁGENES */
+/* MODAL DE IMÁGENES */
 #modalImagen {
     display: none;
     position: fixed;
@@ -380,7 +297,6 @@ h2.text-primary {
     justify-content: center;
     align-items: center;
 }
-
 #imagenAmpliada {
     max-width: 90%;
     max-height: 90%;
@@ -388,7 +304,6 @@ h2.text-primary {
 }
 
 /* BANNER DE COOKIES */
-
 .cookie-banner {
     position: fixed;
     bottom: 0;
@@ -399,7 +314,6 @@ h2.text-primary {
     padding: 10px;
     z-index: 1000;
 }
-
 .cookie-banner button {
     background-color: #007bff;
     border: none;
@@ -408,7 +322,6 @@ h2.text-primary {
     cursor: pointer;
     margin-left: 10px;
 }
-
 .oculto {
     display: none !important;
 }
@@ -418,83 +331,55 @@ h2.text-primary {
     transition: color 0.2s ease;
 }
 
-/* CONTENEDOR PARA WIKILOC Y VIDEOS */
-/* Contenedor genérico para embeds (Wikiloc, Vídeos, etc.) */
+/* EMBED GENÉRICO VIDEOS/WIKILOC */
 .embed-container {
-  display: flex !important;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 16px;
-  width: 100%;
-  margin: 20px 0;
-  padding: 0;
-  box-sizing: border-box;
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+    margin: 20px 0;
 }
-
-/* Iframes responsive */
 .embed-container iframe {
     width: 100%;
     border: none;
 }
-
-/* Estilos adicionales para cada embed */
 .embed-item {
-  flex: 0 0 560px;
-  max-width: 600px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  position: relative;
+    flex: 0 0 560px;
+    max-width: 600px;
+    margin-bottom: 20px;
 }
-
-.embed-item iframe {
-  width: 100%;
-  max-width: 100%;
-  border: none;
-  display: block;
-}
-
-/* Ajuste cuando solo hay un embed-item (1 solo video o wikiloc) */
 .embed-container:has(.embed-item:only-child) {
     justify-content: flex-start;
 }
-
 .embed-container:has(.embed-item:only-child) .embed-item {
     max-width: 500px;
 }
 
-/* ESTILOS FORMULARIO DE BÚSQUEDA DEL MENÚ */
-/* Estilos para el contenedor de búsqueda */
+/* BUSCADOR DEL MENÚ */
 #searchContainer {
-	position: absolute;
-	left: 0;
-	top: 100%;
-	transform: translateY(5px);
-	width: 100%;
-	max-width: 300px;
-	margin: auto;
-    background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+    position: absolute;
+    left: 0;
+    top: 100%;
+    transform: translateY(5px);
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    background-color: rgba(0, 0, 0, 0.7);
     padding: 5px;
     border-radius: 5px;
 }
-
-/* Estilo para el input de búsqueda */
 #searchContainer input[type="search"] {
     border-radius: 5px;
     border: none;
     padding: 5px;
 }
 
-/* PÁGINA SITEMAP */
+/* SITEMAP */
 .site-map-container {
     text-align: center;
     margin-bottom: 30px;
 }
-
-.site-map-container ul {
-    padding: 0;
-    margin: 0 auto;
-}
-
 .site-map-container .list-group-item {
     border: none;
     font-size: 1.05rem;
@@ -502,29 +387,25 @@ h2.text-primary {
     padding: 12px 20px;
     transition: background-color 0.2s ease-in-out;
 }
-
 .site-map-container .list-group-item:hover {
     background-color: #f4f1f8;
 }
-
 .enlace-mapa {
     text-decoration: none;
     color: #3D315B;
     font-weight: 500;
 }
-
 .enlace-mapa:hover {
-	text-decoration: underline;
+    text-decoration: underline;
     color: #6B3FA0;
 }
-
 .enlace-mapa i {
     color: #6B3FA0;
 }
 
-/* AJUSTES PARA MÓVILES */
+/* RESPONSIVE */
 @media (max-width: 600px) {
-    .weather-widget .embed-container{
+    .weather-widget .embed-container {
         max-width: 100%;
         padding: 0 10px;
     }
@@ -536,31 +417,28 @@ h2.text-primary {
         padding: 4px 8px;
     }
     .navbar .container {
-    display: flex;
-  	align-items: center;
-    justify-content: space-between;
-  	}
-	.navbar .d-flex.align-items-center {
-    flex: 1;
-	}
-	#searchContainer {
-    position: static;
-    width: 100%;
-    margin-top: 5px;
-    max-width: none;
-	}
-	.navbar-collapse {
-    text-align: right;
- 	}
- 	
- 	.form-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .navbar .d-flex.align-items-center {
+        flex: 1;
+    }
+    #searchContainer {
+        position: static;
+        width: 100%;
+        margin-top: 5px;
+        max-width: none;
+    }
+    .navbar-collapse {
+        text-align: right;
+    }
+    .form-label {
         font-size: 0.95rem;
     }
-    
     .table thead {
         display: none;
     }
-
     .table tbody tr {
         display: block;
         margin-bottom: 20px;
@@ -568,7 +446,6 @@ h2.text-primary {
         border-radius: 8px;
         padding: 10px;
     }
-
     .table tbody td {
         display: flex;
         justify-content: space-between;
@@ -576,28 +453,20 @@ h2.text-primary {
         font-size: 0.9rem;
         border: none;
     }
-
     .table tbody td::before {
         content: attr(data-label);
         font-weight: bold;
         color: #555;
     }
-    
     .table td {
         vertical-align: top;
-        padding-top: 6px;
-        padding-bottom: 6px;
         text-align: right;
     }
-    
     .tabla-nuevas-ferratas td {
         text-align: left;
     }
-    
     .embed-item {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }
-
-

@@ -1,5 +1,7 @@
+<!-- Aviso Legal -->
 <h1 class="text-center mb-4">Aviso Legal</h1>
 
+<!-- Introducción del aviso -->
 <div class="card p-4 shadow-sm mb-4">
     <p class="mb-0">
         <strong>Red Ferratera</strong> es un sitio web dedicado a compartir información sobre vías ferratas en España. 
@@ -7,6 +9,7 @@
     </p>
 </div>
 
+<!-- Sección de responsabilidad del contenido -->
 <h2 class="text-primary mt-4">Responsabilidad del Contenido</h2>
 <div class="card p-3 shadow-sm mb-4">
     <p class="mb-0">
@@ -15,6 +18,7 @@
     </p>
 </div>
 
+<!-- Sección de derechos de autor -->
 <h2 class="text-primary mt-4">Derechos de Autor</h2>
 <div class="card p-3 shadow-sm mb-4">
     <p class="mb-0">

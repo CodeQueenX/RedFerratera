@@ -10,22 +10,22 @@ class Usuario {
         $this->conn = $database->getConnection();
     }
     
-    // Método para registrar un nuevo usuario
+    // Registrar un nuevo usuario
     public function registrar($nombre, $email, $contraseña, $token) {
-        // Verificar si el email ya está registrado
+        // Verificar si ya existe el email
         $stmt = $this->conn->prepare("SELECT id FROM usuarios WHERE email = :email");
-        $stmt->execute([":email" => $email]);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+        $stmt->execute();
         
         if ($stmt->fetch()) {
-            return false; // Usuario ya existe
+            return false; // Ya existe el usuario
         }
         
         $contraseña_hash = password_hash($contraseña, PASSWORD_DEFAULT);
         $rol = "usuario";
         
         $query = "INSERT INTO usuarios (nombre, email, clave, rol, token, verificado)
-              VALUES (:nombre, :email, :clave, :rol, :token, 0)";
-        
+                  VALUES (:nombre, :email, :clave, :rol, :token, 0)";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
             ":nombre" => $nombre,
@@ -36,74 +36,66 @@ class Usuario {
         ]);
     }
     
-    // Función para activar la cuenta
+    // Activar cuenta mediante token
     public function activarCuenta($token) {
         $query = "UPDATE usuarios SET verificado = 1, token = NULL WHERE token = :token AND verificado = 0";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':token', $token);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
         return $stmt->execute();
     }
-
-    // Método para verificar usuario en el login
+    
+    // Verificar login del usuario
     public function login($email, $contraseña) {
         $query = "SELECT * FROM usuarios WHERE email = :email AND verificado = 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        if (!$usuario) {
-            echo "Usuario no encontrado o cuenta no activada.<br>";
-            return false;
-        }
-        
-        // Verificar la contraseña encriptada
-        if (password_verify($contraseña, $usuario['clave'])) {
+        // Validar contraseña si el usuario existe
+        if ($usuario && password_verify($contraseña, $usuario['clave'])) {
             return $usuario;
-        } else {
-            return false;
         }
+        return false;
     }
     
+    // Verificar si el email existe en la base de datos
     public function existeEmail($email) {
         $query = "SELECT id FROM usuarios WHERE email = :email";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([':email' => $email]);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
+    // Guardar token de recuperación de contraseña
     public function guardarTokenRecuperacion($email, $token) {
-        $query = "UPDATE usuarios
-              SET token = :token
-              WHERE email = :email AND verificado = 1";
+        $query = "UPDATE usuarios SET token = :token WHERE email = :email AND verificado = 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([
-            ":token" => $token,
-            ":email" => $email
-        ]);
-        return $stmt->rowCount() > 0; // Verifica si se modificó alguna fila
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
     
+    // Actualizar clave con token de recuperación
     public function actualizarClavePorToken($token, $nuevaClave) {
         $nuevaClaveHash = password_hash($nuevaClave, PASSWORD_DEFAULT);
         
-        $query = "UPDATE usuarios
-              SET clave = :clave, token = NULL
-              WHERE token = :token";
+        $query = "UPDATE usuarios SET clave = :clave, token = NULL WHERE token = :token";
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([
-            ":clave" => $nuevaClaveHash,
-            ":token" => $token
-        ]);
-        
-        return $stmt->rowCount() > 0; // True solo si se actualizó
+        $stmt->bindParam(':clave', $nuevaClaveHash, PDO::PARAM_STR);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
     }
     
+    // Borrar token de recuperación (después de usarlo)
     public function borrarTokenRecuperacion($token) {
         $query = "UPDATE usuarios SET token = NULL WHERE token = :token";
         $stmt = $this->conn->prepare($query);
-        return $stmt->execute([':token' => $token]);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        return $stmt->execute();
     }
 }
 ?>
-

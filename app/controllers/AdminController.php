@@ -17,7 +17,7 @@ class AdminController {
         // Guardamos el rol del usuario
         $this->usuarioRol = $_SESSION['usuario']['rol'];
         
-        // Si no es admin o moderador, no puede acceder a este controlador
+        // Solo admin o moderador pueden acceder
         if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
             die("Acceso denegado.");
         }
@@ -25,8 +25,8 @@ class AdminController {
         $this->ferrata = new Ferrata();
     }
     
+    // Mostrar solicitudes de ferratas y reportes
     public function gestionarSolicitudes() {
-        // Los moderadores y admins pueden acceder
         $solicitudesFerratas = $this->ferrata->obtenerSolicitudesPendientes();
         
         require_once __DIR__ . '/../models/Reporte.php';
@@ -36,6 +36,7 @@ class AdminController {
         include __DIR__ . '/../views/admin_solicitudes.php';
     }
     
+    // Aprobar una ferrata
     public function aprobarFerrata($id) {
         if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
             die("Acceso denegado.");
@@ -47,14 +48,14 @@ class AdminController {
         }
         
         if ($this->ferrata->aprobarFerrata($id)) {
-            echo "Ferrata aprobada correctamente.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            echo "Error al aprobar la ferrata.";
+            die("Error al aprobar la ferrata.");
         }
     }
     
+    // Rechazar (eliminar) una ferrata pendiente
     public function rechazarFerrata($id) {
         if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
             die("Acceso denegado.");
@@ -66,14 +67,14 @@ class AdminController {
         }
         
         if ($this->ferrata->rechazarFerrata($id)) {
-            echo "Ferrata eliminada correctamente.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            echo "Error al eliminar la ferrata.";
+            die("Error al eliminar la ferrata.");
         }
     }
     
+    // Aprobar un reporte y añadirlo a la descripción
     public function aprobarReporte($id) {
         if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
             die("Acceso denegado.");
@@ -95,18 +96,19 @@ class AdminController {
             die("Error: No se encontró la ferrata.");
         }
         
+        // Añadir mensaje del reporte a la descripción de la ferrata
         $nuevaDescripcion = $ferrata['descripcion'] . "\n🚨 [REPORTE] " . $reporte['mensaje'] . " (Fecha: " . $reporte['fecha_reporte'] . ")";
         $ferrataModel->actualizarDescripcion($reporte['ferrata_id'], $nuevaDescripcion);
         
         if ($reporteModel->cambiarEstadoReporte($id, 'Aprobado')) {
-            echo "Reporte aprobado y añadido a la ferrata.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            echo "Error al aprobar el reporte.";
+            die("Error al aprobar el reporte.");
         }
     }
     
+    // Rechazar un reporte (cambiar estado)
     public function rechazarReporte($id) {
         if ($this->usuarioRol !== 'admin' && $this->usuarioRol !== 'moderador') {
             die("Acceso denegado.");
@@ -116,46 +118,44 @@ class AdminController {
         $reporteModel = new Reporte();
         
         if ($reporteModel->cambiarEstadoReporte($id, 'Rechazado')) {
-            echo "Reporte rechazado.";
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {
-            echo "Error al rechazar el reporte.";
+            die("Error al rechazar el reporte.");
         }
     }
     
+    // Mostrar vista de edición de ferrata
     public function editarFerrata($id) {
-        require_once __DIR__ . '/../models/Ferrata.php';
         require_once __DIR__ . '/../models/Imagen.php';
         require_once __DIR__ . '/../models/Comentario.php';
         
-        $ferrataModel = new Ferrata();
         $imagenModel = new Imagen();
         $comentarioModel = new Comentario();
         
-        $id = $_GET['id'] ?? null;
         if (!$id) {
             die("ID de ferrata no proporcionado.");
         }
         
-        $ferrata = $ferrataModel->obtenerFerrataPorId($id);
+        $ferrata = $this->ferrata->obtenerFerrataPorId($id);
         $imagenes = $imagenModel->obtenerImagenesPorFerrata($id);
         $comentarios = $comentarioModel->obtenerComentariosPorFerrata($id);
         
         include __DIR__ . '/../views/editar_ferrata.php';
     }
     
+    // Guardar cambios al editar una ferrata
     public function guardarEdicionFerrata() {
-        require_once __DIR__ . '/../models/Ferrata.php';
         require_once __DIR__ . '/../models/Imagen.php';
         
-        $ferrataModel = new Ferrata();
         $imagenModel = new Imagen();
         
         $id = $_POST['id'] ?? null;
         if (!$id) {
             die("Error: ID de ferrata no válido.");
         }
+        
+        // Recoger datos del formulario
         $nombre = $_POST['nombre'] ?? '';
         $ubicacion = $_POST['ubicacion'] ?? '';
         $comunidad_autonoma = $_POST['comunidad_autonoma'] ?? '';
@@ -164,20 +164,15 @@ class AdminController {
         $descripcion = $_POST['descripcion'] ?? '';
         $coordenadas = $_POST['coordenadas'] ?? null;
         $estado = $_POST['estado'] ?? '';
-        if (!empty($_POST['fecha_creacion'])) {
-            $fecha_creacion = $_POST['fecha_creacion']; // Se guarda directamente, ya está en formato correcto
-        } else {
-            $fecha_creacion = date('Y-m-d'); // Si no se envía, usa la fecha actual como predeterminado
-        }
+        $fecha_creacion = !empty($_POST['fecha_creacion']) ? $_POST['fecha_creacion'] : date('Y-m-d');
         $fecha_inicio_cierre = !empty($_POST['fecha_inicio_cierre']) ? $_POST['fecha_inicio_cierre'] : null;
         $fecha_fin_cierre = !empty($_POST['fecha_fin_cierre']) ? $_POST['fecha_fin_cierre'] : null;
         $recurrente = isset($_POST['recurrente']) ? 1 : 0;
         
-        // Guardar la ferrata editada
-        $ferrataModel->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente);
-        echo "Ferrata actualizada correctamente.<br>";
+        // Guardar cambios
+        $this->ferrata->editarFerrata($id, $nombre, $ubicacion, $comunidad_autonoma, $provincia, $dificultad, $descripcion, $coordenadas, $estado, $fecha_creacion, $fecha_inicio_cierre, $fecha_fin_cierre, $recurrente);
         
-        // Manejar imágenes
+        // Guardar imágenes si se han subido
         if (!empty($_FILES['imagenes']['name'][0])) {
             foreach ($_FILES['imagenes']['tmp_name'] as $key => $tmp_name) {
                 if ($_FILES['imagenes']['error'][$key] === UPLOAD_ERR_OK) {
@@ -185,16 +180,13 @@ class AdminController {
                     $rutaDestino = "public/img/ferratas/" . $nombreArchivo;
                     
                     if (move_uploaded_file($tmp_name, $rutaDestino)) {
-                        $imagenModel->agregarImagen($id, $nombreArchivo);
-                        echo "Imagen subida: $nombreArchivo<br>";
-                    } else {
-                        echo "Error al subir la imagen: $nombreArchivo<br>";
+                        $imagenModel->guardarImagen($id, $nombreArchivo);
                     }
                 }
             }
         }
         
-        // Detectar si la edición viene desde gestionar_ferratas o ver_ferrata
+        // Redirigir según procedencia
         if (!empty($_POST['desde_gestion']) && $_POST['desde_gestion'] == 1) {
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
         } else {
@@ -203,45 +195,51 @@ class AdminController {
         exit();
     }
     
+    // Eliminar ferrata y todo lo relacionado
     public function eliminarFerrata($id) {
-        require_once __DIR__ . '/../models/Ferrata.php';
         require_once __DIR__ . '/../models/Imagen.php';
         require_once __DIR__ . '/../models/Comentario.php';
         require_once __DIR__ . '/../models/Reporte.php';
+        require_once __DIR__ . '/../models/Video.php';
+        require_once __DIR__ . '/../models/Wikiloc.php';
+        require_once __DIR__ . '/../models/Valoracion.php';
         
-        // Verificar sesión y rol de usuario
+        // Validar sesión y rol
         if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
-            header("Location: /RedFerratera/index.php?accion=home"); // Bloqueo de acceso
+            header("Location: /RedFerratera/index.php?accion=home");
             exit();
         }
         
-        $ferrataModel = new Ferrata();
         $imagenModel = new Imagen();
         $comentarioModel = new Comentario();
         $reporteModel = new Reporte();
+        $videoModel = new Video();
+        $wikilocModel = new Wikiloc();
+        $valoracionModel = new Valoracion();
         
         if (!$id) {
             die("Error: ID de ferrata no válido.");
         }
         
-        // Eliminar imágenes asociadas
+        // Eliminar imágenes (y archivos)
         $imagenes = $imagenModel->obtenerImagenesPorFerrata($id);
         foreach ($imagenes as $imagen) {
             $ruta = __DIR__ . "/../../public/img/ferratas/" . $imagen['ruta'];
             if (file_exists($ruta)) {
-                unlink($ruta); // Borra la imagen del servidor
+                unlink($ruta);
             }
-            $imagenModel->eliminarImagen($imagen['id']); // Borra la imagen de la BD
+            $imagenModel->eliminarImagen($imagen['id']);
         }
         
-        // Eliminar comentarios relacionados
+        // Eliminar datos asociados
         $comentarioModel->eliminarComentariosPorFerrata($id);
-        
-        // Eliminar reportes relacionados
         $reporteModel->eliminarReportesPorFerrata($id);
+        $videoModel->eliminarVideosPorFerrata($id);
+        $wikilocModel->eliminarWikilocPorFerrata($id);
+        $valoracionModel->eliminarValoracionesPorFerrata($id);
         
-        // Eliminar la ferrata de la base de datos
-        if ($ferrataModel->eliminarFerrata($id)) {
+        // Eliminar ferrata
+        if ($this->ferrata->eliminarFerrata($id)) {
             header("Location: /RedFerratera/index.php?accion=gestionar_ferratas");
             exit();
         } else {

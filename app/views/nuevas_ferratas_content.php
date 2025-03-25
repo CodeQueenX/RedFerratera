@@ -1,6 +1,8 @@
+<!-- Título -->
 <h1 class="text-center my-4 fw-bold">Ferratas Nuevas (Último Mes)</h1>
 
-<?php if(isset($nuevasFerratas) && count($nuevasFerratas) > 0): ?>
+<?php if (isset($nuevasFerratas) && count($nuevasFerratas) > 0): ?>
+    <!-- Tabla de ferratas nuevas -->
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle shadow-sm tabla-nuevas-ferratas">
             <thead class="table-dark text-center">
@@ -14,15 +16,22 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($nuevasFerratas as $ferrata): ?>
+                <?php foreach ($nuevasFerratas as $ferrata): ?>
                     <tr>
+                        <!-- Nombre -->
                         <td>
                             <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>" class="ferrata-nueva-nombre">
                                 <?= htmlspecialchars($ferrata['nombre']); ?>
                             </a>
                         </td>
+
+                        <!-- Ubicación -->
                         <td><?= htmlspecialchars($ferrata['ubicacion']); ?></td>
+
+                        <!-- Dificultad -->
                         <td><span class="badge bg-secondary"><?= htmlspecialchars($ferrata['dificultad']); ?></span></td>
+
+                        <!-- Estado -->
                         <td>
                             <span class="badge 
                                 <?= ($ferrata['estado'] === 'Abierta') ? 'bg-success' : 
@@ -32,7 +41,11 @@
                                 <?= htmlspecialchars($ferrata['estado']); ?>
                             </span>
                         </td>
+
+                        <!-- Fecha de creación -->
                         <td><?= date('d-m-Y', strtotime($ferrata['fecha_creacion'])); ?></td>
+
+                        <!-- Acción -->
                         <td class="text-center">
                             <a href="/RedFerratera/ferrata/<?= $ferrata['id']; ?>/<?= urlencode(strtolower(str_replace(' ', '-', $ferrata['nombre']))); ?>" class="btn btn-outline-primary btn-sm">
                                 Ver detalles
@@ -44,6 +57,7 @@
         </table>
     </div>
 <?php else: ?>
+    <!-- Aviso si no hay ferratas nuevas -->
     <div class="alert alert-info text-center mt-4 shadow-sm" role="alert">
         No hay ferratas nuevas registradas en el último mes.
     </div>

@@ -11,24 +11,22 @@ class UsuarioController {
         $this->usuario = new Usuario();
     }
     
-    // Método para registrar un nuevo usuario y verificación de email
+    // Registrar nuevo usuario con verificación por email
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
-            // Verificación de token CSRF
+            // Validar token CSRF
             if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
                 die('Error: Token CSRF inválido o ausente.');
             }
             
-            // Limpieza del token tras su uso
-            unset($_SESSION['csrf_token']);
+            unset($_SESSION['csrf_token']); // Limpiar token
             
             $nombre = $_POST['nombre'] ?? '';
             $email = $_POST['email'] ?? '';
             $contraseña = $_POST['clave'] ?? '';
             
             if ($nombre && $email && $contraseña) {
-                // Verificar si el email ya está registrado
+                // Verificar si el email ya existe
                 if ($this->usuario->existeEmail($email)) {
                     echo "<div style='text-align:center; padding: 20px; background: #f8d7da; color: #721c24; font-size: 18px; border: 1px solid #f5c6cb;'>
                             ❌ <strong>Error:</strong> Este email ya está registrado.<br><br>
@@ -37,19 +35,17 @@ class UsuarioController {
                     return;
                 }
                 
-                $token = bin2hex(random_bytes(32)); // Genera un token único
+                $token = bin2hex(random_bytes(32));
                 
                 if ($this->usuario->registrar($nombre, $email, $contraseña, $token)) {
-                    // Enviar email de verificación
+                    // Enviar correo de activación
                     $asunto = "Activa tu cuenta en Red Ferratera";
                     $mensaje = "Haz clic aquí para activar tu cuenta:\n\n";
                     $mensaje .= "http://localhost/RedFerratera/index.php?accion=activar_cuenta&token=$token";
-                    
                     $cabeceras = "From: no-reply@redferratera.com\r\n" .
                         "Reply-To: no-reply@redferratera.com\r\n" .
                         "X-Mailer: PHP/" . phpversion();
                     
-                    // Enviar correo
                     mail($email, $asunto, $mensaje, $cabeceras);
                     
                     echo "<div style='text-align:center; padding: 20px; background: #dff0d8; color: #3c763d; font-size: 18px; border: 1px solid #d6e9c6;'>
@@ -66,7 +62,7 @@ class UsuarioController {
         }
     }
     
-    // Función para activar la cuenta
+    // Activar cuenta de usuario
     public function activarCuenta() {
         $token = $_GET['token'] ?? null;
         
@@ -80,17 +76,15 @@ class UsuarioController {
         }
     }
     
-    // Método para iniciar sesión
+    // Iniciar sesión
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
-            // Verificación de token CSRF
+            // Validar token CSRF
             if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
                 die('Error: Token CSRF inválido o ausente.');
             }
             
-            // Limpieza del token tras su uso
-            unset($_SESSION['csrf_token']);
+            unset($_SESSION['csrf_token']); // Limpiar token
             
             $email = $_POST['email'] ?? '';
             $contraseña = $_POST['clave'] ?? '';
@@ -106,9 +100,9 @@ class UsuarioController {
                         "verificado" => $usuario['verificado']
                     ];
                     
-                    // Opción "Recordar contraseña" usando cookies
+                    // Guardar cookie si se selecciona "recordar"
                     if (isset($_POST['recordar'])) {
-                        setcookie("usuario_email", $usuario['email'], time() + (86400 * 30), "/"); // 30 días
+                        setcookie("usuario_email", $usuario['email'], time() + (86400 * 30), "/");
                     }
                     
                     header("Location: index.php");
@@ -124,9 +118,12 @@ class UsuarioController {
         }
     }
     
+    // Enviar enlace de recuperación de contraseña
     public function enviarRecuperacion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (session_status() === PHP_SESSION_NONE) session_start();
+            
+            // Validar token CSRF
             if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
                 die("Error: Token CSRF inválido.");
             }
@@ -135,7 +132,6 @@ class UsuarioController {
             
             if ($email) {
                 $token = bin2hex(random_bytes(32));
-                require_once __DIR__ . '/../models/Usuario.php';
                 $usuario = new Usuario();
                 
                 if ($usuario->guardarTokenRecuperacion($email, $token)) {
@@ -158,9 +154,12 @@ class UsuarioController {
         }
     }
     
+    // Procesar cambio de contraseña desde el enlace
     public function procesarCambioClave() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (session_status() === PHP_SESSION_NONE) session_start();
+            
+            // Validar token CSRF
             if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
                 die("Error: Token CSRF inválido.");
             }
@@ -170,7 +169,7 @@ class UsuarioController {
             
             if ($token && $nuevaClave) {
                 if ($this->usuario->actualizarClavePorToken($token, $nuevaClave)) {
-                    $this->usuario->borrarTokenRecuperacion($token); // Invalida el token
+                    $this->usuario->borrarTokenRecuperacion($token);
                     
                     echo "<div class='alert alert-success text-center mt-4'>✅ Contraseña restablecida correctamente. <a href='/RedFerratera/login'>Iniciar sesión</a></div>";
                 } else {
@@ -182,15 +181,14 @@ class UsuarioController {
         }
     }
     
-    // Método para cerrar sesión
+    // Cerrar sesión
     public function logout() {
         session_start();
         session_destroy();
-        setcookie("usuario_email", "", time() - 3600, "/"); // Elimina la cookie
+        setcookie("usuario_email", "", time() - 3600, "/");
         
         header("Location: index.php");
         exit();
     }
 }
 ?>
-
