@@ -11,6 +11,13 @@ class ComentarioController {
     // Agregar un nuevo comentario
     public function agregar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Verificar token CSRF
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                die('Error: Token CSRF inválido o ausente.');
+            }
+            
+            unset($_SESSION['csrf_token']);
+            
             $ferrata_id = $_POST['ferrata_id'] ?? null;
             $usuario_id = $_SESSION['usuario']['id'] ?? null;
             $comentario = $_POST['comentario'] ?? '';

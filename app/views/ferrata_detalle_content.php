@@ -1,4 +1,12 @@
 <?php
+// Iniciar sesión y generar token si no existe
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 if ($ferrata):
 $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
 ?>
@@ -176,6 +184,7 @@ $total = $ratingData ? $ratingData['total'] : 0;
 <?php if (isset($_SESSION['usuario'])): ?>
     <h4 class="mt-4">Añadir comentario</h4>
     <form action="/RedFerratera/index.php?accion=agregar_comentario" method="POST">
+    	<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <input type="hidden" name="accion" value="agregar_comentario">
         <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
         <label for="comentario_nuevo" class="form-label">Comentario:</label>

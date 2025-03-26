@@ -29,11 +29,26 @@ if (preg_match('/^eliminar-imagen\/(\d+)\/ferrata\/(\d+)$/', $accion, $m)) {
     $accion = 'eliminar_imagen';
 }
 
+// Bloquear acciones si el usuario NO ha iniciado sesión
+$soloUsuarios = ['agregar_ferrata', 'agregar_reporte'];
+if (in_array($accion, $soloUsuarios) && !isset($_SESSION['usuario'])) {
+    die("⛔ Debes iniciar sesión para acceder a esta página.");
+}
+
 // Acceso restringido a usuarios no verificados
 if (isset($_SESSION['usuario']) && (!isset($_SESSION['usuario']['verificado']) || $_SESSION['usuario']['verificado'] != 1)) {
     $restringidas = ['agregar_ferrata', 'agregar_reporte'];
     if (in_array($accion, $restringidas)) {
         die("⚠️ Debes verificar tu cuenta para acceder a esta página.");
+    }
+}
+
+// Bloquear acciones si el usuario no es admin
+$soloAdmin = ['editar_ferrata', 'guardar_edicion_ferrata', 'eliminar_ferrata'];
+
+if (in_array($accion, $soloAdmin)) {
+    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] !== 'admin') {
+        die("⛔ Acceso denegado. Solo el administrador puede realizar esta acción.");
     }
 }
 
