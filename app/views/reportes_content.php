@@ -1,4 +1,3 @@
-<!-- Título -->
 <h1 class="text-center my-4 fw-bold">Reportes Pendientes de Ferratas</h1>
 
 <?php if (!empty($reportes)): ?>

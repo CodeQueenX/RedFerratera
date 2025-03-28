@@ -160,7 +160,7 @@ if (!empty($videos)):
     <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
     <div class="mb-3">
         <label for="video_embed" class="form-label">Agregar vídeo (código embed):</label>
-        <textarea name="video" id="video_embed" class="form-control" placeholder='<iframe ...></iframe>'></textarea>
+        <textarea name="video" id="video_embed" class="form-control" placeholder="Pega aquí el iframe del video"></textarea>
         <button type="submit" class="btn btn-primary mt-2">Guardar Vídeo</button>
     </div>
 </form>
@@ -190,7 +190,7 @@ if (!empty($wikilocs)):
     <input type="hidden" name="ferrata_id" value="<?= $ferrata_id; ?>">
     <div class="mb-3">
         <label for="wikiloc_embed" class="form-label">Agregar enlace Wikiloc (código embed):</label>
-        <textarea name="wikiloc" id="wikiloc_embed" class="form-control" placeholder="Pega aquí el código embed de Wikiloc"></textarea>
+        <textarea name="wikiloc" id="wikiloc_embed" class="form-control" placeholder="Pega aquí el iframe de Wikiloc"></textarea>
         <button type="submit" class="btn btn-primary mt-2">Guardar Enlace Wikiloc</button>
     </div>
 </form>
