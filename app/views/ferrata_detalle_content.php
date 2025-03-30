@@ -25,7 +25,13 @@ $ferrata_id = isset($ferrata['id']) ? $ferrata['id'] : '';
             <?= htmlspecialchars($ferrata['estado']); ?>
         </span>
     </p>
-    <p><i data-lucide="calendar"></i> <strong>Fecha de Creación:</strong> <?= date('d-m-Y', strtotime($ferrata['fecha_creacion'])); ?></p>
+    <p><i data-lucide="calendar"></i> <strong>Fecha de Creación:</strong>
+        <?php if (!empty($ferrata['fecha_creacion'])): ?>
+            <?= date('d-m-Y', strtotime($ferrata['fecha_creacion'])); ?>
+        <?php else: ?>
+            <span class="text-muted">No disponible</span>
+        <?php endif; ?>
+    </p>
     <p><i data-lucide="file-text"></i> <strong>Descripción:</strong> <?= nl2br(htmlspecialchars($ferrata['descripcion'])); ?></p>
 
     <!-- Mapa con Google Maps -->
