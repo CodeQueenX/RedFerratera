@@ -21,19 +21,19 @@ if (empty($_SESSION['csrf_token'])) {
             <!-- Nombre -->
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" required>
+                <input type="text" class="form-control" name="nombre" id="nombre" autocomplete="name" required>
             </div>
 
             <!-- Correo electrónico -->
             <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" name="email" id="email" required>
+                <input type="email" class="form-control" name="email" id="email" autocomplete="email" required>
             </div>
 
             <!-- Contraseña -->
             <div class="mb-3">
                 <label for="clave" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="clave" id="clave" required>
+                <input type="password" class="form-control" name="clave" id="clave" autocomplete="new-password" required>
             </div>
 
             <!-- Botón de registro -->

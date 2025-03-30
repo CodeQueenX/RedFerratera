@@ -31,8 +31,8 @@ $ferrata_id = $ferrata['id'];
             <?php
             $comunidades = [
                 "Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria",
-                "Castilla-La Mancha", "Castilla y León", "Cataluña", "Extremadura", "Galicia",
-                "Madrid", "Murcia", "Navarra", "País Vasco", "La Rioja", "Valencia"
+                "Castilla La Mancha", "Castilla y León", "Cataluña", "Extremadura", "Galicia",
+                "Madrid", "Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"
             ];
             foreach ($comunidades as $comunidad):
             ?>

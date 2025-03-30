@@ -18,25 +18,25 @@ if (empty($_SESSION['csrf_token'])) {
         <!-- Nombre -->
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre de la ferrata:</label>
-            <input type="text" class="form-control" name="nombre" id="nombre" required>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
         </div>
 
         <!-- Ubicación -->
         <div class="mb-3">
             <label for="ubicacion" class="form-label">Ubicación (Localidad):</label>
-            <input type="text" class="form-control" name="ubicacion" id="ubicacion" required>
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" required>
         </div>
 
         <!-- Comunidad Autónoma -->
         <div class="mb-3">
             <label for="comunidad_autonoma" class="form-label">Comunidad Autónoma:</label>
-            <select name="comunidad_autonoma" id="comunidad_autonoma" class="form-select" required>
+            <select id="comunidad_autonoma" name="comunidad_autonoma" class="form-select" required>
                 <option value="">Selecciona una comunidad</option>
                 <?php
                 $comunidades = [
                     "Andalucía", "Aragón", "Asturias", "Baleares", "Canarias", "Cantabria",
                     "Castilla-La Mancha", "Castilla y León", "Cataluña", "Extremadura", "Galicia",
-                    "Madrid", "Murcia", "Navarra", "País Vasco", "La Rioja", "Valencia"
+                    "Madrid", "Murcia", "Navarra", "País Vasco", "La Rioja", "Comunidad Valenciana"
                 ];
                 foreach ($comunidades as $comunidad):
                 ?>
@@ -48,13 +48,13 @@ if (empty($_SESSION['csrf_token'])) {
         <!-- Provincia -->
         <div class="mb-3">
             <label for="provincia" class="form-label">Provincia:</label>
-            <input type="text" class="form-control" name="provincia" id="provincia" required>
+            <input type="text" id="provincia" name="provincia" class="form-control" required>
         </div>
 
         <!-- Dificultad -->
         <div class="mb-3">
             <label for="dificultad" class="form-label">Dificultad (K1 - K7):</label>
-            <select name="dificultad" id="dificultad" class="form-select" required>
+            <select id="dificultad" name="dificultad" class="form-select" required>
                 <?php for ($i = 1; $i <= 7; $i++): ?>
                     <option value="K<?= $i ?>">K<?= $i ?></option>
                 <?php endfor; ?>
@@ -64,45 +64,45 @@ if (empty($_SESSION['csrf_token'])) {
         <!-- Descripción -->
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción:</label>
-            <textarea name="descripcion" id="descripcion" class="form-control" required></textarea>
+            <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
         </div>
 
         <!-- Coordenadas -->
         <div class="mb-3">
             <label for="coordenadas" class="form-label">Coordenadas (latitud, longitud):</label>
-            <input type="text" class="form-control" name="coordenadas" id="coordenadas">
+            <input type="text" id="coordenadas" name="coordenadas" class="form-control">
         </div>
 
         <!-- Fecha de creación -->
         <div class="mb-3">
             <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
-            <input type="date" class="form-control" name="fecha_creacion" id="fecha_creacion" required>
+            <input type="date" id="fecha_creacion" name="fecha_creacion" class="form-control" required>
         </div>
 
         <!-- Fechas de cierre -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="fecha_inicio_cierre" class="form-label">Fecha de Inicio de Cierre:</label>
-                <input type="date" class="form-control" name="fecha_inicio_cierre" id="fecha_inicio_cierre">
+                <input type="date" id="fecha_inicio_cierre" name="fecha_inicio_cierre" class="form-control">
             </div>
             <div class="col-md-6 mb-3">
                 <label for="fecha_fin_cierre" class="form-label">Fecha de Fin de Cierre:</label>
-                <input type="date" class="form-control" name="fecha_fin_cierre" id="fecha_fin_cierre">
+                <input type="date" id="fecha_fin_cierre" name="fecha_fin_cierre" class="form-control">
             </div>
         </div>
 
         <!-- Cierre recurrente -->
         <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" name="recurrente" id="recurrente" value="1" <?= (isset($ferrata['recurrente']) && $ferrata['recurrente'] == 1) ? 'checked' : ''; ?>>
-            <label class="form-check-label" for="recurrente">Cierre recurrente</label>
-            <small class="form-text text-muted">Las fechas de cierre se aplican cada año si está marcado.</small>
+            <input type="checkbox" id="recurrente" name="recurrente" value="1" class="form-check-input" <?= (isset($ferrata['recurrente']) && $ferrata['recurrente'] == 1) ? 'checked' : ''; ?>>
+            <label for="recurrente" class="form-check-label">Cierre recurrente</label>
+            <div class="form-text">Las fechas de cierre se aplican cada año si está marcado.</div>
         </div>
 
         <!-- Subir imágenes (solo admin) -->
         <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol'] === 'admin'): ?>
             <div class="mb-3">
                 <label for="imagenes" class="form-label">Subir imágenes:</label>
-                <input type="file" name="imagenes[]" id="imagenes" multiple accept="image/*" class="form-control">
+                <input type="file" id="imagenes" name="imagenes[]" class="form-control" multiple accept="image/*">
             </div>
         <?php endif; ?>
 

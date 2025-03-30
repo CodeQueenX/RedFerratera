@@ -20,14 +20,14 @@ if (empty($_SESSION['csrf_token'])) {
             <!-- Correo electrónico -->
             <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" name="email" id="email"
+                <input type="email" class="form-control" name="email" id="email" autocomplete="email"
                        value="<?= htmlspecialchars($_COOKIE['usuario_email'] ?? '') ?>" required>
             </div>
 
             <!-- Contraseña -->
             <div class="mb-3">
                 <label for="clave" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="clave" id="clave" required>
+                <input type="password" class="form-control" name="clave" id="clave" autocomplete="current-password" required>
             </div>
 
             <!-- Recordar contraseña -->
