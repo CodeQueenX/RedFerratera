@@ -2,7 +2,7 @@
 📌 Descripción
 
 RedFerratera es una aplicación web desarrollada como proyecto final del ciclo de Desarrollo de Aplicaciones Web (DAW).
-Permite consultar rutas de ferratas en España con información detallada sobre ubicación, dificultad y características principales. Es ideal para usuarios que buscan planificar sus aventuras de forma interactiva.
+Permite consultar ferratas en España con información detallada sobre ubicación, dificultad y características principales. Es ideal para usuarios que buscan planificar sus aventuras de forma interactiva.
 
 🧩 Estructura del Proyecto
 
